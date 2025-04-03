@@ -1,0 +1,154 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Campaign {
+  id                  Int           @id @default(autoincrement())
+  title               String        @db.VarChar(255)
+  description         String
+  coverImage          String?       @map("cover_image") @db.VarChar(255)
+  coach               String        @db.VarChar(255)
+  startDate           DateTime      @map("start_date") @db.Timestamp(6)
+  endDate             DateTime      @map("end_date") @db.Timestamp(6)
+  maxParticipants     Int           @map("max_participants")
+  currentParticipants Int?          @default(0) @map("current_participants")
+  duration            String        @db.VarChar(50)
+  sessions            Int
+  status              String        @default("upcoming") @db.VarChar(50)
+  campaignGoals       String[]      @map("campaign_goals")
+  targetAudience      String        @map("target_audience")
+  budget              String        @db.VarChar(50)
+  timeline            String        @db.VarChar(50)
+  preferredChannels   String[]      @map("preferred_channels")
+  messageStyle        String        @map("message_style") @db.VarChar(255)
+  kpis                String[]
+  createdAt           DateTime      @default(now()) @map("created_at") @db.Timestamp(6)
+  updatedAt           DateTime?     @updatedAt @map("updated_at") @db.Timestamp(6)
+  tags                CampaignTag[]
+
+  @@map("campaigns")
+}
+
+model CampaignTag {
+  campaignId Int      @map("campaign_id")
+  tag        String   @db.VarChar(50)
+  campaign   Campaign @relation(fields: [campaignId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+
+  @@id([campaignId, tag])
+  @@map("campaign_tags")
+}
+
+model Coach {
+  id             Int       @id @default(autoincrement())
+  fullName       String    @map("full_name") @db.VarChar(255)
+  email          String    @unique @db.VarChar(255)
+  linkedinUrl    String?   @map("linkedin_url") @db.VarChar(255)
+  website        String?   @db.VarChar(255)
+  expertise      String[]
+  experience     String    @db.VarChar(50)
+  languages      String[]
+  timezone       String    @db.VarChar(50)
+  availability   String    @db.VarChar(50)
+  preferredRate  String    @map("preferred_rate") @db.VarChar(50)
+  certifications String[]
+  bio            String
+  status         String    @default("pending") @db.VarChar(50)
+  createdAt      DateTime  @default(now()) @map("created_at") @db.Timestamp(6)
+  updatedAt      DateTime? @updatedAt @map("updated_at") @db.Timestamp(6)
+
+  @@index([email], map: "idx_coaches_email")
+  @@index([status], map: "idx_coaches_status")
+  @@map("coaches")
+}
+
+model Waitlist {
+  id                Int       @id @default(autoincrement())
+  fullName          String    @map("full_name") @db.VarChar(255)
+  email             String    @unique @db.VarChar(255)
+  phone             String?   @db.VarChar(50)
+  role              String?   @db.VarChar(255)
+  pricingTier       String    @map("pricing_tier") @db.VarChar(50)
+  company           String?   @db.VarChar(255)
+  industry          String?   @db.VarChar(100)
+  companySize       String?   @map("company_size") @db.VarChar(50)
+  experienceLevel   String?   @map("experience_level") @db.VarChar(50)
+  coachingGoals     String[]  @map("coaching_goals")
+  preferredLanguage String?   @map("preferred_language") @db.VarChar(50)
+  location          String?   @db.VarChar(100)
+  heardFrom         String?   @map("heard_from") @db.VarChar(100)
+  budgetRange       String?   @map("budget_range") @db.VarChar(50)
+  startTimeline     String?   @map("start_timeline") @db.VarChar(50)
+  interests         String[]
+  createdAt         DateTime? @default(now()) @map("created_at") @db.Timestamptz(6)
+  status            String?   @default("pending") @db.VarChar(50)
+  assessmentResults Json?     @db.JsonB
+
+  @@map("waitlist")
+}
+
+model Article {
+  id            String   @id @default(cuid())
+  title         String   @db.VarChar(255)
+  content       String   @db.Text
+  url           String   @unique @db.VarChar(255)
+  sourceUrl     String   @db.VarChar(255)
+  category      String   @db.VarChar(50)
+  summary       String   @db.Text
+  description   String   @db.Text
+  keywords      String[]
+  imageUrl      String?  @db.Text
+  author        String?  @db.VarChar(100)
+  readTime      Int?
+  publishedAt   DateTime?
+  viewCount     Int      @default(0)
+  likeCount     Int      @default(0)
+  relevanceScore Float   @default(1.0)
+  status        String   @default("active") @db.VarChar(20)
+  language      String   @default("en") @db.VarChar(10)
+  tags          String[]
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  recommendationCount Int @default(0)
+  clickCount         Int @default(0)
+  completionRate     Float @default(0)
+
+  @@index([category])
+  @@index([status])
+  @@index([relevanceScore])
+  @@index([publishedAt])
+  @@index([language])
+  @@index([tags])
+  @@index([url])
+}
+
+model Recommendation {
+  id          String   @id @default(cuid())
+  category    String
+  title       String
+  description String
+  imageUrl    String
+  articleUrl  String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model PricingWaitlist {
+  id          Int      @id @default(autoincrement())
+  name        String
+  email       String
+  company     String?
+  role        String?
+  linkedinUrl String?  @map("linkedin_url")
+  goals       String?  @db.Text
+  selectedTier String  @map("selected_tier")
+  submittedAt DateTime @map("submitted_at")
+  createdAt   DateTime @default(now()) @map("created_at")
+
+  @@map("pricing_waitlist")
+}

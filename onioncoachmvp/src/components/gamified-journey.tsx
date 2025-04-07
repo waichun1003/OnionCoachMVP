@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button"
 import { ArrowRight } from 'lucide-react'
 import { useState } from "react"
 import Image from "next/image"
+import Link from "next/link"
 
 interface Step {
     number: string;
@@ -406,25 +407,27 @@ export function GamifiedJourney() {
                                             Unlock your potential with our AI-powered coach matching service. Whether advancing your career or achieving personal growth, our AI ensures you get paired with the ideal coach for your unique needs and goals.
                                         </p>
                                         
-                                        <button 
-                                            className="rounded-full px-8 py-2 text-base text-white hover:bg-[#e65a00] transition-all duration-300 flex items-center"
-                                            style={{ 
-                                                backgroundColor: "#ff6a00",
-                                                border: "none",
-                                                padding: "0.75rem 1.5rem",
-                                                fontSize: "1rem",
-                                                cursor: "pointer",
-                                            }}
-                                        >
-                                            Know more
-                                            <motion.div
-                                                animate={{ x: [0, 5, 0] }}
-                                                transition={{ repeat: Infinity, duration: 1.5 }}
-                                                className="ml-2"
+                                        <Link href="/find-coach">
+                                            <button 
+                                                className="rounded-full px-8 py-2 text-base text-white hover:bg-[#e65a00] transition-all duration-300 flex items-center"
+                                                style={{ 
+                                                    backgroundColor: "#ff6a00",
+                                                    border: "none",
+                                                    padding: "0.75rem 1.5rem",
+                                                    fontSize: "1rem",
+                                                    cursor: "pointer",
+                                                }}
                                             >
-                                                <ArrowRight className="h-5 w-5" />
-                                            </motion.div>
-                                        </button>
+                                                Know more
+                                                <motion.div
+                                                    animate={{ x: [0, 5, 0] }}
+                                                    transition={{ repeat: Infinity, duration: 1.5 }}
+                                                    className="ml-2"
+                                                >
+                                                    <ArrowRight className="h-5 w-5" />
+                                                </motion.div>
+                                            </button>
+                                        </Link>
                                     </motion.div>
                                 </div>
                             </div>
@@ -672,25 +675,27 @@ export function GamifiedJourney() {
                                                                 : step.description}
                                                         </p>
                                                         
-                                                        <button 
-                                                            className="rounded-full px-8 py-2 text-base text-white hover:bg-[#e65a00] transition-all duration-300 flex items-center"
-                                                            style={{ 
-                                                                backgroundColor: "#ff6a00",
-                                                                border: "none",
-                                                                padding: "0.75rem 1.5rem",
-                                                                fontSize: "1rem",
-                                                                cursor: "pointer",
-                                                            }}
-                                                        >
-                                                            Know more
-                                                            <motion.div
-                                                                animate={{ x: [0, 5, 0] }}
-                                                                transition={{ repeat: Infinity, duration: 1.5 }}
-                                                                className="ml-2"
+                                                        <Link href="/find-coach">
+                                                            <button 
+                                                                className="rounded-full px-8 py-2 text-base text-white hover:bg-[#e65a00] transition-all duration-300 flex items-center"
+                                                                style={{ 
+                                                                    backgroundColor: "#ff6a00",
+                                                                    border: "none",
+                                                                    padding: "0.75rem 1.5rem",
+                                                                    fontSize: "1rem",
+                                                                    cursor: "pointer",
+                                                                }}
                                                             >
-                                                                <ArrowRight className="h-5 w-5" />
-                                                            </motion.div>
-                                                        </button>
+                                                                Know more
+                                                                <motion.div
+                                                                    animate={{ x: [0, 5, 0] }}
+                                                                    transition={{ repeat: Infinity, duration: 1.5 }}
+                                                                    className="ml-2"
+                                                                >
+                                                                    <ArrowRight className="h-5 w-5" />
+                                                                </motion.div>
+                                                            </button>
+                                                        </Link>
                                                     </motion.div>
                                                 </div>
                                             </div>

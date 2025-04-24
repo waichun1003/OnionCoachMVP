@@ -68,15 +68,15 @@ export function HeroSection() {
                             initial={{opacity: 0, scale: 0}}
                             animate={{opacity: 1, scale: 1}}
                             transition={{delay: 0.3}}
-                            className="relative w-[244.7px] h-[244.7px] rounded-full overflow-hidden bg-[#FF5733]" // Increased size
+                            className="relative w-[280px] h-[280px] rounded-full overflow-hidden bg-[#FF5733] shadow-xl"
                         >
-
                             <Image
                                 src="/images/image_114.png"
                                 alt="Coach 1"
                                 fill
-                                quality="100"
-                                className="object-cover"
+                                quality={100}
+                                sizes="(max-width: 768px) 280px, 280px"
+                                className="object-cover object-center"
                                 priority
                             />
                         </motion.div>
@@ -86,13 +86,13 @@ export function HeroSection() {
                                 initial={{scaleX: 0}}
                                 animate={{scaleX: 1}}
                                 transition={{delay: 0.4}}
-                                className="w-[120px] h-[250px] bg-[#6B46C1] rounded-r-full"
+                                className="w-[140px] h-[280px] bg-[#6B46C1] rounded-r-full shadow-xl"
                             />
                             <motion.div
                                 initial={{scaleX: 0}}
                                 animate={{scaleX: 1}}
                                 transition={{delay: 0.4}}
-                                className="w-[120px] h-[250px] bg-[#6B46C1] rounded-r-full"
+                                className="w-[140px] h-[280px] bg-[#6B46C1] rounded-r-full shadow-xl"
                             />
                         </div>
 
@@ -100,14 +100,15 @@ export function HeroSection() {
                             initial={{opacity: 0, scale: 0}}
                             animate={{opacity: 1, scale: 1}}
                             transition={{delay: 0.6}}
-                            className="relative w-[248px] h-[291px] rounded-full overflow-hidden bg-[#FDB347]"
+                            className="relative w-[300px] h-[350px] rounded-full overflow-hidden bg-[#FDB347] shadow-xl"
                         >
                             <Image
                                 src="/images/image_103.png"
                                 alt="Coach 2"
                                 fill
-                                quality="100"
-                                className="object-cover"
+                                quality={100}
+                                sizes="(max-width: 768px) 300px, 300px"
+                                className="object-cover object-center"
                                 priority
                             />
                         </motion.div>
@@ -116,14 +117,15 @@ export function HeroSection() {
                             initial={{opacity: 0, x: 20}}
                             animate={{opacity: 1, x: 0}}
                             transition={{delay: 0.8}}
-                            className="relative w-[476px] h-[232px] overflow-hidden rounded-2xl"
+                            className="relative w-[550px] h-[280px] overflow-hidden rounded-2xl shadow-xl"
                         >
                             <Image
                                 src="/images/Rectangle_2157.png"
                                 alt="People crossing"
                                 fill
-                                quality="100"
-                                className="object-cover"
+                                quality={100}
+                                sizes="(max-width: 768px) 550px, 550px"
+                                className="object-cover object-center"
                                 priority
                             />
                         </motion.div>
@@ -132,14 +134,15 @@ export function HeroSection() {
                             initial={{opacity: 0, scale: 0}}
                             animate={{opacity: 1, scale: 1}}
                             transition={{delay: 1}}
-                            className="relative w-[252px] h-[250px] rounded-full overflow-hidden bg-[#FF5733]"
+                            className="relative w-[300px] h-[300px] rounded-full overflow-hidden bg-[#FF5733] shadow-xl"
                         >
                             <Image
                                 src="/images/image_113.png"
                                 alt="Coach 3"
                                 fill
-                                quality="100"
-                                className="object-cover"
+                                quality={100}
+                                sizes="(max-width: 768px) 300px, 300px"
+                                className="object-cover object-center"
                                 priority
                             />
                         </motion.div>

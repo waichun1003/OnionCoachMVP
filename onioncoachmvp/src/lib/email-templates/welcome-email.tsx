@@ -1,146 +1,229 @@
+import { FC } from 'react';
 import { 
-  Body,
-  Container,
-  Head,
-  Heading,
-  Html,
-  Preview,
-  Text,
-  Section,
+  Html, 
+  Body, 
+  Container, 
+  Heading, 
+  Text, 
+  Section, 
+  Hr, 
   Link,
-  Hr,
-} from '@react-email/components'
+  Button,
+  Img,
+  Column,
+  Row,
+  Head,
+  Preview
+} from '@react-email/components';
+
+interface AssessmentScores {
+  [key: string]: number;
+}
 
 interface WelcomeEmailProps {
   name: string;
-  assessmentScores: Record<string, number>;
-  personalityType?: string;
-  recommendedPath?: string;
+  assessmentScores: AssessmentScores;
+  personalityType: string;
+  recommendedPath: string;
+  strengths?: string[];
+  challenges?: string[];
+  nextSteps?: string[];
+  resultId?: string;
 }
 
-export function WelcomeEmail({ 
+export const WelcomeEmail: FC<WelcomeEmailProps> = ({ 
   name, 
   assessmentScores,
-  personalityType = 'Balance Seeker',
-  recommendedPath = 'Core Life Skills Foundation'
-}: WelcomeEmailProps) {
+  personalityType,
+  recommendedPath,
+  strengths = [],
+  challenges = [],
+  nextSteps = [],
+  resultId
+}) => {
+  // Get the highest and lowest scores to highlight
+  const scoreEntries = Object.entries(assessmentScores);
+  
+  const scoreText = {
+    fontSize: '14px',
+    margin: '8px 0',
+    paddingLeft: '12px',
+    borderLeft: '2px solid currentColor'
+  };
+
+  const subHeading = {
+    fontSize: '16px',
+    fontWeight: 'bold',
+    marginBottom: '12px'
+  };
+
+  const section = {
+    marginBottom: '24px'
+  };
+
+  const sectionHeading = {
+    color: '#6B46C1',
+    fontSize: '18px',
+    marginBottom: '16px'
+  };
+
+  const text = {
+    fontSize: '16px',
+    lineHeight: '1.5',
+    marginBottom: '12px'
+  };
+
+  const list = {
+    paddingLeft: '20px',
+    marginBottom: '16px'
+  };
+
+  const listItem = {
+    fontSize: '16px',
+    lineHeight: '1.5',
+    marginBottom: '8px'
+  };
+
   return (
     <Html>
-      <Head />
-      <Preview>Welcome to Onion Coach - Your Personal Growth Journey Begins</Preview>
-      <Body style={main}>
-        <Container style={container}>
-          <Heading style={h1}>Welcome to Onion Coach, {name}!</Heading>
+      <Body style={{ 
+        fontFamily: 'Arial, sans-serif',
+        backgroundColor: '#f9f9f9',
+        margin: '0',
+        padding: '0'
+      }}>
+        <Container style={{ 
+          maxWidth: '600px', 
+          margin: '0 auto', 
+          backgroundColor: '#ffffff',
+          border: '1px solid #e5e5e5',
+          borderRadius: '5px',
+          padding: '20px'
+        }}>
+          <Heading style={{ 
+            color: '#6B46C1', 
+            fontSize: '24px',
+            textAlign: 'center',
+            marginBottom: '20px'
+          }}>
+            Your Onion Coach Assessment Results
+          </Heading>
           
-          <Text style={text}>
-            Thank you for completing the Life Wheel Assessment. We're excited to begin this journey with you!
+          <Text style={{ fontSize: '16px' }}>
+            Hello {name},
           </Text>
-
-          <Section style={scoreSection}>
-            <Heading style={h2}>Your Assessment Results</Heading>
-            <Text style={text}>
-              Personality Type: <strong>{personalityType}</strong>
-            </Text>
-            <Text style={text}>
-              Recommended Path: <strong>{recommendedPath}</strong>
-            </Text>
+          
+          <Text style={{ fontSize: '16px', lineHeight: '1.5' }}>
+            Thank you for completing your Onion Coach assessment. We're excited to share your results and begin your coaching journey.
+          </Text>
+          
+          <Section style={{ 
+            backgroundColor: '#f5f0ff', 
+            padding: '15px', 
+            borderRadius: '8px',
+            marginBottom: '20px'
+          }}>
+            <Heading as="h2" style={{ 
+              color: '#6B46C1', 
+              fontSize: '18px',
+              marginBottom: '10px'
+            }}>
+              Your Personality Type: {personalityType}
+            </Heading>
             
-            <Hr style={hr} />
-            
-            <Text style={text}>Your Life Wheel Scores:</Text>
-            {Object.entries(assessmentScores).map(([category, score]) => (
-              <Text key={category} style={scoreText}>
-                {category}: {score}/10
-              </Text>
-            ))}
-          </Section>
-
-          <Section style={nextSteps}>
-            <Heading style={h2}>Next Steps</Heading>
-            <Text style={text}>
-              Our team will review your assessment and get in touch with personalized recommendations 
-              within the next 24-48 hours.
+            <Text style={{ fontSize: '16px', lineHeight: '1.5' }}>
+              Based on your responses, we've identified your personality type as <strong>{personalityType}</strong>.
+              We recommend the <strong>{recommendedPath}</strong> approach for your growth journey.
             </Text>
           </Section>
+          
+          <Section style={section}>
+            <Heading style={sectionHeading}>Your Life Balance Scores</Heading>
+            <Text style={text}>Here's a detailed breakdown of your assessment results:</Text>
+            
+            <Section style={{ marginBottom: '20px' }}>
+              <Heading as="h3" style={{ ...subHeading, color: '#22C55E' }}>Core Strengths (7-10)</Heading>
+              {Object.entries(assessmentScores)
+                .filter(([_, score]) => score >= 7)
+                .map(([area, score]) => (
+                  <Text key={area} style={{ ...scoreText, color: '#22C55E' }}>
+                    {area}: {score}/10
+                  </Text>
+                ))
+              }
+            </Section>
 
-          <Hr style={hr} />
+            <Section style={{ marginBottom: '20px' }}>
+              <Heading as="h3" style={{ ...subHeading, color: '#6366F1' }}>Growing Areas (5-6)</Heading>
+              {Object.entries(assessmentScores)
+                .filter(([_, score]) => score >= 5 && score < 7)
+                .map(([area, score]) => (
+                  <Text key={area} style={{ ...scoreText, color: '#6366F1' }}>
+                    {area}: {score}/10
+                  </Text>
+                ))
+              }
+            </Section>
 
-          <Text style={footer}>
-            If you have any questions, feel free to reply to this email or contact us at{' '}
-            <Link href="mailto:support@onioncoach.com" style={link}>
-              support@onioncoach.com
-            </Link>
+            <Section style={{ marginBottom: '20px' }}>
+              <Heading as="h3" style={{ ...subHeading, color: '#EF4444' }}>Focus Areas (1-4)</Heading>
+              {Object.entries(assessmentScores)
+                .filter(([_, score]) => score < 5)
+                .map(([area, score]) => (
+                  <Text key={area} style={{ ...scoreText, color: '#EF4444' }}>
+                    {area}: {score}/10
+                  </Text>
+                ))
+              }
+            </Section>
+          </Section>
+          
+          <Section style={section}>
+            <Heading style={sectionHeading}>Next Steps</Heading>
+            <Text style={text}>Thank you for completing your assessment! As part of our exclusive beta program:</Text>
+            <ul style={list}>
+              <li style={listItem}>We'll review your assessment results carefully</li>
+              <li style={listItem}>You'll receive a response within 5 business days</li>
+              <li style={listItem}>If selected, we'll arrange a complimentary 1-on-1 coaching session</li>
+            </ul>
+          </Section>
+          
+          <Button
+            href={`https://onioncoach.com/assessment/results?id=${encodeURIComponent(resultId || name.replace(/\s+/g, '-').toLowerCase())}`}
+            style={{
+              backgroundColor: '#6B46C1',
+              color: '#FFFFFF',
+              padding: '12px 20px',
+              borderRadius: '4px',
+              textDecoration: 'none',
+              textAlign: 'center',
+              display: 'block',
+              width: '200px',
+              margin: '20px auto'
+            }}
+          >
+            View Full Results
+          </Button>
+          
+          <Hr style={{ borderTop: '1px solid #E2E8F0', margin: '30px 0' }} />
+          
+          <Text style={{ 
+            fontSize: '14px', 
+            color: '#666666',
+            textAlign: 'center'
+          }}>
+            If you have any questions, feel free to <Link href="mailto:onioncoach2024@gmail.com" style={{ color: '#6B46C1' }}>contact us</Link>.
+          </Text>
+          
+          <Text style={{ 
+            fontSize: '14px', 
+            color: '#666666',
+            textAlign: 'center'
+          }}>
+            Onion Coach Team
           </Text>
         </Container>
       </Body>
     </Html>
-  )
-}
-
-// Styles
-const main = {
-  backgroundColor: '#ffffff',
-  fontFamily: '-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Oxygen-Sans,Ubuntu,Cantarell,"Helvetica Neue",sans-serif',
-}
-
-const container = {
-  margin: '0 auto',
-  padding: '20px 0 48px',
-  maxWidth: '580px',
-}
-
-const h1 = {
-  color: '#333',
-  fontSize: '24px',
-  fontWeight: '600',
-  lineHeight: '1.3',
-  margin: '16px 0',
-}
-
-const h2 = {
-  color: '#444',
-  fontSize: '20px',
-  fontWeight: '500',
-  lineHeight: '1.3',
-  margin: '16px 0',
-}
-
-const text = {
-  color: '#333',
-  fontSize: '16px',
-  lineHeight: '1.6',
-  margin: '16px 0',
-}
-
-const scoreSection = {
-  margin: '24px 0',
-  padding: '24px',
-  backgroundColor: '#f9f9f9',
-  borderRadius: '6px',
-}
-
-const scoreText = {
-  margin: '8px 0',
-  fontSize: '15px',
-  color: '#555',
-}
-
-const nextSteps = {
-  margin: '32px 0',
-}
-
-const hr = {
-  borderColor: '#eee',
-  margin: '24px 0',
-}
-
-const footer = {
-  color: '#666',
-  fontSize: '14px',
-  margin: '24px 0',
-}
-
-const link = {
-  color: '#E86C3A',
-  textDecoration: 'underline',
-} 
+  );
+}; 

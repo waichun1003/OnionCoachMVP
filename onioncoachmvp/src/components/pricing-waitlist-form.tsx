@@ -8,7 +8,7 @@ import { X, ArrowRight, Star, Zap, Shield, Gift } from "lucide-react"
 import { toast } from "sonner"
 
 interface PricingWaitlistFormProps {
-  selectedTier: "Professional Growth" | "Entrepreneur Elite" | "Enterprise Solutions"
+  selectedTier: "Starter" | "Professional" | "Enterprise"
   onClose: () => void
 }
 
@@ -26,27 +26,27 @@ export function PricingWaitlistForm({ selectedTier: initialTier, onClose }: Pric
 
   const pricingOptions = [
     {
-      tier: "Professional Growth",
-      price: "99",
-      originalPrice: "165",
-      description: "Perfect for professionals seeking career advancement",
+      tier: "Starter",
+      price: "49",
+      originalPrice: "99",
+      description: "Perfect for individuals starting their coaching journey",
       icon: Zap,
       color: "bg-purple-600",
       lightColor: "bg-purple-100"
     },
     {
-      tier: "Entrepreneur Elite",
-      price: "199",
-      originalPrice: "332",
-      description: "Tailored for entrepreneurs and business owners",
+      tier: "Professional",
+      price: "99",
+      originalPrice: "199",
+      description: "For professionals seeking comprehensive career development",
       icon: Shield,
       color: "bg-[#E86C3A]",
       lightColor: "bg-orange-100"
     },
     {
-      tier: "Enterprise Solutions",
+      tier: "Enterprise",
       price: "Custom",
-      description: "Enterprise-grade coaching solutions",
+      description: "Tailored solutions for organizational development",
       icon: Gift,
       color: "bg-blue-600",
       lightColor: "bg-blue-100"

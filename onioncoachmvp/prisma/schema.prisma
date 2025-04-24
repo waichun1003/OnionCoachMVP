@@ -92,31 +92,31 @@ model Waitlist {
 }
 
 model Article {
-  id            String   @id @default(cuid())
-  title         String   @db.VarChar(255)
-  content       String   @db.Text
-  url           String   @unique @db.VarChar(255)
-  sourceUrl     String   @db.VarChar(255)
-  category      String   @db.VarChar(50)
-  summary       String   @db.Text
-  description   String   @db.Text
-  keywords      String[]
-  imageUrl      String?  @db.Text
-  author        String?  @db.VarChar(100)
-  readTime      Int?
-  publishedAt   DateTime?
-  viewCount     Int      @default(0)
-  likeCount     Int      @default(0)
-  relevanceScore Float   @default(1.0)
-  status        String   @default("active") @db.VarChar(20)
-  language      String   @default("en") @db.VarChar(10)
-  tags          String[]
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @updatedAt
+  id             String    @id @default(cuid())
+  title          String    @db.VarChar(255)
+  content        String    @db.Text
+  url            String    @unique @db.VarChar(255)
+  sourceUrl      String    @db.VarChar(255)
+  category       String    @db.VarChar(50)
+  summary        String    @db.Text
+  description    String    @db.Text
+  keywords       String[]
+  imageUrl       String?   @db.Text
+  author         String?   @db.VarChar(100)
+  readTime       Int?
+  publishedAt    DateTime?
+  viewCount      Int       @default(0)
+  likeCount      Int       @default(0)
+  relevanceScore Float     @default(1.0)
+  status         String    @default("active") @db.VarChar(20)
+  language       String    @default("en") @db.VarChar(10)
+  tags           String[]
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
 
-  recommendationCount Int @default(0)
-  clickCount         Int @default(0)
-  completionRate     Float @default(0)
+  recommendationCount Int   @default(0)
+  clickCount          Int   @default(0)
+  completionRate      Float @default(0)
 
   @@index([category])
   @@index([status])
@@ -139,16 +139,26 @@ model Recommendation {
 }
 
 model PricingWaitlist {
-  id          Int      @id @default(autoincrement())
-  name        String
-  email       String
-  company     String?
-  role        String?
-  linkedinUrl String?  @map("linkedin_url")
-  goals       String?  @db.Text
-  selectedTier String  @map("selected_tier")
-  submittedAt DateTime @map("submitted_at")
-  createdAt   DateTime @default(now()) @map("created_at")
+  id           Int      @id @default(autoincrement())
+  name         String
+  email        String
+  company      String?
+  role         String?
+  linkedinUrl  String?  @map("linkedin_url")
+  goals        String?  @db.Text
+  selectedTier String   @map("selected_tier")
+  submittedAt  DateTime @map("submitted_at")
+  createdAt    DateTime @default(now()) @map("created_at")
 
   @@map("pricing_waitlist")
+}
+
+model AssessmentToken {
+  id        String   @id @default(cuid())
+  token     String   @unique
+  email     String
+  expiresAt DateTime
+  userId    String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }

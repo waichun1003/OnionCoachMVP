@@ -31,7 +31,7 @@ const teamMembers = [
   {
     name: "Wai Chun Cheng (Samuel)",
     role: "Co-founder & Development Guide",
-    image: "/images/samuel.jpg",
+    image: "/images/samuel.png",
     bio: "Expert in crafting transformative professional journeys",
     linkedin: "https://www.linkedin.com/in/samuel-cheng-4a1270a9/"
   },
@@ -360,6 +360,8 @@ export default function AboutPage() {
                         <p className="text-gray-600 text-sm mb-4">{member.bio}</p>
                         <motion.a 
                           href={member.linkedin}
+                          target="_blank"
+                          rel="noopener noreferrer"
                           className="text-[#6B46C1] hover:text-[#5B3AA8] inline-flex items-center"
                           whileHover={{ scale: 1.05 }}
                           whileTap={{ scale: 0.95 }}

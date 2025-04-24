@@ -46,24 +46,24 @@ const coachSchema = z.object({
 })
 
 const EXPERTISE_OPTIONS = [
-  "Career Development",
-  "Leadership",
-  "Executive Coaching",
-  "Life Coaching",
-  "Business Strategy",
-  "Performance",
-  "Communication",
-  "Team Building"
+  { value: "career-development", label: "Career Development" },
+  { value: "leadership", label: "Leadership" },
+  { value: "executive-coaching", label: "Executive Coaching" },
+  { value: "life-coaching", label: "Life Coaching" },
+  { value: "business-strategy", label: "Business Strategy" },
+  { value: "performance", label: "Performance" },
+  { value: "communication", label: "Communication" },
+  { value: "team-building", label: "Team Building" }
 ]
 
 const LANGUAGE_OPTIONS = [
-  "English",
-  "Mandarin",
-  "Spanish",
-  "French",
-  "German",
-  "Japanese",
-  "Korean"
+  { value: "english", label: "English" },
+  { value: "mandarin", label: "Mandarin" },
+  { value: "spanish", label: "Spanish" },
+  { value: "french", label: "French" },
+  { value: "german", label: "German" },
+  { value: "japanese", label: "Japanese" },
+  { value: "korean", label: "Korean" }
 ]
 
 const TIMEZONE_OPTIONS = [
@@ -277,9 +277,11 @@ export function CoachForm({ onClose }: { onClose: () => void }) {
               options={EXPERTISE_OPTIONS}
               value={watch('expertise')}
               onChange={(value) => setValue('expertise', value)}
-              label="Select expertise"
-              error={errors.expertise?.message}
+              placeholder="Select expertise"
             />
+            {errors.expertise?.message && (
+              <p className="text-red-500 text-sm">{errors.expertise.message}</p>
+            )}
           </div>
         )
       case 'languages':
@@ -290,9 +292,11 @@ export function CoachForm({ onClose }: { onClose: () => void }) {
               options={LANGUAGE_OPTIONS}
               value={watch('languages')}
               onChange={(value) => setValue('languages', value)}
-              label="Select languages"
-              error={errors.languages?.message}
+              placeholder="Select languages"
             />
+            {errors.languages?.message && (
+              <p className="text-red-500 text-sm">{errors.languages.message}</p>
+            )}
           </div>
         )
       case 'bio':
@@ -395,9 +399,11 @@ export function CoachForm({ onClose }: { onClose: () => void }) {
               options={CERTIFICATION_OPTIONS}
               value={watch('certifications') || []}
               onChange={(value) => setValue('certifications', value)}
-              label="Select certifications"
-              error={errors.certifications?.message}
+              placeholder="Select certifications"
             />
+            {errors.certifications?.message && (
+              <p className="text-red-500 text-sm">{errors.certifications.message}</p>
+            )}
             <p className="text-xs text-gray-500">Select all relevant certifications (optional)</p>
           </div>
         )

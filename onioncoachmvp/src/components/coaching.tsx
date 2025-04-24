@@ -29,7 +29,7 @@ const testimonials = [
         name: "Alex Chen",
         role: "Software Engineer",
         content: "The coaching sessions have been transformative for my career. I've gained clarity and confidence in my professional journey.",
-        avatar: "/images/coach1.png"
+        avatar: "/images/coach3.png"
     },
     {
         name: "Sarah Miller",

@@ -14,86 +14,76 @@ import { useState } from "react"
 
 const pricingTiers = [
   {
-    name: "Professional Growth",
-    price: "99",
-    originalPrice: "165",
-    description: "Perfect for professionals seeking career advancement and skill development",
+    name: "Starter",
+    price: "49",
+    originalPrice: "99",
+    description: "Perfect for individuals starting their coaching journey",
     features: [
-      "1-on-1 Career Coaching Sessions (2/month)",
-      "Resume & LinkedIn Profile Optimization",
-      "Interview Mastery Program",
-      "Career Transition Roadmap",
-      "Skill Gap Analysis & Development Plan",
-      "Professional Network Building Events",
-      "Industry Insights & Trend Reports",
-      "Career Path Planning & Milestones",
-      "Salary Negotiation Training",
-      "Personal Brand Development"
+      "1-on-1 Coaching Session (1/month)",
+      "Basic Career Assessment",
+      "Resume Review",
+      "LinkedIn Profile Optimization",
+      "Email Support",
+      "Access to Resource Library"
     ],
-    industryBenefits: "Ideal for IT, Finance, Marketing, and Sales professionals",
+    industryBenefits: "Ideal for early-career professionals and career changers",
     caseStudy: {
-      title: "Marketing Manager to Senior Director",
-      result: "Achieved 40% salary increase within 6 months"
+      title: "Career Transition Success",
+      result: "Secured new role within 3 months"
     },
     featured: false,
     color: "bg-purple-600",
     icon: Zap
   },
   {
-    name: "Entrepreneur Elite",
-    price: "199",
-    originalPrice: "332",
-    description: "Tailored for entrepreneurs and business owners looking to scale their ventures",
+    name: "Professional",
+    price: "99",
+    originalPrice: "199",
+    description: "For professionals seeking comprehensive career development",
     features: [
-      "Strategic Business Consulting (4/month)",
-      "Leadership & Team Building",
-      "Growth Strategy & Execution Plan",
-      "Market Analysis & Competitor Insights",
-      "Pitch Deck & Investor Readiness",
-      "Fundraising & Investor Relations",
-      "Business Model Innovation",
-      "Executive Presence & Communication",
-      "Founders Network Membership",
-      "Monthly Mastermind Sessions"
+      "1-on-1 Coaching Sessions (2/month)",
+      "Advanced Career Assessment",
+      "Interview Preparation",
+      "Career Strategy Planning",
+      "Priority Email Support",
+      "Access to Premium Resources",
+      "Monthly Group Workshops"
     ],
-    industryBenefits: "Perfect for Tech Startups, E-commerce, and Service-based businesses",
+    industryBenefits: "Perfect for mid-career professionals and managers",
     caseStudy: {
-      title: "Startup to Series A",
-      result: "Secured $2M funding after 3 months of coaching"
+      title: "Leadership Advancement",
+      result: "Achieved promotion within 6 months"
     },
     featured: true,
     color: "bg-[#E86C3A]",
     icon: Shield
   },
   {
-    name: "Enterprise Solutions",
+    name: "Enterprise",
     price: "Custom",
     originalPrice: "",
-    description: "Enterprise-grade coaching solutions for organizational leadership",
+    description: "Tailored solutions for organizational development",
     features: [
-      "Executive Leadership Program",
-      "Organizational Strategy Development",
-      "Change Management Framework",
-      "Team Performance Systems",
-      "Corporate Culture Transformation",
-      "Succession Planning Strategy",
-      "Board & Stakeholder Management",
-      "Custom Leadership Workshops",
-      "Cross-functional Team Alignment",
-      "Global Leadership Development"
+      "Custom Coaching Program",
+      "Team Development Sessions",
+      "Leadership Training",
+      "Progress Tracking Dashboard",
+      "Dedicated Success Manager",
+      "Custom Workshops",
+      "Priority Support"
     ],
-    industryBenefits: "Tailored for Fortune 500, MNCs, and High-Growth Companies",
+    industryBenefits: "Designed for teams and organizations",
     caseStudy: {
-      title: "Global Team Transformation",
-      result: "30% improvement in team performance metrics"
+      title: "Team Performance",
+      result: "30% improvement in team engagement"
     },
     featured: false,
     customPricing: true,
     enterpriseFeatures: [
-      "Customized coaching programs",
-      "Multi-team deployment",
-      "Progress tracking dashboard",
-      "ROI measurement tools"
+      "Custom program design",
+      "Team deployment",
+      "Progress analytics",
+      "ROI tracking"
     ],
     color: "bg-blue-600",
     icon: Gift
@@ -103,92 +93,44 @@ const pricingTiers = [
 const comparisonFeatures = [
   {
     feature: "1-on-1 Coaching Sessions",
-    prof: "2/month",
-    entre: "4/month",
-    enterprise: "Unlimited"
-  },
-  {
-    feature: "Response Time",
-    prof: "Within 24h",
-    entre: "Within 12h",
-    enterprise: "Priority 4h"
-  },
-  {
-    feature: "Group Sessions",
-    prof: "1/month",
-    entre: "2/month",
+    starter: "1/month",
+    professional: "2/month",
     enterprise: "Custom"
   },
   {
     feature: "Career Assessment",
-    prof: "Basic",
-    entre: "Advanced",
-    enterprise: "Comprehensive"
-  },
-  {
-    feature: "Skill Development Plans",
-    prof: "✓",
-    entre: "✓",
-    enterprise: "✓"
-  },
-  {
-    feature: "Resume Review",
-    prof: "Quarterly",
-    entre: "Monthly",
-    enterprise: "On-demand"
-  },
-  {
-    feature: "LinkedIn Optimization",
-    prof: "One-time",
-    entre: "Quarterly",
-    enterprise: "Monthly"
-  },
-  {
-    feature: "Interview Preparation",
-    prof: "Basic",
-    entre: "Advanced",
+    starter: "Basic",
+    professional: "Advanced",
     enterprise: "Custom"
   },
   {
-    feature: "Industry Network Access",
-    prof: "Limited",
-    entre: "Full Access",
-    enterprise: "VIP Access"
+    feature: "Support Response Time",
+    starter: "Within 48h",
+    professional: "Within 24h",
+    enterprise: "Priority"
   },
   {
-    feature: "Exclusive Events",
-    prof: "2/year",
-    entre: "4/year",
-    enterprise: "Unlimited"
+    feature: "Group Workshops",
+    starter: "❌",
+    professional: "Monthly",
+    enterprise: "Custom"
   },
   {
     feature: "Resource Library",
-    prof: "Basic",
-    entre: "Premium",
-    enterprise: "Enterprise"
+    starter: "Basic",
+    professional: "Premium",
+    enterprise: "Custom"
   },
   {
     feature: "Progress Tracking",
-    prof: "Monthly",
-    entre: "Weekly",
-    enterprise: "Real-time"
-  },
-  {
-    feature: "Team Workshops",
-    prof: "❌",
-    entre: "2/quarter",
-    enterprise: "Unlimited"
-  },
-  {
-    feature: "Custom Learning Path",
-    prof: "✓",
-    entre: "✓",
-    enterprise: "✓"
+    starter: "Basic",
+    professional: "Advanced",
+    enterprise: "Custom"
   },
   {
     feature: "Success Manager",
-    prof: "❌",
-    entre: "Shared",
+    starter: "❌",
+    professional: "Shared",
     enterprise: "Dedicated"
   }
 ]
@@ -223,9 +165,9 @@ function ParticleEffect() {
 
 export default function PricingPage() {
   const [showWaitlistForm, setShowWaitlistForm] = useState(false)
-  const [selectedTier, setSelectedTier] = useState<"Professional Growth" | "Entrepreneur Elite" | "Enterprise Solutions">("Professional Growth")
+  const [selectedTier, setSelectedTier] = useState<"Starter" | "Professional" | "Enterprise">("Starter")
 
-  const handleWaitlistJoin = (tier: "Professional Growth" | "Entrepreneur Elite" | "Enterprise Solutions") => {
+  const handleWaitlistJoin = (tier: "Starter" | "Professional" | "Enterprise") => {
     setSelectedTier(tier)
     setShowWaitlistForm(true)
   }
@@ -371,9 +313,9 @@ export default function PricingPage() {
                 <thead>
                   <tr className="border-b-2">
                     <th className="p-4 text-left">Features</th>
-                    <th className="p-4 text-center">Professional Growth</th>
-                    <th className="p-4 text-center">Entrepreneur Elite</th>
-                    <th className="p-4 text-center">Enterprise Solutions</th>
+                    <th className="p-4 text-center">Starter</th>
+                    <th className="p-4 text-center">Professional</th>
+                    <th className="p-4 text-center">Enterprise</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -385,8 +327,8 @@ export default function PricingPage() {
                       }`}
                     >
                       <td className="p-4 font-medium">{row.feature}</td>
-                      <td className="p-4 text-center">{row.prof}</td>
-                      <td className="p-4 text-center font-medium text-[#E86C3A]">{row.entre}</td>
+                      <td className="p-4 text-center">{row.starter}</td>
+                      <td className="p-4 text-center font-medium text-[#E86C3A]">{row.professional}</td>
                       <td className="p-4 text-center">{row.enterprise}</td>
                     </tr>
                   ))}
@@ -417,7 +359,7 @@ export default function PricingPage() {
                         <Button 
                           size="lg"
                           className="w-full rounded-full bg-white text-[#E86C3A] hover:bg-orange-50"
-                          onClick={() => handleWaitlistJoin("Professional Growth")}
+                          onClick={() => handleWaitlistJoin("Starter")}
                         >
                           Join Priority Waitlist
                           <ArrowRight className="ml-2 h-5 w-5" />

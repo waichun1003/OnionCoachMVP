@@ -4,16 +4,39 @@ import { useState } from "react"
 import { motion } from "framer-motion"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import { ArrowRight, Mail, Users, Calendar, Star } from 'lucide-react'
+import { ArrowRight, Mail, Users, Calendar, Star, Loader2 } from 'lucide-react'
+import { toast } from "sonner"
 
 export function ContactSection() {
     const [email, setEmail] = useState("")
+    const [isSubmitting, setIsSubmitting] = useState(false)
 
-    const handleSubmit = (e: React.FormEvent) => {
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault()
-        // Handle form submission
-        console.log("Email submitted:", email)
-        setEmail("")
+        setIsSubmitting(true)
+        
+        try {
+            // Here you would typically make an API call to your backend
+            // For now, we'll simulate an API call with a timeout
+            await new Promise(resolve => setTimeout(resolve, 1000))
+            
+            // Show success message
+            toast.success("Thank you for subscribing! We'll keep you updated.", {
+                description: "Check your inbox for further updates!",
+                duration: 5000,
+            })
+            
+            // Clear the input
+            setEmail("")
+        } catch (error) {
+            // Show error message
+            toast.error("Oops! Something went wrong.", {
+                description: "Please try again later.",
+                duration: 5000,
+            })
+        } finally {
+            setIsSubmitting(false)
+        }
     }
 
     const circleVariants = {
@@ -65,15 +88,33 @@ export function ContactSection() {
                                     onChange={(e) => setEmail(e.target.value)}
                                     className="w-full h-14 pl-6 pr-32 rounded-full bg-white text-gray-900 placeholder:text-gray-500"
                                     required
+                                    disabled={isSubmitting}
                                 />
                                 <Button
                                     type="submit"
                                     className="absolute right-2 top-2 rounded-full bg-[#F36C49] hover:bg-[#E55D3A] h-10"
+                                    disabled={isSubmitting}
                                 >
-                                    Submit
-                                    <ArrowRight className="ml-2 h-5 w-5" />
+                                    {isSubmitting ? (
+                                        <>
+                                            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                                            Sending...
+                                        </>
+                                    ) : (
+                                        <>
+                                            Submit
+                                            <ArrowRight className="ml-2 h-5 w-5" />
+                                        </>
+                                    )}
                                 </Button>
                             </form>
+                            <motion.p
+                                initial={{ opacity: 0, y: 10 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                className="text-sm text-white/70 mt-4"
+                            >
+                                By subscribing, you'll receive updates about new features, coaching tips, and exclusive content.
+                            </motion.p>
                         </motion.div>
 
                         <motion.div

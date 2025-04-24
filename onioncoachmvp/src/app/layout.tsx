@@ -4,6 +4,7 @@ import "./globals.css";
 import { Toaster } from 'sonner'
 import { LayoutWrapper } from "@/components/layout-wrapper"
 import { QueryProvider } from '@/providers/query-provider'
+import { ScrollRestoration } from "@/components/scroll-restoration"
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -35,6 +36,7 @@ export default function RootLayout({
         <QueryProvider>
           <LayoutWrapper>
             {children}
+            <ScrollRestoration />
           </LayoutWrapper>
           <Toaster />
         </QueryProvider>

@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, useRef } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -53,7 +53,10 @@ const formSchema = z.object({
     recommendedPath: z.string().optional(),
     scores: z.record(z.number()).optional(),
     completedAt: z.string().optional()
-  }).optional()
+  }).optional(),
+  areasOfExpertise: z.array(z.string()).min(1, "Please select at least one area of expertise"),
+  yearsOfExperience: z.array(z.string()).min(1, "Please select your years of experience"),
+  languages: z.array(z.string()).min(1, "Please select at least one language"),
 })
 
 type FormData = z.infer<typeof formSchema>
@@ -119,6 +122,35 @@ const DURATION_OPTIONS = [
   "12 weeks",
   "Custom"
 ]
+
+// Add these constants at the top with other constants
+const AREAS_OF_EXPERTISE = [
+  { label: "Life Coaching", value: "Life Coaching" },
+  { label: "Career Development", value: "Career Development" },
+  { label: "Leadership", value: "Leadership" },
+  { label: "Business Strategy", value: "Business Strategy" },
+  { label: "Personal Growth", value: "Personal Growth" },
+  { label: "Executive Coaching", value: "Executive Coaching" },
+  { label: "Team Management", value: "Team Management" },
+  { label: "Work-Life Balance", value: "Work-Life Balance" }
+];
+
+const YEARS_OF_EXPERIENCE = [
+  { label: "1-2 years", value: "1-2 years" },
+  { label: "3-5 years", value: "3-5 years" },
+  { label: "5-10 years", value: "5-10 years" },
+  { label: "10+ years", value: "10+ years" }
+];
+
+const LANGUAGES = [
+  { label: "English", value: "English" },
+  { label: "Spanish", value: "Spanish" },
+  { label: "Mandarin", value: "Mandarin" },
+  { label: "Cantonese", value: "Cantonese" },
+  { label: "French", value: "French" },
+  { label: "German", value: "German" },
+  { label: "Japanese", value: "Japanese" }
+];
 
 // Success state component
 function SuccessState({ onClose }: { onClose: () => void }) {
@@ -215,6 +247,7 @@ export function WaitlistForm({ onClose, selectedTier, assessmentResults }: Waitl
   const [currentStep, setCurrentStep] = useState(1)
   const [showSuccess, setShowSuccess] = useState(false)
   const [isSubmitting, setIsSubmitting] = useState(false)
+  const formContainerRef = useRef<HTMLDivElement>(null);
 
   const {
     register,
@@ -551,6 +584,63 @@ export function WaitlistForm({ onClose, selectedTier, assessmentResults }: Waitl
           </div>
         )
 
+      case 'areasOfExpertise':
+        return (
+          <div>
+            <label className="block text-sm font-medium mb-1">Areas of Expertise</label>
+            <p className="text-sm text-gray-500 mb-2">Select your coaching specialties</p>
+            <MultiSelect
+              value={watch('areasOfExpertise') || []}
+              onChange={(value) => setValue('areasOfExpertise', value)}
+              options={AREAS_OF_EXPERTISE}
+              placeholder="Select areas of expertise..."
+            />
+            {errors.areasOfExpertise && (
+              <p className="text-red-500 text-sm mt-1">
+                {(errors.areasOfExpertise as { message: string })?.message}
+              </p>
+            )}
+          </div>
+        );
+
+      case 'yearsOfExperience':
+        return (
+          <div>
+            <label className="block text-sm font-medium mb-1">Years of Experience</label>
+            <p className="text-sm text-gray-500 mb-2">Select your experience level</p>
+            <MultiSelect
+              value={watch('yearsOfExperience') || []}
+              onChange={(value) => setValue('yearsOfExperience', value)}
+              options={YEARS_OF_EXPERIENCE}
+              placeholder="Select years of experience..."
+            />
+            {errors.yearsOfExperience && (
+              <p className="text-red-500 text-sm mt-1">
+                {(errors.yearsOfExperience as { message: string })?.message}
+              </p>
+            )}
+          </div>
+        );
+
+      case 'languages':
+        return (
+          <div>
+            <label className="block text-sm font-medium mb-1">Languages</label>
+            <p className="text-sm text-gray-500 mb-2">Select languages you can coach in</p>
+            <MultiSelect
+              value={watch('languages') || []}
+              onChange={(value) => setValue('languages', value)}
+              options={LANGUAGES}
+              placeholder="Select languages..."
+            />
+            {errors.languages && (
+              <p className="text-red-500 text-sm mt-1">
+                {(errors.languages as { message: string })?.message}
+              </p>
+            )}
+          </div>
+        );
+
       // Default case for other fields
       default:
         return (
@@ -597,6 +687,9 @@ export function WaitlistForm({ onClose, selectedTier, assessmentResults }: Waitl
       interests: "Areas you're interested in developing",
       pricingTier: "Selected pricing package",
       assessmentResults: "Your assessment results and recommendations",
+      areasOfExpertise: "Select your coaching specialties",
+      yearsOfExperience: "Select your experience level",
+      languages: "Select languages you can coach in",
     }
     return descriptions[fieldName] || ""
   }
@@ -620,6 +713,9 @@ export function WaitlistForm({ onClose, selectedTier, assessmentResults }: Waitl
       interests: "Select areas of interest",
       pricingTier: "Select pricing tier",
       assessmentResults: "Assessment data",
+      areasOfExpertise: "Select areas of expertise",
+      yearsOfExperience: "Select years of experience",
+      languages: "Select languages",
     }
     return placeholders[fieldName] || ""
   }
@@ -774,6 +870,12 @@ export function WaitlistForm({ onClose, selectedTier, assessmentResults }: Waitl
     "Hybrid Learning": "Mix of virtual and in-person"
   })[channel];
 
+  useEffect(() => {
+    if (formContainerRef.current) {
+      formContainerRef.current.scrollTop = 0;
+    }
+  }, [currentStep]);
+
   return (
     <motion.div className="fixed inset-0 bg-black/60 flex items-center justify-center z-50 p-4">
       <Card className="w-full max-w-lg relative overflow-hidden bg-white">
@@ -798,7 +900,10 @@ export function WaitlistForm({ onClose, selectedTier, assessmentResults }: Waitl
               transition={{ duration: 4, repeat: Infinity }}
             />
             
-            <CardContent className="p-6 space-y-6 relative max-h-[80vh] overflow-y-auto custom-scrollbar">
+            <CardContent 
+              ref={formContainerRef}
+              className="p-6 space-y-6 relative max-h-[80vh] overflow-y-auto custom-scrollbar"
+            >
               <div className="absolute top-4 right-4 z-10">
                 <Button
                   variant="ghost"

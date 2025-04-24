@@ -2,6 +2,7 @@
 const nextConfig = {
   reactStrictMode: true,
   swcMinify: true,
+  poweredByHeader: false,
   images: {
     remotePatterns: [
       {
@@ -72,6 +73,12 @@ const nextConfig = {
   experimental: {
     serverActions: true,
   },
+  typescript: {
+    ignoreBuildErrors: false,
+  },
+  eslint: {
+    ignoreDuringBuilds: false,
+  }
 }
 
 module.exports = nextConfig

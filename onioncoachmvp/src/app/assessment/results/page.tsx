@@ -1,12 +1,12 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import axios from 'axios';
 import { Loader } from '@/components/ui/loader';
 import { AssessmentResult } from "@/components/assessment-result";
 
-export default function ResultsPage() {
+function AssessmentResultsContent() {
   const searchParams = useSearchParams();
   const resultId = searchParams.get('id');
   const name = searchParams.get('name');
@@ -150,5 +150,13 @@ export default function ResultsPage() {
         </div>
       )}
     </div>
+  );
+}
+
+export default function AssessmentResultsPage() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <AssessmentResultsContent />
+    </Suspense>
   );
 } 

@@ -1,5 +1,6 @@
 "use client"
 
+import dynamic from 'next/dynamic'
 import { NavBar } from "@/components/nav-bar"
 import { Footer } from "@/components/footer"
 import { Button } from "@/components/ui/button"
@@ -11,6 +12,10 @@ import { AnimatedSection } from "@/components/ui/animated-section"
 import { WaitlistForm } from "@/components/waitlist-form"
 import { PricingWaitlistForm } from "@/components/pricing-waitlist-form"
 import { useState } from "react"
+
+const DynamicAnimatedSection = dynamic(() => import('@/components/ui/animated-section').then(mod => mod.AnimatedSection), { ssr: false })
+const DynamicPricingWaitlistForm = dynamic(() => import('@/components/pricing-waitlist-form').then(mod => mod.PricingWaitlistForm), { ssr: false })
+const DynamicParticleEffect = dynamic(() => import('./particle-effect'), { ssr: false })
 
 const pricingTiers = [
   {
@@ -135,35 +140,11 @@ const comparisonFeatures = [
   }
 ]
 
-function ParticleEffect() {
-  return (
-    <div className="absolute inset-0 pointer-events-none overflow-hidden">
-      {[...Array(20)].map((_, i) => (
-        <motion.div
-          key={i}
-          className="absolute w-2 h-2 bg-[#E86C3A]/20 rounded-full"
-          initial={{ 
-            x: Math.random() * 100 - 50,
-            y: Math.random() * 100 - 50,
-            scale: 0 
-          }}
-          animate={{ 
-            x: [Math.random() * 200 - 100, Math.random() * 200 - 100],
-            y: [Math.random() * 200 - 100, Math.random() * 200 - 100],
-            scale: [0, 1, 0]
-          }}
-          transition={{ 
-            duration: 3 + Math.random() * 2,
-            repeat: Infinity,
-            ease: "easeInOut"
-          }}
-        />
-      ))}
-    </div>
-  )
-}
+export default dynamic(() => Promise.resolve(PricingPage), {
+  ssr: false
+})
 
-export default function PricingPage() {
+function PricingPage() {
   const [showWaitlistForm, setShowWaitlistForm] = useState(false)
   const [selectedTier, setSelectedTier] = useState<"Starter" | "Professional" | "Enterprise">("Starter")
 
@@ -222,7 +203,7 @@ export default function PricingPage() {
                           ease: "easeInOut"
                         }}
                       >
-                        <ParticleEffect />
+                        <DynamicParticleEffect />
 
                         <div className="absolute inset-0 bg-gradient-to-br from-transparent via-transparent to-transparent group-hover:from-orange-50/30 group-hover:via-purple-50/30 group-hover:to-orange-50/30 transition-all duration-500 opacity-0 group-hover:opacity-100" />
 
@@ -442,7 +423,7 @@ export default function PricingPage() {
       <Footer />
       <AnimatePresence>
         {showWaitlistForm && (
-          <PricingWaitlistForm
+          <DynamicPricingWaitlistForm
             selectedTier={selectedTier}
             onClose={() => setShowWaitlistForm(false)}
           />

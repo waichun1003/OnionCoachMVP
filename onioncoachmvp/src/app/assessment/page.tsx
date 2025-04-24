@@ -1,4 +1,4 @@
-"use client"
+'use client'
 
 import { useState } from "react"
 import { motion, AnimatePresence } from "framer-motion"
@@ -9,11 +9,6 @@ import { Slider } from "@/components/ui/slider"
 import { Checkbox } from "@/components/ui/checkbox"
 import { ArrowRight } from 'lucide-react'
 import { AssessmentResult } from "@/components/assessment-result"
-
-// @ts-ignore
-export const metadata = {
-  hideNavigation: true
-}
 
 interface AssessmentData {
   personalityType: string;

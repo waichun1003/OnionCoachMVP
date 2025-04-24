@@ -6,8 +6,14 @@
   "framework": "nextjs",
   "builds": [
     {
-      "src": "next.config.js",
+      "src": "./src/app/page.js",
       "use": "@vercel/next"
     }
+  ],
+  "routes": [
+    {
+      "src": "/.*",
+      "dest": "/src/app/page.js"
+    }
   ]
-} 
+}

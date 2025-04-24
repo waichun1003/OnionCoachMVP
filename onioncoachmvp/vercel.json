@@ -3,17 +3,5 @@
   "buildCommand": "npm run build",
   "devCommand": "npm run dev",
   "installCommand": "npm install",
-  "framework": "nextjs",
-  "builds": [
-    {
-      "src": "./src/app/page.js",
-      "use": "@vercel/next"
-    }
-  ],
-  "routes": [
-    {
-      "src": "/.*",
-      "dest": "/src/app/page.js"
-    }
-  ]
+  "framework": "nextjs"
 }

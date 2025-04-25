@@ -4,9 +4,11 @@
   "devCommand": "npm run dev",
   "installCommand": "npm install",
   "framework": "nextjs",
-  "build": {
-    "env": {
-      "PRISMA_GENERATE": "true"
+  "outputDirectory": ".next",
+  "builds": [
+    {
+      "src": "src/app/**/*",
+      "use": "@vercel/next"
     }
-  }
+  ]
 }

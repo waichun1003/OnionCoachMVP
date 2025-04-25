@@ -78,9 +78,12 @@ const nextConfig = {
   },
   output: 'standalone',
   experimental: {
-    serverActions: {
-      allowedOrigins: ['localhost:3000', 'beta.onioncoach.com']
-    }
+    serverActions: true,
+  },
+  distDir: '.next',
+  webpack: (config, { buildId, dev, isServer, defaultLoaders, webpack }) => {
+    config.resolve.modules.push('./src')
+    return config
   }
 }
 

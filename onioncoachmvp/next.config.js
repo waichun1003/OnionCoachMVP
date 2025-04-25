@@ -79,6 +79,7 @@ const nextConfig = {
   output: 'standalone',
   experimental: {
     serverActions: true,
+    esmExternals: true
   },
   distDir: '.next',
   webpack: (config, { buildId, dev, isServer, defaultLoaders, webpack }) => {

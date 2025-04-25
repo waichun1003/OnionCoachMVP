@@ -1,14 +1,9 @@
 {
   "version": 2,
-  "buildCommand": "npm run build",
-  "devCommand": "npm run dev",
+  "buildCommand": "prisma generate && next build",
+  "devCommand": "next dev",
   "installCommand": "npm install",
   "framework": "nextjs",
   "outputDirectory": ".next",
-  "builds": [
-    {
-      "src": "src/app/**/*",
-      "use": "@vercel/next"
-    }
-  ]
+  "rootDirectory": "src"
 }

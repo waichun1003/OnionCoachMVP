@@ -4,8 +4,5 @@
   "devCommand": "next dev",
   "installCommand": "npm install",
   "framework": "nextjs",
-  "outputDirectory": ".next",
-  "prisma": {
-    "schema": "prisma/schema.prisma"
-  }
+  "outputDirectory": ".next"
 }

@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "buildCommand": "npx prisma generate --schema=prisma/schema.prisma && npx next build",
+  "buildCommand": "ls -l prisma && npx prisma generate --schema=prisma/schema.prisma && npx next build",
   "devCommand": "next dev",
   "installCommand": "npm install",
   "framework": "nextjs",

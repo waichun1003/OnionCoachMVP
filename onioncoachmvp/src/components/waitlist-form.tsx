@@ -736,7 +736,7 @@ export function WaitlistForm({ onClose, selectedTier, assessmentResults }: Waitl
       if (currentStep === formSteps.length) {
         await handleSubmit(onSubmit)()
       } else {
-        setCurrentStep(prev => prev + 1)
+      setCurrentStep(prev => prev + 1)
         toast.success(`Step ${currentStep} completed!`)
       }
     } else {

@@ -1,11 +1,12 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { X, ArrowRight, Star, Zap, Shield, Gift } from "lucide-react"
 import { toast } from "sonner"
+import { useModal } from "@/components/ui/modal-context"
 
 interface PricingWaitlistFormProps {
   selectedTier: "Starter" | "Professional" | "Enterprise"
@@ -13,6 +14,7 @@ interface PricingWaitlistFormProps {
 }
 
 export function PricingWaitlistForm({ selectedTier: initialTier, onClose }: PricingWaitlistFormProps) {
+  const { setModalOpen } = useModal()
   const [selectedTier, setSelectedTier] = useState(initialTier)
   const [formData, setFormData] = useState({
     name: "",
@@ -23,6 +25,11 @@ export function PricingWaitlistForm({ selectedTier: initialTier, onClose }: Pric
     goals: ""
   })
   const [isSubmitting, setIsSubmitting] = useState(false)
+
+  useEffect(() => {
+    setModalOpen(true)
+    return () => setModalOpen(false)
+  }, [setModalOpen])
 
   const pricingOptions = [
     {

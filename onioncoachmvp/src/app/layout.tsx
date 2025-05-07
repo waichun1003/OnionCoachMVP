@@ -6,6 +6,7 @@ import { LayoutWrapper } from "@/components/layout-wrapper"
 import { QueryProvider } from '@/providers/query-provider'
 import { ScrollRestoration } from "@/components/scroll-restoration"
 import { BetaBanner } from "@/components/beta-banner"
+import { ModalProvider } from "@/components/ui/modal-context"
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -35,12 +36,14 @@ export default function RootLayout({
         antialiased selection:bg-[#E86C3A]/20 selection:text-[#E86C3A]`}
       >
         <QueryProvider>
-          <LayoutWrapper>
-            <BetaBanner />
-            {children}
-            <ScrollRestoration />
-          </LayoutWrapper>
-          <Toaster />
+          <ModalProvider>
+            <LayoutWrapper>
+              <BetaBanner />
+              {children}
+              <ScrollRestoration />
+            </LayoutWrapper>
+            <Toaster />
+          </ModalProvider>
         </QueryProvider>
       </body>
     </html>

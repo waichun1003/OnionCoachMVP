@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useState } from "react"
+import React, { useState, useEffect } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
@@ -11,6 +11,7 @@ import { Progress } from "@/components/ui/progress"
 import { X, Rocket, Target, Calendar, MessageSquare, Sparkles, CheckCircle2, ArrowRight } from 'lucide-react'
 import { toast } from 'sonner'
 import confetti from 'canvas-confetti'
+import { useModal } from "@/components/ui/modal-context"
 
 interface FormField {
   name: string;
@@ -71,10 +72,16 @@ const formSteps: Array<{
 ]
 
 export function EngagingSubmitForm({ onClose }: { onClose: () => void }) {
+  const { setModalOpen } = useModal()
   const [currentStep, setCurrentStep] = useState(0)
   const [formData, setFormData] = useState<Record<string, any>>({})
   const [isSubmitting, setIsSubmitting] = useState(false)
   const progress = ((currentStep + 1) / formSteps.length) * 100
+
+  useEffect(() => {
+    setModalOpen(true)
+    return () => setModalOpen(false)
+  }, [setModalOpen])
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target

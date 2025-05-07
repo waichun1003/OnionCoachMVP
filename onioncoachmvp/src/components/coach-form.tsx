@@ -13,6 +13,7 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { MultiSelect } from "@/components/ui/multi-select"
 import { Textarea } from "@/components/ui/textarea"
 import type { CoachData } from "@/types/coach"
+import { useModal } from "@/components/ui/modal-context"
 
 // Add coach schema
 const coachSchema = z.object({
@@ -215,6 +216,7 @@ const fieldVariants = {
 }
 
 export function CoachForm({ onClose }: { onClose: () => void }) {
+  const { setModalOpen } = useModal()
   const [currentStep, setCurrentStep] = useState(1)
   const [showSuccess, setShowSuccess] = useState(false)
   const [isSubmitting, setIsSubmitting] = useState(false)
@@ -229,6 +231,11 @@ export function CoachForm({ onClose }: { onClose: () => void }) {
   })
 
   const { register, handleSubmit, formState: { errors }, trigger, watch, setValue } = form
+
+  useEffect(() => {
+    setModalOpen(true)
+    return () => setModalOpen(false)
+  }, [setModalOpen])
 
   const handleNextClick = async () => {
     const fields = [...formSteps[currentStep - 1].fields] as Array<keyof CoachData>
@@ -256,11 +263,14 @@ export function CoachForm({ onClose }: { onClose: () => void }) {
       })
 
       if (!response.ok) {
-        throw new Error('Submission failed')
+        const errorData = await response.json()
+        throw new Error(errorData.error || 'Submission failed')
       }
 
       setShowSuccess(true)
+      toast.success('Application submitted successfully!')
     } catch (error: any) {
+      console.error('Form submission error:', error)
       toast.error(error.message || 'Failed to submit application')
     } finally {
       setIsSubmitting(false)

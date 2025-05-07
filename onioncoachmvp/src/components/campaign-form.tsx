@@ -13,6 +13,7 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { MultiSelect } from "@/components/ui/multi-select"
 import { Textarea } from "@/components/ui/textarea"
 import { ImageUpload } from "@/components/ui/image-upload"
+import { useModal } from "@/components/ui/modal-context"
 
 // Form validation schema
 const formSchema = z.object({
@@ -206,6 +207,7 @@ const fieldVariants = {
 }
 
 export function CampaignForm({ onClose }: CampaignFormProps) {
+  const { setModalOpen } = useModal();
   const [currentStep, setCurrentStep] = useState(1)
   const [showSuccess, setShowSuccess] = useState(false)
   const [isSubmitting, setIsSubmitting] = useState(false)
@@ -718,6 +720,11 @@ export function CampaignForm({ onClose }: CampaignFormProps) {
     "Online Courses": "Self-paced learning",
     "Hybrid Learning": "Mix of virtual and in-person"
   })[channel];
+
+  useEffect(() => {
+    setModalOpen(true);
+    return () => setModalOpen(false);
+  }, [setModalOpen]);
 
   return (
     <motion.div className="fixed inset-0 bg-black/60 flex items-center justify-center z-50 p-4">

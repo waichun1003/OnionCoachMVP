@@ -556,8 +556,8 @@ export default function CampaignPage() {
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: 0.2 }}
               >
-                <Card className="overflow-hidden bg-gradient-to-br from-[#E86C3A] to-[#D55C2A] text-white">
-                  <CardContent className="p-8">
+                <Card className="overflow-hidden bg-gradient-to-br from-[#E86C3A] to-[#D55C2A] text-white h-full">
+                  <CardContent className="p-8 h-full flex flex-col">
                     <h3 className="text-2xl font-normal mb-6">Campaign Benefits</h3>
                     <ul className="space-y-4">
                       {[
@@ -590,8 +590,8 @@ export default function CampaignPage() {
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: 0.4 }}
               >
-                <Card>
-                  <CardContent className="p-8">
+                <Card className="h-full">
+                  <CardContent className="p-8 h-full flex flex-col">
                     <h3 className="text-2xl font-normal mb-6">How It Works</h3>
                     <ol className="space-y-4">
                       {[

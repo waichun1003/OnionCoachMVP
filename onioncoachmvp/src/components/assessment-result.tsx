@@ -11,6 +11,7 @@ import { WaitlistForm } from "./waitlist-form"
 import { useState } from "react"
 import { WaitlistModal } from "./waitlist-modal"
 import { categoryColors } from "@/components/assessment-flow"
+import { useModal } from "@/components/ui/modal-context"
 
 interface AssessmentResultProps {
   name: string;
@@ -19,6 +20,20 @@ interface AssessmentResultProps {
 }
 
 export function AssessmentResult({ name, scores, onSchedule }: AssessmentResultProps) {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const { setModalOpen } = useModal();
+
+  const handleOpenSchedule = () => {
+    setIsModalOpen(true);
+    setModalOpen(true);
+    onSchedule();
+  };
+
+  const handleCloseSchedule = () => {
+    setIsModalOpen(false);
+    setModalOpen(false);
+  };
+
   // Calculate the actual percentage
   const calculateOverallScore = () => {
     const categories = Object.keys(scores);
@@ -48,7 +63,7 @@ export function AssessmentResult({ name, scores, onSchedule }: AssessmentResultP
 
   return (
     <>
-      <NavBar />
+      {!isModalOpen && <NavBar />}
       
       {/* Results Header Layout */}
       <section className="w-full bg-[#664EC9] pt-[80px]">
@@ -106,7 +121,7 @@ export function AssessmentResult({ name, scores, onSchedule }: AssessmentResultP
 
               <motion.div>
                 <Button
-                  onClick={onSchedule}
+                  onClick={handleOpenSchedule}
                   className="flex items-center justify-between w-[320px] h-[57px] bg-[#FF6512] hover:bg-[#E55401] rounded-full px-8"
                 >
                   <span className="text-[18px] text-white whitespace-nowrap">
@@ -136,6 +151,11 @@ export function AssessmentResult({ name, scores, onSchedule }: AssessmentResultP
 
       {/* Recommendations Layout */}
       <RecommendationsSection scores={scores} />
+
+      {/* Schedule Modal (WaitlistModal or WaitlistForm) */}
+      {isModalOpen && (
+        <WaitlistModal isOpen={isModalOpen} onClose={handleCloseSchedule} />
+      )}
     </>
   )
 }

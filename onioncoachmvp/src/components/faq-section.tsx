@@ -7,6 +7,7 @@ import {
     AccordionItem,
     AccordionTrigger,
 } from "@/components/ui/accordion"
+import { ChevronDown } from "lucide-react"
 
 const faqs = [
     {
@@ -29,80 +30,49 @@ const faqs = [
 
 export function FAQSection() {
     return (
-        <section className="py-24 bg-[#EDE6DC] relative overflow-hidden">
+        <section className="py-24 bg-[#F5F0E8]">
             <div className="container mx-auto px-4">
-                {/* Decorative Grid Elements */}
-                <div className="absolute inset-0 grid grid-cols-6 grid-rows-6 gap-4 pointer-events-none">
-                    {/* Top Left Box */}
+                <div className="max-w-3xl mx-auto text-center mb-12">
                     <motion.div
-                        className="col-start-1 col-span-2 row-start-1 row-span-2 bg-[#FFB541] rounded-3xl opacity-20"
-                        initial={{ opacity: 0, scale: 0.8 }}
-                        whileInView={{ opacity: 0.2, scale: 1 }}
-                        viewport={{ once: true }}
-                        transition={{ duration: 0.6 }}
-                    />
-
-                    {/* Middle Right Box */}
-                    <motion.div
-                        className="col-start-5 col-span-2 row-start-3 row-span-2 bg-[#664EC9] rounded-3xl opacity-20"
-                        initial={{ opacity: 0, scale: 0.8 }}
-                        whileInView={{ opacity: 0.2, scale: 1 }}
-                        viewport={{ once: true }}
-                        transition={{ duration: 0.6, delay: 0.2 }}
-                    />
-
-                    {/* Bottom Left Box */}
-                    <motion.div
-                        className="col-start-2 col-span-2 row-start-5 row-span-2 bg-[#067169] rounded-3xl opacity-20"
-                        initial={{ opacity: 0, scale: 0.8 }}
-                        whileInView={{ opacity: 0.2, scale: 1 }}
-                        viewport={{ once: true }}
-                        transition={{ duration: 0.6, delay: 0.4 }}
-                    />
-                </div>
-
-                {/* Content */}
-                <div className="relative z-10">
-                    <motion.div
-                        className="max-w-3xl mx-auto text-center mb-12"
                         initial={{ opacity: 0, y: 20 }}
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
                     >
                         <h2 className="text-4xl md:text-5xl font-normal mb-4">
                             Frequently Asked{" "}
-                            <span className="italic font-serif">Question.</span>
+                            <span className="italic">Question.</span>
                         </h2>
-                        <p className="text-lg text-gray-600">
+                        <p className="text-lg text-gray-600 max-w-2xl mx-auto">
                             Navigating the world of coaching can be daunting, but we're here to make the process simple and stress-free. If you don't find the answer you're looking for, don't hesitate to reach out to our support team
                         </p>
                     </motion.div>
-
-                    <motion.div
-                        className="max-w-3xl mx-auto backdrop-blur-sm bg-white/50 p-8 rounded-3xl shadow-lg"
-                        initial={{ opacity: 0, y: 20 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        viewport={{ once: true }}
-                        transition={{ delay: 0.2 }}
-                    >
-                        <Accordion type="single" collapsible defaultValue="item-0">
-                            {faqs.map((faq, index) => (
-                                <AccordionItem
-                                    key={index}
-                                    value={`item-${index}`}
-                                    className="border-b border-gray-200 last:border-b-0"
-                                >
-                                    <AccordionTrigger className="text-left text-lg font-seminormal hover:no-underline">
-                                        {faq.question}
-                                    </AccordionTrigger>
-                                    <AccordionContent className="text-gray-600">
-                                        {faq.answer}
-                                    </AccordionContent>
-                                </AccordionItem>
-                            ))}
-                        </Accordion>
-                    </motion.div>
                 </div>
+
+                <motion.div
+                    className="max-w-4xl mx-auto space-y-4"
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: 0.2 }}
+                >
+                    <Accordion type="single" collapsible>
+                        {faqs.map((faq, index) => (
+                            <AccordionItem
+                                key={index}
+                                value={`item-${index}`}
+                                className="mb-4 bg-white rounded-xl overflow-hidden"
+                            >
+                                <AccordionTrigger className="px-6 py-5 text-left text-lg hover:no-underline w-full flex justify-between items-center data-[state=open]>[data-chevron]:rotate-180">
+                                    <span className="font-normal text-gray-900">{faq.question}</span>
+                                    <ChevronDown data-chevron className="h-5 w-5 shrink-0 text-gray-500 transition-transform duration-200" />
+                                </AccordionTrigger>
+                                <AccordionContent className="px-6 pb-5 text-gray-600">
+                                    {faq.answer}
+                                </AccordionContent>
+                            </AccordionItem>
+                        ))}
+                    </Accordion>
+                </motion.div>
             </div>
         </section>
     )

@@ -11,7 +11,7 @@ interface WaitlistModalProps {
 
 export function WaitlistModal({ isOpen, onClose, selectedTier }: WaitlistModalProps) {
   return (
-    <Dialog open={isOpen} onOpenChange={onClose}>
+    <Dialog open={isOpen} onOpenChange={(open) => { if (!open) onClose(); }}>
       <DialogContent className="bg-transparent border-none shadow-none max-w-2xl">
         <WaitlistForm 
           onClose={onClose}

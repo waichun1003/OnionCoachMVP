@@ -65,62 +65,18 @@ export function TransformSection() {
     const controls1 = useAnimation()
     const controls2 = useAnimation()
 
-    useEffect(() => {
-        let timeoutId: NodeJS.Timeout
-
-        const startScrolling = () => {
-            if (scrollContainerRef1.current && scrollContainerRef2.current) {
-                const container1 = scrollContainerRef1.current
-                const container2 = scrollContainerRef2.current
-                const scrollHeight1 = container1.scrollHeight
-                const scrollHeight2 = container2.scrollHeight
-                const clientHeight = container1.clientHeight
-
-                controls1.start({
-                    y: [0, -(scrollHeight1 - clientHeight)],
-                    transition: {
-                        duration: 30,
-                        ease: "linear",
-                        repeat: Infinity,
-                        repeatType: "loop"
-                    }
-                })
-
-                controls2.start({
-                    y: [-(scrollHeight2 - clientHeight), 0],
-                    transition: {
-                        duration: 30,
-                        ease: "linear",
-                        repeat: Infinity,
-                        repeatType: "loop"
-                    }
-                })
-            }
-        }
-
-        timeoutId = setTimeout(startScrolling, 1000)
-
-        return () => {
-            clearTimeout(timeoutId)
-            controls1.stop()
-            controls2.stop()
-        }
-    }, [controls1, controls2])
-
-    // @ts-ignore
-    // @ts-ignore
     return (
         <section className="py-24 bg-[#6B46C1] overflow-hidden">
             <div className="container mx-auto px-4">
-                <div className="grid lg:grid-cols-2 gap-12 items-start">
+                <div className="grid lg:grid-cols-2 gap-12 items-center min-h-screen">
                     <motion.div
                         initial={{ opacity: 0, x: -20 }}
                         whileInView={{ opacity: 1, x: 0 }}
                         viewport={{ once: true }}
                         transition={{ duration: 0.5 }}
-                        className="text-white lg:sticky lg:top-24"
+                        className="text-white"
                     >
-                        <h2 className="text-4xl md:text-5xl lg:text-6xl font-nornmal mb-6">
+                        <h2 className="text-4xl md:text-5xl lg:text-6xl font-normal mb-6">
                             Discover how coaching can{" "}
                             <span className="italic font-serif">transform your career.</span>
                         </h2>
@@ -136,16 +92,11 @@ export function TransformSection() {
                         </Button>
                     </motion.div>
 
-                    <div className="grid grid-cols-2 gap-4 h-[600px]">
+                    <div className="grid grid-cols-2 gap-4 h-[800px]">
                         <div className="h-full overflow-hidden relative">
                             <div
                                 ref={scrollContainerRef1}
                                 className="absolute inset-0 space-y-4 pr-2"
-                                style={{
-                                    '@media (min-width: 1440px)': {
-                                        width: '310px'
-                                    }
-                                }}
                             >
                                 <motion.div
                                     animate={controls1}
@@ -161,11 +112,6 @@ export function TransformSection() {
                             <div
                                 ref={scrollContainerRef2}
                                 className="absolute inset-0 space-y-4 pl-2"
-                                style={{
-                                    '@media (min-width: 1440px)': {
-                                        width: '310px'
-                                    }
-                                }}
                             >
                                 <motion.div
                                     animate={controls2}
@@ -185,7 +131,6 @@ export function TransformSection() {
 }
 
 function ArticleCard({ article, index }: { article: typeof coachArticles[0], index: number }) {
-    // @ts-ignore
     return (
         <motion.div
             initial={{ opacity: 0, x: 20 }}
@@ -195,13 +140,7 @@ function ArticleCard({ article, index }: { article: typeof coachArticles[0], ind
             whileHover={{ scale: 1.02 }}
             className="transform transition-transform"
         >
-            <Card className="bg-white overflow-hidden hover:shadow-lg transition-shadow rounded-[30px]" 
-                  style={{ 
-                      '@media (min-width: 1440px)': {
-                          width: '310px',
-                          height: '310px'
-                      }
-                  }}>
+            <Card className="bg-white overflow-hidden hover:shadow-lg transition-shadow rounded-[30px]">
                 <CardContent className="p-6">
                     <div className="flex items-start gap-3">
                         <div className="relative flex-shrink-0">

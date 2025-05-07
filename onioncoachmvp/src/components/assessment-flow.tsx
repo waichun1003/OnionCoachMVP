@@ -797,12 +797,21 @@ export default function AssessmentFlow() {
               exit={{ opacity: 0 }}
               className="space-y-8 pb-24"
             >
+              {/* Progress indicator at the top */}
+              <div className="flex items-center gap-2 mb-6">
+                <span className="px-3 py-1 bg-[#664ec9]/10 rounded-full text-[#664ec9] font-medium">
+                  Question {currentQuestionIndex + 1} of {lifeWheelQuestions.length}
+                </span>
+                <span className="text-sm text-gray-500">
+                  • {lifeWheelQuestions[currentQuestionIndex].category}
+                </span>
+              </div>
               {/* Step title and description */}
               <motion.div 
                 className="space-y-4 mb-8"
                 initial={{ opacity: 0, y: -20 }}
                 animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5 }}
+                transition={{ duration: 0.5 }}
               >
                 <h2 className="text-[2.75rem] leading-tight font-normal text-gray-900">
                   {getStepTitle(step)}
@@ -937,21 +946,6 @@ export default function AssessmentFlow() {
                   </motion.span>
                 </Button>
               </motion.div>
-              
-              {/* Question counter */}
-              <motion.div 
-                className="mt-8 text-center text-gray-500 flex items-center justify-center gap-2"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ duration: 0.5, delay: 1 }}
-              >
-                <span className="px-3 py-1 bg-[#664ec9]/10 rounded-full text-[#664ec9] font-medium">
-                  Question {currentQuestionIndex + 1} of {lifeWheelQuestions.length}
-                </span>
-                <span className="text-sm text-gray-500">
-                  • {lifeWheelQuestions[currentQuestionIndex].category}
-                </span>
-              </motion.div>
             </motion.div>
           ) : (
             <motion.div
@@ -990,6 +984,16 @@ export default function AssessmentFlow() {
   // Add this function to handle opening the waitlist form
   const handleOpenWaitlist = () => {
     setIsModalOpen(true);
+  };
+
+  // Add back button handler
+  const handleBack = () => {
+    if (step === 5 && currentQuestionIndex > 0) {
+      setCurrentQuestionIndex(currentQuestionIndex - 1);
+      setShowStatistic(false);
+    } else if (step > 0) {
+      setStep(step - 1);
+    }
   };
 
   // Remove the URL routing logic and directly show results
@@ -1056,290 +1060,304 @@ export default function AssessmentFlow() {
             />
           </div>
 
+          {/* Back button for steps 1-5 (not on step 0) */}
+          {step > 0 && step < 6 && (
+            <button
+              onClick={handleBack}
+              className="flex items-center gap-2 text-gray-700 hover:text-[#664ec9] mb-8 font-medium text-lg focus:outline-none"
+              style={{ background: 'none', border: 'none', padding: 0 }}
+            >
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+              </svg>
+              Back
+            </button>
+          )}
+
           {/* Content */}
           {step !== 6 ? (
             <div className="w-full">
-        <AnimatePresence mode="wait">
-          {/* Landing Page */}
-          {step === 0 && (
-            <motion.div
-              key="landing"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -20 }}
-            >
-                    <h1 className="text-[56px] leading-[1.1] font-normal text-gray-900 mb-4">
-                  Life Wheel Assessment
-                </h1>
-                    <p className="text-[40px] italic font-serif text-gray-900 mb-8">
-                  A Self-Reflection Tool
-                </p>
-                    <p className="text-lg leading-[1.6] text-gray-700 mb-16 font-serif">
-                  The Life Wheel is a powerful self-reflection tool designed to help you evaluate
-                  key areas of your life and identify areas for growth and balance. By rating your
-                  satisfaction in different aspects—such as career, health, relationships, and
-                  personal growth—you can gain clarity on where you're thriving and where
-                  adjustments may be needed. This questionnaire will guide you through an
-                  honest evaluation of your current state, helping you create a roadmap for a
-                  more fulfilling and balanced life.
-                </p>
-                    <div className="flex justify-center">
-                      <Button
-                        onClick={nextStep}
-                        className="w-full max-w-[600px] bg-[#664ec9] hover:bg-[#5B3FFF] text-white rounded-full py-6 text-lg font-normal"
-                      >
-                        Get started →
-                      </Button>
-              </div>
-            </motion.div>
-          )}
-
-          {/* Name Input */}
-          {step === 1 && (
-            <motion.div
-              key="name"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -20 }}
-                  >
-                    <p className="text-sm uppercase tracking-wider text-gray-500">Getting started</p>
-                    <h2 className="text-[2.75rem] leading-tight font-normal text-gray-900 mb-8">
-                      Tell us a little about yourself
-                    </h2>
-                    <div className="flex items-center gap-4 mb-16">
-                      <span className="text-2xl">My name is</span>
-                  <input
-                    type="text"
-                    value={formData.name}
-                        onChange={(e) => {
-                          setNameError("")
-                          setFormData({ ...formData, name: e.target.value })
-                        }}
-                        className="flex-1 border-b-2 border-gray-300 focus:border-[#664ec9] bg-transparent text-2xl outline-none px-2 py-1"
-                    placeholder="Enter your name"
-                  />
-                </div>
-                    {nameError && (
-                      <p className="text-red-500 mb-4">{nameError}</p>
-                    )}
-                    <div className="flex justify-center">
-                      <Button
-                        onClick={handleNameSubmit}
-                        className="w-full max-w-[600px] bg-[#664ec9] hover:bg-[#5B3FFF] text-white rounded-full py-6 text-lg font-normal"
-                      >
-                        Continue →
-                      </Button>
-              </div>
-            </motion.div>
-          )}
-
-                {/* Step 2 - Feelings Selection */}
-          {step === 2 && (
-            <motion.div
-                    key="step-2"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -20 }}
-                    className="pb-24"
-                  >
-                    <div className="space-y-4 mb-8">
-                      <h2 className="text-[2.75rem] leading-tight font-normal text-gray-900">
-                        {getStepTitle(step)}
-                      </h2>
-                      <p className="text-lg text-gray-600">
-                        {getStepDescription(step)}
-                      </p>
-                </div>
-                    
-                    <div className="space-y-4 mb-16">
-                  {feelings.map((feeling) => (
-                    <motion.div
-                      key={feeling}
-                          whileHover={{ scale: 1.01 }}
-                          whileTap={{ scale: 0.99 }}
-                      onClick={() => {
-                        const newFeelings = formData.feelings.includes(feeling)
-                          ? formData.feelings.filter(f => f !== feeling)
-                          : [...formData.feelings, feeling]
-                        setFormData({ ...formData, feelings: newFeelings })
-                      }}
-                    >
-                          <div 
-                            className={`
-                            p-6 cursor-pointer transition-all rounded-2xl
-                            ${formData.feelings.includes(feeling)
-                          ? "bg-[#664ec9] text-white"
-                          : "bg-white hover:bg-white/90"
-                            }
-                          `}
-                          >
-                        <div className="flex items-center justify-between">
-                              <span className="text-xl font-normal">{feeling}</span>
-                          {formData.feelings.includes(feeling) && (
-                                <div className="w-6 h-6 rounded-full border-2 border-white flex items-center justify-center">
-                                  <div className="w-2.5 h-2.5 bg-white rounded-full" />
-                            </div>
-                          )}
-                        </div>
-                      </div>
-                    </motion.div>
-                  ))}
-                </div>
-                    
-                    <motion.div
-                      initial={{ opacity: 0, y: 20 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ duration: 0.5, delay: 0.5 }}
-                    >
-                      <Button
-                        onClick={nextStep}
-                        className="w-full bg-[#664ec9] hover:bg-[#5B3FFF] text-white rounded-full py-6 text-lg font-normal shadow-md hover:shadow-lg transition-all duration-300 hover:-translate-y-1"
-                      >
-                        Continue →
-                      </Button>
-                    </motion.div>
-            </motion.div>
-          )}
-
-                {/* Step 3 - Life Goals */}
-          {step === 3 && (
-            <motion.div
-                    key="step-3"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -20 }}
-                    className="pb-24"
-                  >
-                    <div className="space-y-4 mb-8">
-                      <h2 className="text-[2.75rem] leading-tight font-normal text-gray-900">
-                        {getStepTitle(step)}
-                      </h2>
-                      <p className="text-lg text-gray-600">
-                        {getStepDescription(step)}
-                      </p>
-                </div>
-                    
-                    <div className="grid grid-cols-2 gap-4 mb-16">
-                      {lifeGoals.map((goal) => (
-                        <motion.div
-                          key={goal.title}
-                          whileHover={{ scale: 1.02 }}
-                          whileTap={{ scale: 0.98 }}
-                          onClick={() => {
-                            const newGoals = formData.goals.includes(goal.title)
-                              ? formData.goals.filter(g => g !== goal.title)
-                              : [...formData.goals, goal.title]
-                            setFormData({ ...formData, goals: newGoals })
-                          }}
-                        >
-                          <div className={`
-                            p-4 cursor-pointer transition-all rounded-2xl h-full
-                            ${formData.goals.includes(goal.title)
-                              ? "bg-[#664ec9] text-white"
-                              : "bg-white hover:bg-white/90"
-                            }
-                          `}>
-                            <div className="flex flex-col items-center text-center space-y-3">
-                              <div className={`w-14 h-14 flex items-center justify-center ${
-                                formData.goals.includes(goal.title)
-                                  ? "text-white"
-                                  : "text-[#664ec9]"
-                              }`}>
-                                {goal.icon}
-                              </div>
-                              <div>
-                                <h3 className="text-xl font-semibold mb-1">{goal.title}</h3>
-                                <p className={`text-sm leading-relaxed ${
-                                  formData.goals.includes(goal.title)
-                                    ? "text-white/90"
-                                    : "text-gray-600"
-                                }`}>
-                                  {goal.description}
-                                </p>
-                              </div>
-                              {formData.goals.includes(goal.title) && (
-                                <div className="absolute top-3 right-3 w-5 h-5 rounded-full border-2 border-white flex items-center justify-center">
-                                  <div className="w-2 h-2 bg-white rounded-full" />
-                                </div>
-                              )}
-                            </div>
-                          </div>
-                        </motion.div>
-                      ))}
-                    </div>
-                    
-                    <motion.div
-                      initial={{ opacity: 0, y: 20 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ duration: 0.5, delay: 0.5 }}
-                    >
-                      <Button
-                        onClick={nextStep}
-                        className="w-full bg-[#664ec9] hover:bg-[#5B3FFF] text-white rounded-full py-6 text-lg font-normal shadow-md hover:shadow-lg transition-all duration-300 hover:-translate-y-1"
-                      >
-                        Continue →
-                      </Button>
-                    </motion.div>
-                  </motion.div>
-                )}
-
-                {/* Step 4 - Emotions */}
-                {step === 4 && (
+              <AnimatePresence mode="wait">
+                {/* Landing Page */}
+                {step === 0 && (
                   <motion.div
-                    key="step-4"
+                    key="landing"
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: -20 }}
-                    className="pb-24"
                   >
-                    <div className="space-y-4 mb-8">
-                      <h2 className="text-[2.75rem] leading-tight font-normal text-gray-900">
-                        {getStepTitle(step)}
-                      </h2>
-                      <p className="text-lg text-gray-600">
-                        {getStepDescription(step)}
+                          <h1 className="text-[56px] leading-[1.1] font-normal text-gray-900 mb-4">
+                        Life Wheel Assessment
+                      </h1>
+                          <p className="text-[40px] italic font-serif text-gray-900 mb-8">
+                        A Self-Reflection Tool
                       </p>
-                    </div>
-                    
-                    <div className="space-y-12 mb-16">
-                  {emotions.map((emotion) => (
-                    <div key={emotion.name} className="space-y-6">
-                          <div className="flex items-center gap-4">
-                            <div className="w-10 h-10 flex items-center justify-center text-[#664ec9]">
-                              {emotion.icon}
-                      </div>
-                            <span className="text-2xl font-medium text-gray-900">{emotion.name}</span>
-                          </div>
+                          <p className="text-lg leading-[1.6] text-gray-700 mb-16 font-serif">
+                        The Life Wheel is a powerful self-reflection tool designed to help you evaluate
+                        key areas of your life and identify areas for growth and balance. By rating your
+                        satisfaction in different aspects—such as career, health, relationships, and
+                        personal growth—you can gain clarity on where you're thriving and where
+                        adjustments may be needed. This questionnaire will guide you through an
+                        honest evaluation of your current state, helping you create a roadmap for a
+                        more fulfilling and balanced life.
+                      </p>
+                          <div className="flex justify-center">
+                            <Button
+                              onClick={nextStep}
+                              className="w-full max-w-[600px] bg-[#664ec9] hover:bg-[#5B3FFF] text-white rounded-full py-6 text-lg font-normal"
+                            >
+                              Get started →
+                            </Button>
+                  </div>
+                </motion.div>
+                )}
 
-                          <div className="relative w-full max-w-[600px] mx-auto">
-                            <div className="relative h-12">
-                        <input
-                          type="range"
-                          min="0"
-                                max="10"
-                                step="1"
-                                value={Math.round(formData.emotions[emotion.name as keyof typeof formData.emotions] / 10)}
+                {/* Name Input */}
+                {step === 1 && (
+                  <motion.div
+                    key="name"
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -20 }}
+                        >
+                          <p className="text-sm uppercase tracking-wider text-gray-500">Getting started</p>
+                          <h2 className="text-[2.75rem] leading-tight font-normal text-gray-900 mb-8">
+                            Tell us a little about yourself
+                          </h2>
+                          <div className="flex items-center gap-4 mb-16">
+                            <span className="text-2xl">My name is</span>
+                    <input
+                      type="text"
+                      value={formData.name}
                           onChange={(e) => {
-                            setFormData({
-                              ...formData,
-                              emotions: {
-                                ...formData.emotions,
-                                      [emotion.name]: parseInt(e.target.value) * 10
-                              }
-                            })
+                            setNameError("")
+                            setFormData({ ...formData, name: e.target.value })
                           }}
-                                className="absolute top-1/2 -translate-y-1/2 w-full h-2 bg-[#664ec9]/20 rounded-full appearance-none cursor-pointer 
-                                  [&::-webkit-slider-thumb]:appearance-none 
-                                  [&::-webkit-slider-thumb]:w-6 
-                                  [&::-webkit-slider-thumb]:h-6 
-                                  [&::-webkit-slider-thumb]:rounded-full 
-                                  [&::-webkit-slider-thumb]:bg-[#664ec9] 
-                                  [&::-webkit-slider-thumb]:cursor-pointer
-                                  [&::-webkit-slider-thumb]:transition-transform
-                                  [&::-webkit-slider-thumb]:duration-150 
-                                  [&::-webkit-slider-thumb]:hover:scale-125
-                                  [&::-webkit-slider-thumb]:active:scale-110
-                                  [&::-webkit-slider-thumb]:shadow-md"
+                          className="flex-1 border-b-2 border-gray-300 focus:border-[#664ec9] bg-transparent text-2xl outline-none px-2 py-1"
+                      placeholder="Enter your name"
+                    />
+                  </div>
+                          {nameError && (
+                            <p className="text-red-500 mb-4">{nameError}</p>
+                          )}
+                          <div className="flex justify-center">
+                            <Button
+                              onClick={handleNameSubmit}
+                              className="w-full max-w-[600px] bg-[#664ec9] hover:bg-[#5B3FFF] text-white rounded-full py-6 text-lg font-normal"
+                            >
+                              Continue →
+                            </Button>
+                  </div>
+                </motion.div>
+                )}
+
+                {/* Step 2 - Feelings Selection */}
+                {step === 2 && (
+                  <motion.div
+                          key="step-2"
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -20 }}
+                          className="pb-24"
+                        >
+                          <div className="space-y-4 mb-8">
+                            <h2 className="text-[2.75rem] leading-tight font-normal text-gray-900">
+                              {getStepTitle(step)}
+                            </h2>
+                            <p className="text-lg text-gray-600">
+                              {getStepDescription(step)}
+                            </p>
+                      </div>
+                          
+                          <div className="space-y-4 mb-16">
+                    {feelings.map((feeling) => (
+                      <motion.div
+                        key={feeling}
+                            whileHover={{ scale: 1.01 }}
+                            whileTap={{ scale: 0.99 }}
+                        onClick={() => {
+                          const newFeelings = formData.feelings.includes(feeling)
+                            ? formData.feelings.filter(f => f !== feeling)
+                            : [...formData.feelings, feeling]
+                          setFormData({ ...formData, feelings: newFeelings })
+                        }}
+                      >
+                            <div 
+                              className={`
+                              p-6 cursor-pointer transition-all rounded-2xl
+                              ${formData.feelings.includes(feeling)
+                            ? "bg-[#664ec9] text-white"
+                            : "bg-white hover:bg-white/90"
+                              }
+                            `}
+                            >
+                          <div className="flex items-center justify-between">
+                                <span className="text-xl font-normal">{feeling}</span>
+                            {formData.feelings.includes(feeling) && (
+                                  <div className="w-6 h-6 rounded-full border-2 border-white flex items-center justify-center">
+                                    <div className="w-2.5 h-2.5 bg-white rounded-full" />
+                              </div>
+                            )}
+                          </div>
+                        </div>
+                      </motion.div>
+                    ))}
+                  </div>
+                          
+                          <motion.div
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.5, delay: 0.5 }}
+                          >
+                            <Button
+                              onClick={nextStep}
+                              className="w-full bg-[#664ec9] hover:bg-[#5B3FFF] text-white rounded-full py-6 text-lg font-normal shadow-md hover:shadow-lg transition-all duration-300 hover:-translate-y-1"
+                            >
+                              Continue →
+                            </Button>
+                          </motion.div>
+                </motion.div>
+                )}
+
+                {/* Step 3 - Life Goals */}
+                {step === 3 && (
+                  <motion.div
+                          key="step-3"
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -20 }}
+                          className="pb-24"
+                        >
+                          <div className="space-y-4 mb-8">
+                            <h2 className="text-[2.75rem] leading-tight font-normal text-gray-900">
+                              {getStepTitle(step)}
+                            </h2>
+                            <p className="text-lg text-gray-600">
+                              {getStepDescription(step)}
+                            </p>
+                      </div>
+                          
+                          <div className="grid grid-cols-2 gap-4 mb-16">
+                            {lifeGoals.map((goal) => (
+                              <motion.div
+                                key={goal.title}
+                                whileHover={{ scale: 1.02 }}
+                                whileTap={{ scale: 0.98 }}
+                                onClick={() => {
+                                  const newGoals = formData.goals.includes(goal.title)
+                                    ? formData.goals.filter(g => g !== goal.title)
+                                    : [...formData.goals, goal.title]
+                                  setFormData({ ...formData, goals: newGoals })
+                                }}
+                              >
+                                <div className={`
+                                  p-4 cursor-pointer transition-all rounded-2xl h-full
+                                  ${formData.goals.includes(goal.title)
+                                    ? "bg-[#664ec9] text-white"
+                                    : "bg-white hover:bg-white/90"
+                                  }
+                                `}>
+                                  <div className="flex flex-col items-center text-center space-y-3">
+                                    <div className={`w-14 h-14 flex items-center justify-center ${
+                                      formData.goals.includes(goal.title)
+                                        ? "text-white"
+                                        : "text-[#664ec9]"
+                                    }`}>
+                                      {goal.icon}
+                                    </div>
+                                    <div>
+                                      <h3 className="text-xl font-semibold mb-1">{goal.title}</h3>
+                                      <p className={`text-sm leading-relaxed ${
+                                        formData.goals.includes(goal.title)
+                                          ? "text-white/90"
+                                          : "text-gray-600"
+                                      }`}>
+                                        {goal.description}
+                                      </p>
+                                    </div>
+                                    {formData.goals.includes(goal.title) && (
+                                      <div className="absolute top-3 right-3 w-5 h-5 rounded-full border-2 border-white flex items-center justify-center">
+                                        <div className="w-2 h-2 bg-white rounded-full" />
+                                      </div>
+                                    )}
+                                  </div>
+                                </div>
+                              </motion.div>
+                            ))}
+                          </div>
+                          
+                          <motion.div
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.5, delay: 0.5 }}
+                          >
+                            <Button
+                              onClick={nextStep}
+                              className="w-full bg-[#664ec9] hover:bg-[#5B3FFF] text-white rounded-full py-6 text-lg font-normal shadow-md hover:shadow-lg transition-all duration-300 hover:-translate-y-1"
+                            >
+                              Continue →
+                            </Button>
+                          </motion.div>
+                        </motion.div>
+                      )}
+
+                      {/* Step 4 - Emotions */}
+                      {step === 4 && (
+                        <motion.div
+                          key="step-4"
+                          initial={{ opacity: 0, y: 20 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          exit={{ opacity: 0, y: -20 }}
+                          className="pb-24"
+                        >
+                          <div className="space-y-4 mb-8">
+                            <h2 className="text-[2.75rem] leading-tight font-normal text-gray-900">
+                              {getStepTitle(step)}
+                            </h2>
+                            <p className="text-lg text-gray-600">
+                              {getStepDescription(step)}
+                            </p>
+                        </div>
+                            
+                        <div className="space-y-12 mb-16">
+                      {emotions.map((emotion) => (
+                        <div key={emotion.name} className="space-y-6">
+                              <div className="flex items-center gap-4">
+                                <div className="w-10 h-10 flex items-center justify-center text-[#664ec9]">
+                                  {emotion.icon}
+                      </div>
+                                <span className="text-2xl font-medium text-gray-900">{emotion.name}</span>
+                              </div>
+
+                              <div className="relative w-full max-w-[600px] mx-auto">
+                                <div className="relative h-12">
+                              <input
+                                type="range"
+                                min="0"
+                                    max="10"
+                                    step="1"
+                                    value={Math.round(formData.emotions[emotion.name as keyof typeof formData.emotions] / 10)}
+                              onChange={(e) => {
+                                setFormData({
+                                  ...formData,
+                                  emotions: {
+                                    ...formData.emotions,
+                                          [emotion.name]: parseInt(e.target.value) * 10
+                                  }
+                                })
+                              }}
+                                    className="absolute top-1/2 -translate-y-1/2 w-full h-2 bg-[#664ec9]/20 rounded-full appearance-none cursor-pointer 
+                                      [&::-webkit-slider-thumb]:appearance-none 
+                                      [&::-webkit-slider-thumb]:w-6 
+                                      [&::-webkit-slider-thumb]:h-6 
+                                      [&::-webkit-slider-thumb]:rounded-full 
+                                      [&::-webkit-slider-thumb]:bg-[#664ec9] 
+                                      [&::-webkit-slider-thumb]:cursor-pointer
+                                      [&::-webkit-slider-thumb]:transition-transform
+                                      [&::-webkit-slider-thumb]:duration-150 
+                                      [&::-webkit-slider-thumb]:hover:scale-125
+                                      [&::-webkit-slider-thumb]:active:scale-110
+                                      [&::-webkit-slider-thumb]:shadow-md"
                               />
                             </div>
                             <div className="absolute top-full pt-3 left-0 right-0 flex justify-between text-sm font-medium">
@@ -1360,26 +1378,26 @@ export default function AssessmentFlow() {
                     </div>
                   ))}
                 </div>
-                    
-                    <motion.div
-                      initial={{ opacity: 0, y: 20 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ duration: 0.5, delay: 0.5 }}
-                    >
-                      <Button
-                        onClick={nextStep}
-                        className="w-full bg-[#664ec9] hover:bg-[#5B3FFF] text-white rounded-full py-6 text-lg font-normal shadow-md hover:shadow-lg transition-all duration-300 hover:-translate-y-1"
-                      >
-                        Continue →
-                      </Button>
-                    </motion.div>
-            </motion.div>
-          )}
+                            
+                        <motion.div
+                          initial={{ opacity: 0, y: 20 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          transition={{ duration: 0.5, delay: 0.5 }}
+                        >
+                          <Button
+                            onClick={nextStep}
+                            className="w-full bg-[#664ec9] hover:bg-[#5B3FFF] text-white rounded-full py-6 text-lg font-normal shadow-md hover:shadow-lg transition-all duration-300 hover:-translate-y-1"
+                          >
+                            Continue →
+                          </Button>
+                        </motion.div>
+                </motion.div>
+              )}
 
-                {/* Step 5 - Life Wheel Questions */}
-                {step === 5 && (
-                  <div className="max-w-[600px] mx-auto">
-                    {!showStatistic ? (
+              {/* Step 5 - Life Wheel Questions */}
+              {step === 5 && (
+                <div className="max-w-[600px] mx-auto">
+                  {!showStatistic ? (
             <motion.div
                         key="question"
                         initial={{ opacity: 0 }}
@@ -1387,6 +1405,15 @@ export default function AssessmentFlow() {
                         exit={{ opacity: 0 }}
                         className="space-y-8 pb-24"
                       >
+                        {/* Progress indicator at the top */}
+                        <div className="flex items-center gap-2 mb-6">
+                          <span className="px-3 py-1 bg-[#664ec9]/10 rounded-full text-[#664ec9] font-medium">
+                            Question {currentQuestionIndex + 1} of {lifeWheelQuestions.length}
+                          </span>
+                          <span className="text-sm text-gray-500">
+                            • {lifeWheelQuestions[currentQuestionIndex].category}
+                          </span>
+                        </div>
                         {/* Step title and description */}
                         <motion.div 
                           className="space-y-4 mb-8"
@@ -1526,21 +1553,6 @@ export default function AssessmentFlow() {
                               </svg>
                             </motion.span>
                           </Button>
-                        </motion.div>
-                        
-                        {/* Question counter */}
-                        <motion.div 
-                          className="mt-8 text-center text-gray-500 flex items-center justify-center gap-2"
-                          initial={{ opacity: 0 }}
-                          animate={{ opacity: 1 }}
-                          transition={{ duration: 0.5, delay: 1 }}
-                        >
-                          <span className="px-3 py-1 bg-[#664ec9]/10 rounded-full text-[#664ec9] font-medium">
-                            Question {currentQuestionIndex + 1} of {lifeWheelQuestions.length}
-                          </span>
-                          <span className="text-sm text-gray-500">
-                            • {lifeWheelQuestions[currentQuestionIndex].category}
-                          </span>
                         </motion.div>
                       </motion.div>
                     ) : (

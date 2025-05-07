@@ -1,45 +1,32 @@
 import { NextResponse } from 'next/server'
-import { Pool } from 'pg'
-import { z } from 'zod'
 import { Resend } from 'resend'
 import { coachEmailTemplates } from '@/lib/email-templates/coach'
+import { prisma } from '@/lib/prisma'
+import { z } from 'zod'
+import type { CoachData } from '@/types/coach'
+
+// Configure runtime
+export const runtime = 'nodejs'
 
 const resend = process.env.RESEND_API_KEY 
   ? new Resend(process.env.RESEND_API_KEY)
   : null
 
-const pool = new Pool({
-  user: process.env.POSTGRES_USER,
-  host: process.env.POSTGRES_HOST,
-  database: process.env.POSTGRES_DB,
-  password: process.env.POSTGRES_PASSWORD,
-  port: parseInt(process.env.POSTGRES_PORT || '5432'),
-})
-
-// Add this SQL to create the coaches table:
-/*
-CREATE TABLE IF NOT EXISTS coaches (
-  id SERIAL PRIMARY KEY,
-  full_name VARCHAR(255) NOT NULL,
-  email VARCHAR(255) NOT NULL UNIQUE,
-  linkedin_url VARCHAR(255),
-  website VARCHAR(255),
-  expertise TEXT[] NOT NULL,
-  experience VARCHAR(50) NOT NULL,
-  languages TEXT[] NOT NULL,
-  timezone VARCHAR(50) NOT NULL,
-  availability VARCHAR(50) NOT NULL,
-  preferred_rate VARCHAR(50) NOT NULL,
-  certifications TEXT[],
-  bio TEXT NOT NULL,
-  status VARCHAR(50) NOT NULL DEFAULT 'pending',
-  created_at TIMESTAMP NOT NULL DEFAULT NOW(),
-  updated_at TIMESTAMP
-);
-
-CREATE INDEX idx_coaches_email ON coaches(email);
-CREATE INDEX idx_coaches_status ON coaches(status);
-*/
+// Coach application schema for validation
+const coachApplicationSchema = z.object({
+  fullName: z.string().min(2),
+  email: z.string().email(),
+  linkedinUrl: z.string().transform(val => val || undefined),
+  website: z.string().transform(val => val || undefined),
+  expertise: z.array(z.string()),
+  experience: z.string(),
+  languages: z.array(z.string()),
+  timezone: z.string(),
+  availability: z.string(),
+  preferredRate: z.string(),
+  certifications: z.array(z.string()).optional(),
+  bio: z.string().min(100)
+}) satisfies z.ZodType<CoachData>
 
 export async function POST(req: Request) {
   const requestId = Math.random().toString(36).substring(7)
@@ -52,102 +39,104 @@ export async function POST(req: Request) {
     method: req.method
   })
   
-  const client = await pool.connect()
-  
   try {
+    // Parse and validate request body
     const validationStart = Date.now()
     const body = await req.json()
     console.log(`[${requestId}] Raw request body:`, body)
 
-    const validatedData = body
+    const validatedData = coachApplicationSchema.parse(body)
     metrics.validation = Date.now() - validationStart
     
+    // Insert into database using Prisma
     const dbStart = Date.now()
-    await client.query('BEGIN')
-
-    const result = await client.query(
-      `INSERT INTO coaches (
-        full_name,
-        email,
-        linkedin_url,
-        website,
-        expertise,
-        experience,
-        languages,
-        timezone,
-        availability,
-        preferred_rate,
-        certifications,
-        bio,
-        created_at,
-        status
-      ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, NOW(), 'upcoming')
-      RETURNING id`,
-      [
-        validatedData.fullName,
-        validatedData.email,
-        validatedData.linkedinUrl,
-        validatedData.website,
-        validatedData.expertise,
-        validatedData.experience,
-        validatedData.languages,
-        validatedData.timezone,
-        validatedData.availability,
-        validatedData.preferredRate,
-        validatedData.certifications || [],
-        validatedData.bio
-      ]
-    )
-
-    await client.query('COMMIT')
+    const coach = await prisma.coach.create({
+      data: {
+        fullName: validatedData.fullName,
+        email: validatedData.email,
+        linkedinUrl: validatedData.linkedinUrl,
+        website: validatedData.website,
+        expertise: validatedData.expertise,
+        experience: validatedData.experience,
+        languages: validatedData.languages,
+        timezone: validatedData.timezone,
+        availability: validatedData.availability,
+        preferredRate: validatedData.preferredRate,
+        certifications: validatedData.certifications || [],
+        bio: validatedData.bio,
+        status: 'upcoming'
+      }
+    })
     metrics.database = Date.now() - dbStart
     
-    // Email notifications
+    // Send email notifications
     if (resend) {
       const emailStart = Date.now()
-      await resend.emails.send({
-        from: 'Onion Coach <partners@onion.coach>',
-        to: [validatedData.email],
-        subject: 'Application Received - Onion Coach',
-        html: coachEmailTemplates.coachConfirmation(validatedData)
-      })
-
-      await resend.emails.send({
-        from: 'Onion Coach <partners@onion.coach>',
-        to: ['team@onion.coach'],
-        subject: `New Coach Application: ${validatedData.fullName}`,
-        html: coachEmailTemplates.teamNotification(validatedData)
-      })
+      await Promise.all([
+        resend.emails.send({
+          from: 'Onion Coach <partners@onion.coach>',
+          to: [validatedData.email],
+          subject: 'Application Received - Onion Coach',
+          html: coachEmailTemplates.coachConfirmation(validatedData)
+        }),
+        resend.emails.send({
+          from: 'Onion Coach <partners@onion.coach>',
+          to: ['team@onion.coach'],
+          subject: `New Coach Application: ${validatedData.fullName}`,
+          html: coachEmailTemplates.teamNotification(validatedData)
+        })
+      ])
       metrics.email = Date.now() - emailStart
     }
+
+    console.log(`[${requestId}] Application completed successfully:`, {
+      coachId: coach.id,
+      metrics,
+      totalTime: Date.now() - startTime
+    })
 
     return NextResponse.json({
       success: true,
       message: 'Application submitted successfully',
-      data: {
-        id: result.rows[0].id,
-        ...validatedData
-      }
+      data: coach
     })
 
   } catch (error: any) {
-    await client.query('ROLLBACK')
-    
     console.error(`[${requestId}] Error:`, {
       type: error.name,
       message: error.message,
       stack: error.stack
     })
 
+    // Handle specific error types
+    if (error instanceof z.ZodError) {
+      return NextResponse.json(
+        { 
+          success: false, 
+          error: 'Invalid application data',
+          details: error.errors
+        },
+        { status: 400 }
+      )
+    }
+
+    // Handle Prisma unique constraint violations
+    if (error.code === 'P2002') {
+      return NextResponse.json(
+        { 
+          success: false, 
+          error: 'A coach with this email already exists'
+        },
+        { status: 409 }
+      )
+    }
+
     return NextResponse.json(
       { 
         success: false, 
-        error: error.message || 'Failed to submit application'
+        error: 'Failed to submit application'
       },
-      { status: error.code === '23505' ? 409 : 500 }
+      { status: 500 }
     )
-  } finally {
-    client.release()
-    console.log(`[${requestId}] Request completed in ${Date.now() - startTime}ms`)
   }
 }

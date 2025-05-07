@@ -19,7 +19,7 @@ export default function FindCoachPage() {
   const router = useRouter()
 
   const handleWaitlistJoin = () => {
-    router.push('/pricing')
+    router.push('/register')
   }
 
   const handleLearnMore = () => {
@@ -51,28 +51,28 @@ export default function FindCoachPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-purple-50 via-white to-orange-50">
+    <div className="min-h-screen bg-gradient-to-b from-purple-50 via-white to-orange-50 overflow-x-hidden flex flex-col">
       <NavBar />
-      <main className="pt-32">
+      <main className="pt-16 xs:pt-20 sm:pt-28 min-h-[calc(100vh-64px)] flex-1 flex flex-col">
         {/* Hero Section */}
-        <section className="container mx-auto px-4 mb-20">
-          <div className="grid lg:grid-cols-2 gap-12 items-center">
+        <section className="container mx-auto px-1 sm:px-2 md:px-4 mb-6 sm:mb-10 md:mb-20">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-2 sm:gap-4 lg:gap-12 items-center">
             <motion.div
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.5 }}
               className="relative z-10"
             >
-              <h1 className="text-5xl md:text-6xl font-normal mb-6 tracking-tight">
-                Begin Your Hero's
-                <span className="block italic font-serif text-purple-600">Journey to Excellence</span>
+              <h1 className="text-lg xs:text-xl sm:text-2xl md:text-4xl lg:text-5xl font-normal mb-2 sm:mb-4 tracking-tight break-words">
+                <span className="block break-words">Begin Your Hero's</span>
+                <span className="block italic font-serif text-purple-600 text-base xs:text-lg sm:text-xl md:text-3xl break-words">Journey to Excellence</span>
               </h1>
-              <p className="text-xl text-gray-600 mb-8">
+              <p className="text-sm xs:text-base sm:text-lg text-gray-600 mb-4 sm:mb-6 break-words">
                 Transform your professional challenges into opportunities with expert guidance through your unique journey
               </p>
               <Button 
                 size="lg"
-                className="rounded-full bg-black hover:bg-gray-800 text-white px-8 h-14 text-lg"
+                className="rounded-full bg-[#7C3AED] hover:bg-[#6D28D9] text-white px-3 sm:px-6 h-10 sm:h-12 text-sm sm:text-base w-full mb-2"
                 onClick={handleWaitlistJoin}
               >
                 Join Waitlist
@@ -84,7 +84,7 @@ export default function FindCoachPage() {
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.5 }}
-              className="relative"
+              className="relative mt-4 sm:mt-6 lg:mt-0"
             >
               <div className="relative z-10">
                 <Image
@@ -92,13 +92,13 @@ export default function FindCoachPage() {
                   width={500}
                   height={500}
                   alt="Career growth illustration"
-                  className="rounded-3xl"
+                  className="rounded-3xl w-full h-auto max-w-full mx-auto"
                 />
               </div>
               
-              {/* Floating Elements */}
+              {/* Floating Elements - hide on mobile */}
               <motion.div
-                className="absolute top-20 -left-10 z-20"
+                className="absolute top-20 -left-10 z-20 hidden md:block"
                 animate={{ y: [0, -20, 0] }}
                 transition={{ duration: 3, repeat: Infinity }}
               >
@@ -118,7 +118,7 @@ export default function FindCoachPage() {
               </motion.div>
 
               <motion.div
-                className="absolute bottom-20 -right-10 z-20"
+                className="absolute bottom-20 -right-10 z-20 hidden md:block"
                 animate={{ y: [0, 20, 0] }}
                 transition={{ duration: 4, repeat: Infinity }}
               >
@@ -138,7 +138,7 @@ export default function FindCoachPage() {
               </motion.div>
 
               {/* Background Elements */}
-              <div className="absolute inset-0 z-0">
+              <div className="absolute inset-0 z-0 hidden md:block">
                 <motion.div
                   className="absolute top-10 right-10 w-72 h-72 bg-purple-200 rounded-full opacity-50 blur-3xl"
                   animate={{ 
@@ -161,8 +161,8 @@ export default function FindCoachPage() {
         </section>
 
         {/* Features Grid */}
-        <section className="container mx-auto px-4 mb-20">
-          <div className="grid md:grid-cols-3 gap-8">
+        <section className="container mx-auto px-1 sm:px-2 md:px-4 mb-6 sm:mb-10 md:mb-20">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-2 sm:gap-4 md:gap-8 items-stretch">
             {[
               {
                 icon: <Medal className="h-8 w-8 text-purple-600" />,
@@ -187,13 +187,13 @@ export default function FindCoachPage() {
                 viewport={{ once: true }}
                 transition={{ duration: 0.5, delay: index * 0.1 }}
               >
-                <Card className="relative overflow-hidden border-none shadow-lg">
+                <Card className="relative overflow-hidden border-none shadow-lg h-full w-full mb-2 md:mb-0">
                   <motion.div
                     className="absolute inset-0 bg-gradient-to-br from-white/80 to-white/20 backdrop-blur-sm"
                     whileHover={{ scale: 1.05 }}
                     transition={{ duration: 0.2 }}
                   />
-                  <CardContent className="relative p-6">
+                  <CardContent className="relative p-2 xs:p-3 sm:p-4 h-full flex flex-col">
                     <motion.div 
                       className="w-16 h-16 rounded-2xl bg-white shadow-lg flex items-center justify-center mb-4"
                       whileHover={{ rotate: 360 }}
@@ -201,8 +201,8 @@ export default function FindCoachPage() {
                     >
                       {feature.icon}
                     </motion.div>
-                    <h3 className="text-xl font-normal mb-2">{feature.title}</h3>
-                    <p className="text-gray-600">{feature.description}</p>
+                    <h3 className="text-base xs:text-lg font-normal mb-1 break-words">{feature.title}</h3>
+                    <p className="text-gray-600 text-xs xs:text-sm sm:text-base break-words">{feature.description}</p>
                   </CardContent>
                 </Card>
               </motion.div>

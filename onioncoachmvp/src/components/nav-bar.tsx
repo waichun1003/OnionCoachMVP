@@ -6,6 +6,7 @@ import { motion, AnimatePresence } from "framer-motion"
 import { Button } from "@/components/ui/button"
 import { Menu, X } from 'lucide-react'
 import Image from "next/image"
+import { useModal } from "@/components/ui/modal-context"
 
 interface NavBarProps {
     className?: string;
@@ -15,38 +16,30 @@ export function NavBar({ className = "" }: NavBarProps) {
     const [isMenuOpen, setIsMenuOpen] = useState(false)
     const [isVisible, setIsVisible] = useState(true)
     const [lastScrollY, setLastScrollY] = useState(0)
+    const { modalOpen } = useModal();
 
     useEffect(() => {
         const controlNavbar = () => {
             const currentScrollY = window.scrollY
-            
             if (currentScrollY > lastScrollY && currentScrollY > 100) {
-                // Scrolling down & past initial threshold
                 setIsVisible(false)
             } else {
-                // Scrolling up or at top
                 setIsVisible(true)
             }
-            
             setLastScrollY(currentScrollY)
         }
-
         window.addEventListener('scroll', controlNavbar)
-        
         return () => {
             window.removeEventListener('scroll', controlNavbar)
         }
     }, [lastScrollY])
 
-    const navigation = [
-        { name: "Find Coach", href: "/find-coach" },
-        { name: "Campaign", href: "/resources" },
-        { name: "About", href: "/about" },
-        { name: "Pricing", href: "/pricing" },
-    ]
+    if (modalOpen) {
+        return null;
+    }
 
     return (
-        <motion.header 
+        <motion.header
             className={`fixed top-0 left-0 right-0 z-50 ${className}`}
             initial={{ y: 0 }}
             animate={{ y: isVisible ? 0 : -100 }}
@@ -67,7 +60,6 @@ export function NavBar({ className = "" }: NavBarProps) {
                                 />
                             </Link>
                         </div>
-
                         <nav className="hidden md:flex items-center space-x-8">
                             <Link 
                                 href="/find-coach" 
@@ -75,12 +67,12 @@ export function NavBar({ className = "" }: NavBarProps) {
                             >
                                 Find Your Coach
                             </Link>
-                            <Link 
+                            {/* <Link 
                                 href="/pricing" 
                                 className="text-gray-600 hover:text-purple-600 font-medium hover:shadow-md hover:underline decoration-purple-600 decoration-2 underline-offset-4 transition-all"
                             >
                                 Pricing
-                            </Link>
+                            </Link> */}
                             <Link 
                                 href="/campaign" 
                                 className="text-gray-600 hover:text-purple-600 font-medium hover:shadow-md hover:underline decoration-purple-600 decoration-2 underline-offset-4 transition-all"
@@ -94,7 +86,6 @@ export function NavBar({ className = "" }: NavBarProps) {
                                 About Us
                             </Link>
                         </nav>
-
                         <div className="hidden md:flex items-center space-x-4">
                             <Button 
                                 className="rounded-full bg-[#6B46C1] hover:bg-purple-700 font-medium" 
@@ -103,7 +94,6 @@ export function NavBar({ className = "" }: NavBarProps) {
                                 <Link href="/register">Get Started</Link>
                             </Button>
                         </div>
-
                         <div className="md:hidden">
                             <Button
                                 variant="ghost"
@@ -138,7 +128,6 @@ export function NavBar({ className = "" }: NavBarProps) {
                         </div>
                     </div>
                 </div>
-
                 {/* Mobile menu overlay */}
                 <AnimatePresence>
                     {isMenuOpen && (
@@ -169,7 +158,6 @@ export function NavBar({ className = "" }: NavBarProps) {
                                             className="h-auto w-[120px]"
                                         />
                                     </div>
-
                                     <nav className="flex-1 space-y-6">
                                         <Link
                                             href="/find-coach"
@@ -200,13 +188,15 @@ export function NavBar({ className = "" }: NavBarProps) {
                                             About Us
                                         </Link>
                                     </nav>
-
-                                    <div className="space-y-4 mt-8">
+                                    <div className="mt-6">
                                         <Button 
-                                            className="rounded-full bg-[#6B46C1] hover:bg-purple-700 font-medium" 
+                                            className="w-full rounded-full bg-[#6B46C1] hover:bg-purple-700 font-medium"
+                                            onClick={() => setIsMenuOpen(false)}
                                             asChild
                                         >
-                                            <Link href="/register">Register</Link>
+                                            <Link href="/register">
+                                                Get Started
+                                            </Link>
                                         </Button>
                                     </div>
                                 </div>
@@ -218,4 +208,3 @@ export function NavBar({ className = "" }: NavBarProps) {
         </motion.header>
     )
 }
-

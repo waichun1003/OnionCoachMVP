@@ -66,62 +66,68 @@ export function StatsSection() {
               <span className="block italic font-serif text-[#E86C3A] mt-2">Your Journey to Success</span>
             </h2>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto mb-4">
-              Embark on a structured journey of professional transformation with expert guidance at every step
+              Embark on a structured journey of professional transformation with expert guidance at every step.
             </p>
             <p className="text-lg text-gray-600 max-w-3xl mx-auto">
               Our proven methodology combines personalized coaching, actionable strategies, and continuous support to help you achieve breakthrough results in your career.
             </p>
           </motion.div>
 
-          {/* Platform Stats */}
-          <motion.div 
-            className="grid md:grid-cols-3 gap-8 mb-16"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5 }}
-          >
-            {platformStats.map((stat, index) => (
-              <Card key={stat.label} className="overflow-hidden">
-                <CardContent className="p-6">
-                  <div className="flex flex-col gap-4">
-                    <div className="flex items-center gap-4">
-                      <div className={`p-3 rounded-xl ${stat.color}`}>
-                        <stat.icon className="w-6 h-6 text-white" />
-                      </div>
-                      <div>
-                        <h3 className="text-2xl font-semibold">{stat.value}</h3>
-                        <p className="text-sm font-medium text-gray-600">{stat.label}</p>
-                      </div>
-                    </div>
-                    <p className="text-sm text-gray-600 leading-relaxed">
-                      {stat.description}
-                    </p>
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
-          </motion.div>
-
-          {/* Journey Stages */}
-          <div className="grid md:grid-cols-3 gap-8">
-            {journeyStages.map((stage, index) => (
+          {/* 4 Simple Steps */}
+          <div className="grid md:grid-cols-4 gap-8 mb-12">
+            {[
+              {
+                title: "Self-Discovery",
+                description: "Begin your journey by understanding your unique strengths, values, and aspirations through expert guidance."
+              },
+              {
+                title: "Goal Alignment",
+                description: "Define clear, achievable goals that resonate with your personal and professional vision."
+              },
+              {
+                title: "Skill Mastery",
+                description: "Develop essential skills and strategies with structured guidance from experienced mentors."
+              },
+              {
+                title: "Ongoing Support & Progress",
+                description: "Receive continuous feedback, track your progress, and adjust your plan to ensure lasting success."
+              }
+            ].map((step, idx) => (
               <motion.div
-                key={stage.title}
+                key={step.title}
+                className="bg-white/90 rounded-2xl shadow-lg p-8 flex flex-col items-center text-center"
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
+                transition={{ duration: 0.5, delay: idx * 0.1 }}
               >
-                <Card className="h-full">
-                  <CardContent className="p-6">
-                    <div className={`w-12 h-12 ${stage.color} rounded-xl flex items-center justify-center mb-4`}>
-                      <stage.icon className="w-6 h-6 text-white" />
-                    </div>
-                    <h3 className="text-xl font-normal mb-2">{stage.title}</h3>
-                    <p className="text-gray-600">{stage.description}</p>
-                  </CardContent>
-                </Card>
+                <div className="w-12 h-12 rounded-full bg-[#E86C3A]/10 flex items-center justify-center mb-4 text-2xl font-semibold text-[#E86C3A]">{idx + 1}</div>
+                <h3 className="text-xl font-normal mb-2">{step.title}</h3>
+                <p className="text-gray-600 text-base">{step.description}</p>
+              </motion.div>
+            ))}
+          </div>
+
+          {/* Program Features Section */}
+          <motion.h3 className="text-2xl font-normal text-center mb-8 mt-16">
+            Why Choose Our Program?
+          </motion.h3>
+          <div className="grid md:grid-cols-3 gap-8 max-w-4xl mx-auto">
+            {platformStats.map((stat, idx) => (
+              <motion.div
+                key={stat.label}
+                className="bg-white/90 rounded-2xl shadow-lg p-8 flex flex-col items-center text-center"
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: idx * 0.1 }}
+              >
+                <div className={`w-14 h-14 flex items-center justify-center rounded-full mb-4 ${stat.color}`}>
+                  <stat.icon className="w-7 h-7 text-white" />
+                </div>
+                <div className="text-2xl font-semibold text-gray-900 mb-1">{stat.value}</div>
+                <div className="text-lg font-medium text-gray-700 mb-2">{stat.label}</div>
+                <p className="text-gray-600 text-base">{stat.description}</p>
               </motion.div>
             ))}
           </div>

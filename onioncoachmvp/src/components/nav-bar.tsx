@@ -100,6 +100,7 @@ export function NavBar({ className = "" }: NavBarProps) {
                                 size="icon"
                                 onClick={() => setIsMenuOpen(!isMenuOpen)}
                                 className="relative z-50"
+                                aria-label="Open menu"
                             >
                                 <AnimatePresence>
                                     {isMenuOpen ? (
@@ -110,7 +111,7 @@ export function NavBar({ className = "" }: NavBarProps) {
                                             exit={{ opacity: 0, rotate: 90 }}
                                             transition={{ duration: 0.2 }}
                                         >
-                                            <X className="h-6 w-6" />
+                                            <X className="h-6 w-6 text-[#7C3AED]" />
                                         </motion.div>
                                     ) : (
                                         <motion.div
@@ -120,7 +121,7 @@ export function NavBar({ className = "" }: NavBarProps) {
                                             exit={{ opacity: 0, rotate: -90 }}
                                             transition={{ duration: 0.2 }}
                                         >
-                                            <Menu className="h-6 w-6" />
+                                            <Menu className="h-6 w-6 text-[#7C3AED]" />
                                         </motion.div>
                                     )}
                                 </AnimatePresence>
@@ -166,13 +167,13 @@ export function NavBar({ className = "" }: NavBarProps) {
                                         >
                                             Find Your Coach
                                         </Link>
-                                        <Link
+                                        {/* <Link
                                             href="/pricing"
                                             className="block text-2xl font-medium text-gray-900 hover:text-purple-600 transition-colors"
                                             onClick={() => setIsMenuOpen(false)}
                                         >
                                             Pricing
-                                        </Link>
+                                        </Link> */}
                                         <Link
                                             href="/campaign"
                                             className="block text-2xl font-medium text-gray-900 hover:text-purple-600 transition-colors"
@@ -190,7 +191,7 @@ export function NavBar({ className = "" }: NavBarProps) {
                                     </nav>
                                     <div className="mt-6">
                                         <Button 
-                                            className="w-full rounded-full bg-[#6B46C1] hover:bg-purple-700 font-medium"
+                                            className="w-full rounded-full bg-[#7C3AED] hover:bg-[#6D28D9] font-medium"
                                             onClick={() => setIsMenuOpen(false)}
                                             asChild
                                         >

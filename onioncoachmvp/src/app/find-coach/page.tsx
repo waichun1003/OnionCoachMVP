@@ -53,7 +53,7 @@ export default function FindCoachPage() {
   return (
     <div className="min-h-screen bg-gradient-to-b from-purple-50 via-white to-orange-50 overflow-x-hidden flex flex-col">
       <NavBar />
-      <main className="pt-16 xs:pt-20 sm:pt-28 min-h-[calc(100vh-64px)] flex-1 flex flex-col">
+      <main className="pt-24 xs:pt-28 sm:pt-32 min-h-[calc(100vh-64px)] flex-1 flex flex-col">
         {/* Hero Section */}
         <section className="container mx-auto px-1 sm:px-2 md:px-4 mb-6 sm:mb-10 md:mb-20">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-2 sm:gap-4 lg:gap-12 items-center">
@@ -63,11 +63,11 @@ export default function FindCoachPage() {
               transition={{ duration: 0.5 }}
               className="relative z-10"
             >
-              <h1 className="text-lg xs:text-xl sm:text-2xl md:text-4xl lg:text-5xl font-normal mb-2 sm:mb-4 tracking-tight break-words">
+              <h1 className="text-3xl xs:text-4xl sm:text-5xl md:text-6xl font-normal mb-3 sm:mb-6 tracking-tight break-words text-center leading-tight">
                 <span className="block break-words">Begin Your Hero's</span>
-                <span className="block italic font-serif text-purple-600 text-base xs:text-lg sm:text-xl md:text-3xl break-words">Journey to Excellence</span>
+                <span className="block italic font-serif text-purple-600 text-xl xs:text-2xl sm:text-3xl md:text-4xl break-words">Journey to Excellence</span>
               </h1>
-              <p className="text-sm xs:text-base sm:text-lg text-gray-600 mb-4 sm:mb-6 break-words">
+              <p className="text-base xs:text-lg sm:text-xl text-gray-600 mb-5 sm:mb-8 break-words text-center">
                 Transform your professional challenges into opportunities with expert guidance through your unique journey
               </p>
               <Button 

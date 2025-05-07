@@ -16,7 +16,7 @@ const teamMembers = [
     name: "Xuan Zhang\n" +
         " (Joanna)",
     role: "Co-founder & Chief Guide",
-    image: "/images/CEO.png",
+    image: "/images/CEO.jpeg",
     bio: "Experienced journey architect with 15+ years guiding tech leaders",
     linkedin: "https://www.linkedin.com/in/joannazhang1213/"
   },
@@ -24,14 +24,14 @@ const teamMembers = [
     name: "Ka Ki Wong\n" +
         " (Kee)",
     role: "Co-founder & Innovation Guide",
-    image: "/images/kee.png",
+    image: "/images/kee.jpeg",
     bio: "Master mentor specializing in transformative leadership journeys",
     linkedin: "https://www.linkedin.com/in/kee-ka-ki-wong-3682ba11b/"
   },
   {
     name: "Wai Chun Cheng (Samuel)",
     role: "Co-founder & Development Guide",
-    image: "/images/samuel.png",
+    image: "/images/samuel.jpeg",
     bio: "Expert in crafting transformative professional journeys",
     linkedin: "https://www.linkedin.com/in/samuel-cheng-4a1270a9/"
   },
@@ -39,7 +39,7 @@ const teamMembers = [
     name: "Dan yu \n" +
         "(Dana)",
     role: "Platform Head Coach & Experience Guide",
-    image: "/images/dana.png",
+    image: "/images/dana.jpeg",
     bio: "Architect of breakthrough growth experiences",
     linkedin: "https://www.linkedin.com/in/danyu/"
   }
@@ -218,7 +218,7 @@ export default function AboutPage() {
                       transition={{ duration: 0.8 }}
                     >
                       <Image
-                        src="/images/about.png"
+                        src="/images/about.jpeg"
                         alt="Our story"
                         fill
                         className="object-cover"

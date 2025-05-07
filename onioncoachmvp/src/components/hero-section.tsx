@@ -71,7 +71,7 @@ export function HeroSection() {
                             className="relative w-[280px] h-[280px] rounded-full overflow-hidden bg-[#FF5733] shadow-xl"
                         >
                             <Image
-                                src="/images/image_114.png"
+                                src="/images/image_114.jpeg"
                                 alt="Coach 1"
                                 fill
                                 quality={100}
@@ -103,7 +103,7 @@ export function HeroSection() {
                             className="relative w-[300px] h-[350px] rounded-full overflow-hidden bg-[#FDB347] shadow-xl"
                         >
                             <Image
-                                src="/images/image_103.png"
+                                src="/images/image_103.jpeg"
                                 alt="Coach 2"
                                 fill
                                 quality={100}
@@ -120,7 +120,7 @@ export function HeroSection() {
                             className="relative w-[550px] h-[280px] overflow-hidden rounded-2xl shadow-xl"
                         >
                             <Image
-                                src="/images/Rectangle_2157.png"
+                                src="/images/Rectangle_2157.jpeg"
                                 alt="People crossing"
                                 fill
                                 quality={100}
@@ -137,7 +137,7 @@ export function HeroSection() {
                             className="relative w-[300px] h-[300px] rounded-full overflow-hidden bg-[#FF5733] shadow-xl"
                         >
                             <Image
-                                src="/images/image_113.png"
+                                src="/images/image_113.jpeg"
                                 alt="Coach 3"
                                 fill
                                 quality={100}

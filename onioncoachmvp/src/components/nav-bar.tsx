@@ -51,7 +51,7 @@ export function NavBar({ className = "" }: NavBarProps) {
                         <div className="flex items-center">
                             <Link href="/" className="flex items-center gap-2">
                                 <Image
-                                    src="/images/logo.png"
+                                    src="/images/logo.jpeg"
                                     alt="Onion Logo"
                                     width={120}
                                     height={40}
@@ -151,7 +151,7 @@ export function NavBar({ className = "" }: NavBarProps) {
                                 <div className="flex flex-col min-h-full">
                                     <div className="flex items-center space-x-2 mb-8">
                                         <Image
-                                            src="/images/logo.png"
+                                            src="/images/logo.jpeg"
                                             alt="Onion Logo"
                                             width={120}
                                             height={40}

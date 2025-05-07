@@ -47,7 +47,7 @@ export function ImageGrid() {
                     whileTap={{ scale: 0.95 }}
                 >
                     <Image
-                        src="/images/coach2.png"
+                        src="/images/coach2.jpeg"
                         alt="Professional woman smiling"
                         layout="fill"
                         objectFit="cover"
@@ -72,7 +72,7 @@ export function ImageGrid() {
                     transition={{ type: "spring", stiffness: 300 }}
                 >
                     <Image
-                        src="/images/coach1.png"
+                        src="/images/coach1.jpeg"
                         alt="Professional man smiling"
                         layout="fill"
                         objectFit="cover"

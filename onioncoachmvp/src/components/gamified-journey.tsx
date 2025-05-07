@@ -27,7 +27,7 @@ const steps: Step[] = [
       subtitle: "Mission",
       description: "Define your growth goals and create a personalized roadmap for success. Our AI-powered system analyzes your strengths, weaknesses, and aspirations to craft a tailored journey that aligns with your unique objectives and learning style.",
       buttonText: "View More",
-      imageUrl: "/images/step-1.png",
+      imageUrl: "/images/step-1.jpeg",
       bgColor: "#EDE6DC", // Updated to requested color
       textColor: "text-black",
       subtitleBgColor: "#E9D8FD"
@@ -38,7 +38,7 @@ const steps: Step[] = [
       subtitle: "Quests",
       description: "Complete daily tasks to earn points and advance through levels. Each quest is designed to build specific skills and habits that contribute to your overall growth. Track your progress, earn rewards, and stay motivated with our gamified approach to personal development.",
       buttonText: "Learn More",
-      imageUrl: "/images/step-2.png",
+      imageUrl: "/images/step-2.jpeg",
       bgColor: "#EDE6DC", // Updated to requested color
       textColor: "text-black",
       subtitleBgColor: "#CCCCCC"
@@ -49,7 +49,7 @@ const steps: Step[] = [
       subtitle: "Achievements",
       description: "Earn badges for reaching milestones and mastering skills. Our recognition system acknowledges your progress at every step, providing positive reinforcement and visual representations of your growth journey. Share your achievements with peers and build a portfolio of your accomplishments.",
       buttonText: "View More",
-      imageUrl: "/images/step-3.png",
+      imageUrl: "/images/step-3.jpeg",
       bgColor: "#EDE6DC", // Updated to requested color
       textColor: "text-black",
       subtitleBgColor: "#E9D8FD"
@@ -60,7 +60,7 @@ const steps: Step[] = [
       subtitle: "Connect",
       description: "Connect with peers and coaches for support and collaboration. Our community platform brings together like-minded individuals on similar growth paths, creating opportunities for knowledge sharing, accountability partnerships, and mentorship. Engage in group challenges and learn from others' experiences.",
       buttonText: "View More",
-      imageUrl: "/images/step-4.png",
+      imageUrl: "/images/step-4.jpeg",
       bgColor: "#EDE6DC", // Updated to requested color
       textColor: "text-black",
       subtitleBgColor: "#CCCCCC"
@@ -447,7 +447,7 @@ export function GamifiedJourney() {
                                     style={{ zIndex: 1 }}
                                 >
                                     <Image
-                                        src="/images/setUpMission.png"
+                                        src="/images/setUpMission.jpeg"
                                         alt="Professional woman working"
                                         fill
                                         className="object-cover"
@@ -464,7 +464,7 @@ export function GamifiedJourney() {
                                     style={{ zIndex: 20 }}
                                 >
                                     <Image
-                                        src="/images/setUpMission1.png"
+                                        src="/images/setUpMission1.jpeg"
                                         alt="Radar chart showing life balance"
                                         fill
                                         className="object-contain"
@@ -483,7 +483,7 @@ export function GamifiedJourney() {
                                     style={{ zIndex: 30 }}
                                 >
                                     <Image
-                                        src="/images/setUpMission2.png"
+                                        src="/images/setUpMission2.jpeg"
                                         alt="Emoji selection interface"
                                         fill
                                         className="object-contain"
@@ -502,7 +502,7 @@ export function GamifiedJourney() {
                                     style={{ zIndex: 20 }}
                                 >
                                     <Image
-                                        src="/images/setUpMission3.png"
+                                        src="/images/setUpMission3.jpeg"
                                         alt="Progress bars for life areas"
                                         fill
                                         className="object-contain"
@@ -715,7 +715,7 @@ export function GamifiedJourney() {
                                                     style={{ zIndex: 1 }}
                                                 >
                                                     <Image
-                                                        src={idx === 0 ? "/images/dailyQuest.png" : step.imageUrl}
+                                                        src={idx === 0 ? "/images/dailyQuest.jpeg" : step.imageUrl}
                                                         alt={idx === 0 ? "Daily Quest background" : step.title}
                                                         fill
                                                         className="object-cover"
@@ -737,7 +737,7 @@ export function GamifiedJourney() {
                                                         }}
                                                     >
                                                         <Image
-                                                            src="/images/dailyQuest1.png"
+                                                            src="/images/dailyQuest1.jpeg"
                                                             alt="Daily Quest main content"
                                                             fill
                                                             className="object-contain"
@@ -761,7 +761,7 @@ export function GamifiedJourney() {
                                                         style={{ zIndex: 30 }}
                                                     >
                                                         <Image
-                                                            src="/images/dailyQuest3.png"
+                                                            src="/images/dailyQuest3.jpeg"
                                                             alt="Daily Quest interactive elements"
                                                             fill
                                                             className="object-contain"
@@ -786,7 +786,7 @@ export function GamifiedJourney() {
                                                     >
                                                         <div style={{ position: 'relative', width: '100%', height: '100%' }}>
                                                             <Image
-                                                                src="/images/dailyQuest2.png"
+                                                                src="/images/dailyQuest2.jpeg"
                                                                 alt="Daily Quest interactive elements"
                                                                 fill
                                                                 className="object-contain"
@@ -812,7 +812,7 @@ export function GamifiedJourney() {
                                                             style={{ zIndex: 1 }}
                                                         >
                                                             <Image
-                                                                src="/images/celebrateAchivement.png"
+                                                                src="/images/celebrateAchivement.jpeg"
                                                                 alt="Celebrate Achievements background"
                                                                 fill
                                                                 className="object-cover"
@@ -833,7 +833,7 @@ export function GamifiedJourney() {
                                                             }}
                                                         >
                                                             <Image
-                                                                src="/images/celebrateAchivement1.png"
+                                                                src="/images/celebrateAchivement1.jpeg"
                                                                 alt="Achievement progress"
                                                                 fill
                                                                 className="object-contain"
@@ -855,7 +855,7 @@ export function GamifiedJourney() {
                                                             style={{ zIndex: 30 }}
                                                         >
                                                             <Image
-                                                                src="/images/celebrateAchivement3.png"
+                                                                src="/images/celebrateAchivement3.jpeg"
                                                                 alt="Achievement stats"
                                                                 fill
                                                                 className="object-contain"
@@ -878,7 +878,7 @@ export function GamifiedJourney() {
                                                         >
                                                             <div style={{ position: 'relative', width: '100%', height: '100%' }}>
                                                                 <Image
-                                                                    src="/images/celebrateAchivement2.png"
+                                                                    src="/images/celebrateAchivement2.jpeg"
                                                                     alt="Achievement rewards"
                                                                     fill
                                                                     className="object-contain"
@@ -903,7 +903,7 @@ export function GamifiedJourney() {
                                                             style={{ zIndex: 1 }}
                                                         >
                                                             <Image
-                                                                src="/images/joinCommunities.png"
+                                                                src="/images/joinCommunities.jpeg"
                                                                 alt="Join Communities background"
                                                                 fill
                                                                 className="object-cover"
@@ -925,7 +925,7 @@ export function GamifiedJourney() {
                                                             }}
                                                         >
                                                             <Image
-                                                                src="/images/joinCommunities1.png"
+                                                                src="/images/joinCommunities1.jpeg"
                                                                 alt="Community search interface"
                                                                 fill
                                                                 className="object-contain"
@@ -951,7 +951,7 @@ export function GamifiedJourney() {
                                                             }}
                                                         >
                                                             <Image
-                                                                src="/images/joinCommunities2.png"
+                                                                src="/images/joinCommunities2.jpeg"
                                                                 alt="Community engagement"
                                                                 fill
                                                                 className="object-contain"

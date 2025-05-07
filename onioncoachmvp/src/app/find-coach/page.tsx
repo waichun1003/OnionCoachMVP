@@ -88,7 +88,7 @@ export default function FindCoachPage() {
             >
               <div className="relative z-10">
                 <Image
-                  src="/images/findCoach.png"
+                  src="/images/findCoach.jpeg"
                   width={500}
                   height={500}
                   alt="Career growth illustration"
@@ -264,7 +264,7 @@ export default function FindCoachPage() {
               >
                 <div className="relative w-full aspect-[4/5] rounded-3xl overflow-hidden bg-purple-50">
                   <Image
-                    src="/images/findCoach2.png"
+                    src="/images/findCoach2.jpeg"
                     alt="Professional Coach"
                     fill
                     className="object-cover"

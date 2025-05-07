@@ -76,7 +76,7 @@ export function AssessmentResult({ name, scores, onSchedule }: AssessmentResultP
             className="absolute w-[201px] h-[54.46px] left-[38px] top-[31px] flex items-center gap-[6px]"
           >
             <Image
-              src="/images/logo_white.png"
+              src="/images/logo_white.jpeg"
               alt="Onion Logo"
               width={160}
               height={54}

@@ -11,19 +11,19 @@ const testimonials = [
     {
         name: "Joanna Zhang",
         title: "Co-founder of Onion Coach, former Ogilvy strategist, and lecturer at Hong Kong Baptist University",
-        image: "/images/coach1.png",
+        image: "/images/coach1.jpeg",
         quote: "As your career coach, I've seen how personalized plans can transform your approach to work challenges. With flexible online sessions, I ensure that coaching fits seamlessly into your busy schedule. My goal is to make you feel heard, understood, and supported, leading to significant improvements in your career journey."
     },
     {
         name: "Dana Yu",
         title: "Head Coach, ICF-certified ACC coach, IPMA-certified international trainer",
-        image: "/images/coach2.png",
+        image: "/images/coach2.jpeg",
         quote: "Left a million-dollar salary to become a freelance trainer and coach. Provides training and coaching to hundreds of executives. Through our coaching partnership, we'll work together to unlock your leadership potential. I believe in creating a safe space for exploration and growth, helping you navigate complex career decisions with confidence and clarity."
     },
     {
         name: "Yuki Zhang",
         title: "Guiding Coach, ICF-certified NLP coach, ICC team coach, AOEC-certified",
-        image: "/images/coach3.png",
+        image: "/images/coach3.jpeg",
         quote: "Specializes in organizational change, sales, visual communication, and psychology. Assisted hundreds of teams and over a thousand individuals. My approach combines strategic thinking with emotional intelligence. We'll focus on developing your unique strengths while addressing growth areas, ensuring you're well-equipped to tackle any professional challenge."
     }
 ]

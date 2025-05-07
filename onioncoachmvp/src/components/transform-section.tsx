@@ -5,57 +5,57 @@ import { motion, useAnimation } from "framer-motion"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import Image from "next/image"
-import { ArrowRight } from 'lucide-react'
+import { ArrowRight, User, Briefcase, Award, Star, Heart, Target } from 'lucide-react'
 
 // Mock data for coach articles
 const coachArticles = [
     {
         name: "Anson Lee",
         years: "7 years Coach",
-        image: "/images/image_103.png",
-        title: "Find the coach that best suits your needs",
+        image: "/images/image_103.jpeg",
+        title: "Career Growth Specialist",
         content: "Mastering Career Transitions: A Guide to Professional Evolution",
-        description: "We will ensures you get paired with the ideal coach for your unique needs and goals. Learn how to navigate career changes with confidence and strategic planning."
+        description: "Anson helps you navigate career changes with confidence and strategic planning."
     },
     {
         name: "Sarah Chen",
         years: "5 years Coach",
-        image: "/images/image_103.png",
-        title: "Find the coach that best suits your needs",
+        image: "/images/image_103.jpeg",
+        title: "Leadership Development Coach",
         content: "Leadership Development in the Digital Age",
-        description: "Specialized in career transitions and leadership development. Discover key strategies for becoming an effective leader in today's rapidly evolving workplace."
+        description: "Sarah specializes in leadership and team development for modern workplaces."
     },
     {
         name: "Michael Wong",
         years: "8 years Coach",
-        image: "/images/image_103.png",
-        title: "Find the coach that best suits your needs",
+        image: "/images/image_103.jpeg",
+        title: "Performance & Team Coach",
         content: "Building High-Performance Teams",
-        description: "Expert insights on team dynamics and performance optimization. Learn proven methods for fostering collaboration and achieving exceptional results."
+        description: "Michael offers insights on team dynamics and performance optimization."
     },
     {
         name: "Emma Davis",
         years: "6 years Coach",
-        image: "/images/image_103.png",
-        title: "Find the coach that best suits your needs",
+        image: "/images/image_103.jpeg",
+        title: "Emotional Intelligence Coach",
         content: "Emotional Intelligence in the Workplace",
-        description: "Discover how to leverage emotional intelligence for better workplace relationships and career advancement."
+        description: "Emma helps you leverage emotional intelligence for career advancement."
     },
     {
         name: "David Kim",
         years: "9 years Coach",
-        image: "/images/image_103.png",
-        title: "Find the coach that best suits your needs",
+        image: "/images/image_103.jpeg",
+        title: "Innovation & Tech Coach",
         content: "Tech Leadership: Navigating Innovation",
-        description: "Insights on leading technical teams and driving innovation in fast-paced Personal Growths."
+        description: "David guides tech leaders to drive innovation and growth."
     },
     {
         name: "Lisa Zhang",
         years: "7 years Coach",
-        image: "/images/image_103.png",
-        title: "Find the coach that best suits your needs",
+        image: "/images/image_103.jpeg",
+        title: "Branding & Strategy Coach",
         content: "Personal Branding for Professionals",
-        description: "Learn how to build and maintain a strong professional brand that sets you apart in your industry."
+        description: "Lisa helps you build a strong professional brand and strategy."
     }
 ]
 
@@ -68,7 +68,7 @@ export function TransformSection() {
     return (
         <section className="py-24 bg-[#6B46C1] overflow-hidden">
             <div className="container mx-auto px-4">
-                <div className="grid lg:grid-cols-2 gap-12 items-center min-h-screen">
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
                     <motion.div
                         initial={{ opacity: 0, x: -20 }}
                         whileInView={{ opacity: 1, x: 0 }}
@@ -92,37 +92,12 @@ export function TransformSection() {
                         </Button>
                     </motion.div>
 
-                    <div className="grid grid-cols-2 gap-4 h-[800px]">
-                        <div className="h-full overflow-hidden relative">
-                            <div
-                                ref={scrollContainerRef1}
-                                className="absolute inset-0 space-y-4 pr-2"
-                            >
-                                <motion.div
-                                    animate={controls1}
-                                    className="space-y-4"
-                                >
-                                    {[...coachArticles, ...coachArticles].map((article, index) => (
-                                        <ArticleCard key={`left-${index}`} article={article} index={index} />
-                                    ))}
-                                </motion.div>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 w-full items-stretch">
+                        {coachArticles.map((article, index) => (
+                            <div className="h-full flex" key={index}>
+                                <ArticleCard article={article} index={index} />
                             </div>
-                        </div>
-                        <div className="h-full overflow-hidden relative">
-                            <div
-                                ref={scrollContainerRef2}
-                                className="absolute inset-0 space-y-4 pl-2"
-                            >
-                                <motion.div
-                                    animate={controls2}
-                                    className="space-y-4"
-                                >
-                                    {[...coachArticles, ...coachArticles].map((article, index) => (
-                                        <ArticleCard key={`right-${index}`} article={article} index={index} />
-                                    ))}
-                                </motion.div>
-                            </div>
-                        </div>
+                        ))}
                     </div>
                 </div>
             </div>
@@ -138,12 +113,12 @@ function ArticleCard({ article, index }: { article: typeof coachArticles[0], ind
             viewport={{ once: true }}
             transition={{ duration: 0.5, delay: index * 0.1 }}
             whileHover={{ scale: 1.02 }}
-            className="transform transition-transform"
+            className="transform transition-transform flex flex-col h-full w-full"
         >
-            <Card className="bg-white overflow-hidden hover:shadow-lg transition-shadow rounded-[30px]">
-                <CardContent className="p-6">
+            <Card className="bg-white overflow-hidden hover:shadow-lg transition-shadow rounded-[30px] flex flex-col h-full">
+                <CardContent className="p-6 flex flex-col h-full">
                     <div className="flex items-start gap-3">
-                        <div className="relative flex-shrink-0">
+                        <div className="relative flex-shrink-0 flex flex-col items-center gap-2">
                             <div className="w-16 h-16 rounded-full overflow-hidden bg-purple-100">
                                 <Image
                                     src={article.image}

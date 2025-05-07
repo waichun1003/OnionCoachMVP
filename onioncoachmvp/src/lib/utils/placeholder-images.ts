@@ -1,8 +1,8 @@
 const placeholderImages = {
   'Health and Fitness': [
-    '/images/health1.png',
-    '/images/health2.png',
-    '/images/health3.png',
+    '/images/health1.jpeg',
+    '/images/health2.jpeg',
+    '/images/health3.jpeg',
   ],
   'Romantic Life': [
     '/images/romantic-1.jpg',
@@ -15,9 +15,9 @@ const placeholderImages = {
     '/images/environment-3.jpg',
   ],
   'Personal Growth': [
-    '/images/growth1.png',
-    '/images/growth2.png',
-    '/images/growth3.png',
+    '/images/growth1.jpeg',
+    '/images/growth2.jpeg',
+    '/images/growth3.jpeg',
   ],
   'Work': [
     '/images/work-1.jpg',
@@ -50,7 +50,7 @@ export function getRandomPlaceholderImage(category: string): string {
 export function isValidImageUrl(url: string): boolean {
   try {
     new URL(url);
-    return url.match(/\.(jpg|jpeg|png|webp|avif|gif|svg)$/) !== null;
+    return url.match(/\.(jpg|jpeg|jpeg|webp|avif|gif|svg)$/) !== null;
   } catch {
     return false;
   }

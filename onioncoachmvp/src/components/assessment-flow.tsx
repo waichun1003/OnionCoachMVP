@@ -1051,7 +1051,7 @@ export default function AssessmentFlow() {
           {/* Logo */}
           <div className="mb-16">
             <Image
-              src="/images/logo.png"
+              src="/images/logo.jpeg"
               alt="Onion Logo"
               width={201}
               height={54}

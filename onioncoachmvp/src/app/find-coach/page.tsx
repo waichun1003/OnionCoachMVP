@@ -89,20 +89,20 @@ export default function FindCoachPage() {
               <div className="relative z-10">
                 <Image
                   src="/images/findCoach.jpeg"
-                  width={500}
-                  height={500}
+                  width={600}
+                  height={600}
                   alt="Career growth illustration"
-                  className="rounded-3xl w-full h-auto max-w-full mx-auto"
+                  className="rounded-3xl w-full h-auto max-w-xl mx-auto"
                 />
               </div>
               
               {/* Floating Elements - hide on mobile */}
               <motion.div
-                className="absolute top-20 -left-10 z-20 hidden md:block"
+                className="absolute top-2 -left-8 z-20 hidden md:block"
                 animate={{ y: [0, -20, 0] }}
                 transition={{ duration: 3, repeat: Infinity }}
               >
-                <Card className="bg-white/90 backdrop-blur-sm w-56 p-4 rounded-xl shadow-lg border-none">
+                <Card className="bg-white/90 backdrop-blur-sm w-40 p-2 rounded-xl shadow-lg border-none">
                   <div className="flex items-center gap-3">
                     <div className="w-12 h-12 rounded-full bg-purple-100 flex items-center justify-center">
                       <Star className="w-6 h-6 text-purple-600" />
@@ -118,11 +118,11 @@ export default function FindCoachPage() {
               </motion.div>
 
               <motion.div
-                className="absolute bottom-20 -right-10 z-20 hidden md:block"
+                className="absolute bottom-2 -right-8 z-20 hidden md:block"
                 animate={{ y: [0, 20, 0] }}
                 transition={{ duration: 4, repeat: Infinity }}
               >
-                <Card className="bg-white/90 backdrop-blur-sm w-56 p-4 rounded-xl shadow-lg border-none">
+                <Card className="bg-white/90 backdrop-blur-sm w-40 p-2 rounded-xl shadow-lg border-none">
                   <div className="flex items-center gap-3">
                     <div className="w-12 h-12 rounded-full bg-orange-100 flex items-center justify-center">
                       <Rocket className="w-6 h-6 text-orange-600" />
@@ -140,7 +140,7 @@ export default function FindCoachPage() {
               {/* Background Elements */}
               <div className="absolute inset-0 z-0 hidden md:block">
                 <motion.div
-                  className="absolute top-10 right-10 w-72 h-72 bg-purple-200 rounded-full opacity-50 blur-3xl"
+                  className="absolute top-6 right-6 w-[160px] h-[80px] bg-purple-200 rounded-full opacity-30 blur-2xl"
                   animate={{ 
                     scale: [1, 1.2, 1],
                     rotate: [0, 90, 0]
@@ -148,7 +148,7 @@ export default function FindCoachPage() {
                   transition={{ duration: 8, repeat: Infinity }}
                 />
                 <motion.div
-                  className="absolute bottom-10 left-10 w-72 h-72 bg-orange-200 rounded-full opacity-50 blur-3xl"
+                  className="absolute bottom-6 left-6 w-[120px] h-[60px] bg-orange-200 rounded-full opacity-30 blur-2xl"
                   animate={{ 
                     scale: [1.2, 1, 1.2],
                     rotate: [0, -90, 0]

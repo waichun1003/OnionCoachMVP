@@ -23,9 +23,23 @@ export function HeroSection() {
     const opacity = useTransform(scrollYProgress, [0, 0.5, 1], [1, 1, 0])
 
     const [isModalOpen, setIsModalOpen] = useState(false)
+    const [imagesLoaded, setImagesLoaded] = useState([false, false, false, false])
+    const allLoaded = imagesLoaded.every(Boolean)
+    const handleImageLoad = (idx: number) => {
+      setImagesLoaded(prev => {
+        const next = [...prev]
+        next[idx] = true
+        return next
+      })
+    }
+
+    const mobileGridVariants = {
+      hidden: { opacity: 0 },
+      visible: { opacity: 1, transition: { duration: 0.7, ease: 'easeOut' } }
+    }
 
     return (
-        <div ref={containerRef} className="relative pt-28">
+        <div ref={containerRef} className="relative pt-12">
             <motion.section
                 className="relative min-h-screen flex items-center justify-center overflow-hidden"
                 style={{ opacity }}
@@ -38,11 +52,11 @@ export function HeroSection() {
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.5 }}
                     >
-                        <h1 className="text-5xl md:text-6xl lg:text-7xl font-normal mb-6">
+                        <h1 className="text-6xl sm:text-5xl md:text-7xl lg:text-8xl font-normal mb-4 md:mb-6">
                             Coaching for your next{" "}
                             <span className="italic font-serif">breakthrough.</span>
                         </h1>
-                        <p className="text-xl text-gray-600 mb-8 max-w-2xl mx-auto">
+                        <p className="text-base sm:text-lg md:text-xl text-gray-600 mb-6 md:mb-8 max-w-2xl mx-auto">
                             Empower mid-level professionals and business owners to increase self-awareness and
                             accelerate growth
                         </p>
@@ -58,94 +72,198 @@ export function HeroSection() {
                         </Button>
                     </motion.div>
 
+                    {/* Desktop flex row (md+) */}
                     <motion.div
-                        className="flex justify-center items-center gap-4 mt-12"
-                        initial={{ opacity: 0, y: 50 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.5, delay: 0.2 }}
+                      className="hidden md:flex flex-row items-end w-full mt-12 gap-2"
+                      style={{ paddingLeft: 0, marginLeft: 0 }}
+                      initial="hidden"
+                      animate={allLoaded ? 'visible' : 'hidden'}
                     >
-                        <motion.div
-                            initial={{ opacity: 0, scale: 0 }}
-                            animate={{ opacity: 1, scale: 1 }}
-                            transition={{ delay: 0.3 }}
-                            className="relative w-[280px] h-[280px] rounded-full overflow-hidden bg-[#FF5733] shadow-xl"
-                        >
-                            <Image
-                                src="/images/image_114.jpeg"
-                                alt="Coach 1"
-                                fill
-                                quality={100}
-                                sizes="(max-width: 768px) 280px, 280px"
-                                className="object-cover object-center"
-                                priority
-                            />
-                        </motion.div>
+                      {/* Orange Circle (Coach 1) */}
+                      <motion.div
+                        variants={{
+                          hidden: { opacity: 0, y: 40 },
+                          visible: { opacity: 1, y: 0, transition: { delay: 0.1, duration: 0.5 } }
+                        }}
+                        className="relative w-[244.7px] h-[244.7px] ml-[-100px]"
+                      >
+                        <div className="absolute inset-0 rounded-full bg-[#FF6512]" />
+                        {!imagesLoaded[0] && (
+                          <div className="absolute inset-0 rounded-full bg-[#FF6512] animate-pulse" />
+                        )}
+                        <Image
+                          src="/images/image_114.jpeg"
+                          alt="Coach 1"
+                          fill
+                          className="object-cover rounded-full transition-opacity duration-500"
+                          style={{ opacity: imagesLoaded[0] ? 1 : 0 }}
+                          onLoad={() => handleImageLoad(0)}
+                        />
+                      </motion.div>
+                      {/* First Purple Ellipse */}
+                      <motion.div
+                        variants={{
+                          hidden: { opacity: 0, y: 40 },
+                          visible: { opacity: 1, y: 0, transition: { delay: 0.25, duration: 0.5 } }
+                        }}
+                        className="w-[140px] h-[280px] bg-[#6B46C1] rounded-r-full shadow-xl"
+                      />
+                      {/* Second Purple Ellipse */}
+                      <motion.div
+                        variants={{
+                          hidden: { opacity: 0, y: 40 },
+                          visible: { opacity: 1, y: 0, transition: { delay: 0.4, duration: 0.5 } }
+                        }}
+                        className="w-[140px] h-[280px] bg-[#6B46C1] rounded-r-full shadow-xl"
+                      />
+                      {/* Yellow Circle (Coach 2) */}
+                      <motion.div
+                        variants={{
+                          hidden: { opacity: 0, y: 40 },
+                          visible: { opacity: 1, y: 0, transition: { delay: 0.55, duration: 0.5 } }
+                        }}
+                        className="relative w-[248px] h-[280px]"
+                      >
+                        <div className="absolute inset-0 rounded-full bg-[#FFB541]" />
+                        {!imagesLoaded[1] && (
+                          <div className="absolute inset-0 rounded-full bg-[#FFB541] animate-pulse" />
+                        )}
+                        <Image
+                          src="/images/image_103.jpeg"
+                          alt="Coach 2"
+                          fill
+                          className="object-cover rounded-full transition-opacity duration-500"
+                          style={{ opacity: imagesLoaded[1] ? 1 : 0 }}
+                          onLoad={() => handleImageLoad(1)}
+                        />
+                      </motion.div>
+                      {/* People Crossing Elliptical Mask */}
+                      <motion.div
+                        variants={{
+                          hidden: { opacity: 0, y: 40 },
+                          visible: { opacity: 1, y: 0, transition: { delay: 0.7, duration: 0.5 } }
+                        }}
+                        className="relative w-[476px] h-[232px]"
+                        style={{ borderRadius: '120px / 100px', overflow: 'hidden', background: '#fff' }}
+                      >
+                        {!imagesLoaded[2] && (
+                          <div className="absolute inset-0 bg-gray-200 animate-pulse" style={{ borderRadius: '120px / 100px' }} />
+                        )}
+                        <Image
+                          src="/images/Rectangle_2157.jpeg"
+                          alt="People crossing"
+                          fill
+                          className="object-cover transition-opacity duration-500"
+                          style={{ opacity: imagesLoaded[2] ? 1 : 0 }}
+                          onLoad={() => handleImageLoad(2)}
+                        />
+                      </motion.div>
+                      {/* Right Orange Rounded Rectangle flush right (Coach 3) */}
+                      <motion.div
+                        variants={{
+                          hidden: { opacity: 0, y: 40 },
+                          visible: { opacity: 1, y: 0, transition: { delay: 0.85, duration: 0.5 } }
+                        }}
+                        className="relative w-[260px] h-[260px] mr-[-100px]"
+                        style={{ borderRadius: '120px', overflow: 'hidden', background: '#FF6512' }}
+                      >
+                        {!imagesLoaded[3] && (
+                          <div className="absolute inset-0 bg-[#FF6512] animate-pulse" style={{ borderRadius: '120px' }} />
+                        )}
+                        <Image
+                          src="/images/image_113.jpeg"
+                          alt="Coach 3"
+                          fill
+                          className="object-cover transition-opacity duration-500"
+                          style={{ opacity: imagesLoaded[3] ? 1 : 0 }}
+                          onLoad={() => handleImageLoad(3)}
+                        />
+                      </motion.div>
+                    </motion.div>
 
-                        <div className="flex -space-x-0">
-                            <motion.div
-                                initial={{ scaleX: 0 }}
-                                animate={{ scaleX: 1 }}
-                                transition={{ delay: 0.4 }}
-                                className="w-[140px] h-[280px] bg-[#6B46C1] rounded-r-full shadow-xl"
-                            />
-                            <motion.div
-                                initial={{ scaleX: 0 }}
-                                animate={{ scaleX: 1 }}
-                                transition={{ delay: 0.4 }}
-                                className="w-[140px] h-[280px] bg-[#6B46C1] rounded-r-full shadow-xl"
-                            />
+                    {/* Mobile grid layout - match original design with ellipses */}
+                    <motion.div
+                      className="grid grid-cols-4 grid-rows-2 gap-0 md:hidden w-full mt-8"
+                      variants={mobileGridVariants}
+                      initial="hidden"
+                      animate={allLoaded ? 'visible' : 'hidden'}
+                    >
+                      {/* Top row: Orange Circle, Left Ellipse, Right Ellipse, Yellow Circle */}
+                      <div className="flex items-center justify-center">
+                        <div className="relative w-36 h-36 rounded-full overflow-hidden bg-[#FF6512] self-center">
+                          {!imagesLoaded[0] && (
+                            <div className="absolute inset-0 rounded-full bg-[#FF6512] animate-pulse" />
+                          )}
+                          <Image
+                            src="/images/image_114.jpeg"
+                            alt="Coach 1"
+                            fill
+                            className="object-cover rounded-full transition-opacity duration-500"
+                            style={{ opacity: imagesLoaded[0] ? 1 : 0 }}
+                            onLoad={() => handleImageLoad(0)}
+                          />
                         </div>
-
-                        <motion.div
-                            initial={{ opacity: 0, scale: 0 }}
-                            animate={{ opacity: 1, scale: 1 }}
-                            transition={{ delay: 0.6 }}
-                            className="relative w-[300px] h-[350px] rounded-full overflow-hidden bg-[#FDB347] shadow-xl"
-                        >
-                            <Image
-                                src="/images/image_103.jpeg"
-                                alt="Coach 2"
-                                fill
-                                quality={100}
-                                sizes="(max-width: 768px) 300px, 300px"
-                                className="object-cover object-center"
-                                priority
-                            />
-                        </motion.div>
-
-                        <motion.div
-                            initial={{ opacity: 0, x: 20 }}
-                            animate={{ opacity: 1, x: 0 }}
-                            transition={{ delay: 0.8 }}
-                            className="relative w-[550px] h-[280px] overflow-hidden rounded-2xl shadow-xl"
-                        >
-                            <Image
-                                src="/images/Rectangle_2157.jpeg"
-                                alt="People crossing"
-                                fill
-                                quality={100}
-                                sizes="(max-width: 768px) 550px, 550px"
-                                className="object-cover object-center"
-                                priority
-                            />
-                        </motion.div>
-
-                        <motion.div
-                            initial={{ opacity: 0, scale: 0 }}
-                            animate={{ opacity: 1, scale: 1 }}
-                            transition={{ delay: 1 }}
-                            className="relative w-[300px] h-[300px] rounded-full overflow-hidden bg-[#FF5733] shadow-xl"
-                        >
-                            <Image
-                                src="/images/image_113.jpeg"
-                                alt="Coach 3"
-                                fill
-                                quality={100}
-                                sizes="(max-width: 768px) 300px, 300px"
-                                className="object-cover object-center"
-                                priority
-                            />
-                        </motion.div>
+                      </div>
+                      <div className="flex items-center justify-center">
+                        <div className="inline-flex items-center justify-center w-auto">
+                          <div className="relative overflow-hidden flex items-center justify-center" style={{ width: '70px', height: '140px' }}>
+                            <div className="absolute bg-[#6B46C1]" style={{ width: '140px', height: '140px', borderRadius: '50%', left: '-70px', top: '0' }} />
+                          </div>
+                        </div>
+                      </div>
+                      <div className="flex items-center justify-center">
+                        <div className="inline-flex items-center justify-center w-auto -ml-4">
+                          <div className="relative overflow-hidden flex items-center justify-center" style={{ width: '70px', height: '140px' }}>
+                            <div className="absolute bg-[#6B46C1]" style={{ width: '140px', height: '140px', borderRadius: '50%', left: '-70px', top: '0' }} />
+                          </div>
+                        </div>
+                      </div>
+                      <div className="flex items-center justify-center">
+                        <div className="relative w-36 h-36 rounded-full overflow-hidden bg-[#FFB541] self-center">
+                          {!imagesLoaded[1] && (
+                            <div className="absolute inset-0 rounded-full bg-[#FFB541] animate-pulse" />
+                          )}
+                          <Image
+                            src="/images/image_103.jpeg"
+                            alt="Coach 2"
+                            fill
+                            className="object-cover rounded-full transition-opacity duration-500"
+                            style={{ opacity: imagesLoaded[1] ? 1 : 0 }}
+                            onLoad={() => handleImageLoad(1)}
+                          />
+                        </div>
+                      </div>
+                      {/* Bottom row: People Crossing (ellipse, 3 cols), Orange Circle (Coach 3) */}
+                      <div className="col-span-3 flex items-center justify-center">
+                        <div className="relative w-full h-32 rounded-full overflow-hidden bg-[#fff]" style={{ borderRadius: '80px / 40px' }}>
+                          {!imagesLoaded[2] && (
+                            <div className="absolute inset-0 bg-gray-200 animate-pulse" style={{ borderRadius: '80px / 40px' }} />
+                          )}
+                          <Image
+                            src="/images/Rectangle_2157.jpeg"
+                            alt="People crossing"
+                            fill
+                            className="object-cover transition-opacity duration-500"
+                            style={{ opacity: imagesLoaded[2] ? 1 : 0, borderRadius: '80px / 40px' }}
+                            onLoad={() => handleImageLoad(2)}
+                          />
+                        </div>
+                      </div>
+                      <div className="flex items-center justify-center">
+                        <div className="relative w-36 h-36 rounded-full overflow-hidden bg-[#FF6512] self-center">
+                          {!imagesLoaded[3] && (
+                            <div className="absolute inset-0 rounded-full bg-[#FF6512] animate-pulse" />
+                          )}
+                          <Image
+                            src="/images/image_113.jpeg"
+                            alt="Coach 3"
+                            fill
+                            className="object-cover rounded-full transition-opacity duration-500"
+                            style={{ opacity: imagesLoaded[3] ? 1 : 0 }}
+                            onLoad={() => handleImageLoad(3)}
+                          />
+                        </div>
+                      </div>
                     </motion.div>
                 </div>
             </motion.section>

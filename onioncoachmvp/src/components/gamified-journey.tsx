@@ -105,6 +105,10 @@ export function GamifiedJourney() {
     // Track if we're transitioning to the next section
     const [isTransitioningToNextSection, setIsTransitioningToNextSection] = useState(false)
     
+    // Add this state and ref at the top of the GamifiedJourney function
+    const [currentMobileStep, setCurrentMobileStep] = useState(0);
+    const cardRefs = useRef<(HTMLDivElement | null)[]>([]);
+    
     // Pre-calculate all the transforms for each stack card to avoid conditional hook calls
     const stackCards = steps.slice(1); // Get only the stack cards
     const stepTransforms = stackCards.map((_, index) => {
@@ -276,6 +280,14 @@ export function GamifiedJourney() {
     // Update container height for longer scroll distance
     const containerHeight = `${(steps.length - 1) * 180}vh`; // Increased for longer transitions
 
+    // Handler to update current step on scroll
+    const handleScroll = (e: React.UIEvent<HTMLDivElement>) => {
+        const scrollLeft = e.currentTarget.scrollLeft;
+        const cardWidth = cardRefs.current[0]?.offsetWidth || 1;
+        const idx = Math.round(scrollLeft / cardWidth);
+        setCurrentMobileStep(idx);
+    };
+
     return (
         <section 
             ref={sectionRef}
@@ -298,8 +310,92 @@ export function GamifiedJourney() {
                 }}
             >
                 <div className="h-full flex flex-col">
-                    {/* Main content area for first card */}
-                    <div className="flex-1 flex items-center justify-center">
+                    {/* Mobile layout for all steps as horizontal scrollable cards */}
+                    <div className="block md:hidden w-full pt-8">
+                        {/* Stepper above cards */}
+                        <div className="flex items-center justify-center mb-4">
+                            {steps.map((step, idx) => (
+                                <div key={idx} className="flex items-center">
+                                    <div className={`w-7 h-7 flex items-center justify-center rounded-full ${currentMobileStep === idx ? 'bg-[#6B46C1] text-white' : 'bg-gray-200 text-gray-500'} font-bold text-sm`}>
+                                        {step.number}
+                                    </div>
+                                    {idx < steps.length - 1 && (
+                                        <div className="w-8 h-1 bg-gray-300 mx-1 rounded-full" />
+                                    )}
+                                </div>
+                            ))}
+                        </div>
+                        {/* Horizontal scrollable cards */}
+                        <div
+                            className="flex flex-row overflow-x-auto snap-x snap-mandatory w-full scrollbar-hide"
+                            onScroll={handleScroll}
+                            style={{ scrollSnapType: 'x mandatory' }}
+                        >
+                            {steps.map((step, idx) => (
+                                <div
+                                    key={idx}
+                                    ref={el => { cardRefs.current[idx] = el; }}
+                                    className="w-full min-w-full snap-center flex flex-col items-center pb-6 bg-transparent"
+                                    style={{ background: 'transparent', height: 'calc(100vh - 80px)' }}
+                                >
+                                    <div className="flex flex-col h-full overflow-y-auto">
+                                        {/* Main image only, larger size */}
+                                        <div className="relative w-full max-w-[370px] aspect-[1/1] mx-auto mb-4 rounded-2xl overflow-hidden">
+                                            <Image
+                                              src={
+                                                idx === 0 ? "/images/setUpMission.jpeg" :
+                                                idx === 1 ? "/images/dailyQuest.jpeg" :
+                                                idx === 2 ? "/images/celebrateAchivement.jpeg" :
+                                                idx === 3 ? "/images/joinCommunities.jpeg" :
+                                                step.imageUrl
+                                              }
+                                              alt={step.title}
+                                              fill
+                                              className="object-cover rounded-2xl"
+                                              priority={idx === 0}
+                                            />
+                                        </div>
+                                        {/* Text content below, more compact and readable */}
+                                        <div className="px-4 text-left flex flex-col flex-1 justify-between">
+                                          <p className="text-xs text-gray-600 mb-1">How to work</p>
+                                          <h3 className="text-2xl font-normal m-0 text-[#333333] leading-[1]" style={{ fontFamily: "'Playfair Display', serif" }}>
+                                            {step.title.split(' ').slice(0, -1).join(' ')}
+                                          </h3>
+                                          <h3 className="text-xl font-serif italic m-0 text-[#333333] leading-[1]" style={{ fontFamily: "'Playfair Display', serif", fontWeight: "bold" }}>
+                                            {step.subtitle}
+                                          </h3>
+                                          <p className="text-base mb-4 leading-relaxed text-[#333333]" style={{ fontFamily: "'Roboto', sans-serif", fontSize: "1rem", lineHeight: "1.5" }}>
+                                            {step.description}
+                                          </p>
+                                          <Link href="/find-coach">
+                                            <button 
+                                              className="rounded-full px-8 py-2 text-base text-white hover:bg-[#e65a00] transition-all duration-300 flex items-center"
+                                              style={{ 
+                                                backgroundColor: "#ff6a00",
+                                                border: "none",
+                                                padding: "0.75rem 1.5rem",
+                                                fontSize: "1rem",
+                                                cursor: "pointer",
+                                              }}
+                                            >
+                                              Know more
+                                              <motion.div
+                                                animate={{ x: [0, 5, 0] }}
+                                                transition={{ repeat: Infinity, duration: 1.5 }}
+                                                className="ml-2"
+                                              >
+                                                <ArrowRight className="h-5 w-5" />
+                                              </motion.div>
+                                            </button>
+                                          </Link>
+                                        </div>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                    {/* Main content area for first card (desktop) */}
+                    <div className="flex-1 flex items-center justify-center hidden md:flex">
                         <div className="w-full mx-auto flex justify-center items-center gap-8 px-8" style={{ background: "transparent" }}>
                             {/* Left content - Text and button with scroll bar */}
                             <div className="flex" style={{ marginRight: "50px" }}>
@@ -517,9 +613,9 @@ export function GamifiedJourney() {
                 </div>
             </div>
 
-            {/* Stack Cards Wrapper */}
+            {/* Stack Cards Wrapper (desktop only) */}
             <div 
-                className="relative"
+                className="relative hidden md:block"
                 style={{ 
                     height: containerHeight,
                     marginTop: '0',
@@ -662,10 +758,10 @@ export function GamifiedJourney() {
                                                     >
                                                         <p className="text-sm text-gray-600 mb-2">How to work</p>
                                                         
-                                                        <h3 className="text-5xl font-normal mb-2 text-[#333333]" style={{ fontFamily: "'Playfair Display', serif" }}>
+                                                        <h3 className="text-2xl font-normal m-0 text-[#333333] leading-[1]" style={{ fontFamily: "'Playfair Display', serif" }}>
                                                             {idx === 0 ? "Daily" : step.title.split(" ")[0]}
                                                         </h3>
-                                                        <h3 className="text-5xl font-serif italic mb-6 text-[#333333]" style={{ fontFamily: "'Playfair Display', serif", fontWeight: "bold" }}>
+                                                        <h3 className="text-xl font-serif italic m-0 text-[#333333] leading-[1]" style={{ fontFamily: "'Playfair Display', serif", fontWeight: "bold" }}>
                                                             {idx === 0 ? "Quests" : step.subtitle}
                                                         </h3>
                                                         

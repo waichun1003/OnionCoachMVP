@@ -42,6 +42,7 @@ interface Campaign {
   createdAt: string;
   updatedAt: string | null;
   tags: string[];
+  eventLink?: string;
 }
 
 // When displaying dates, convert string to Date
@@ -136,6 +137,16 @@ export default function CampaignPage() {
         kpis: campaign.kpis || [],
         currentParticipants: campaign.currentParticipants || 0
       }));
+  }, [campaigns]);
+
+  // Combine and sort campaigns: Active > Upcoming > others
+  const statusOrder: { [key: string]: number } = { ACTIVE: 0, UPCOMING: 1 };
+  const sortedCampaigns = useMemo(() => {
+    return [...campaigns].sort((a, b) => {
+      const aStatus = a.status?.toUpperCase() || '';
+      const bStatus = b.status?.toUpperCase() || '';
+      return (statusOrder[aStatus] ?? 2) - (statusOrder[bStatus] ?? 2);
+    });
   }, [campaigns]);
 
   const scrollContainerBy = (container: HTMLElement, scrollOffset: number) => {
@@ -257,231 +268,35 @@ export default function CampaignPage() {
         {/* Campaigns Section */}
         <AnimatedSection delay={200}>
           <section className="container mx-auto px-4 py-20">
-            <h2 className="text-3xl font-normal mb-12 text-center">Campaigns on Onion</h2>
+            <h2 className="text-3xl font-normal mb-12 text-center">All Campaigns</h2>
             {loading ? (
               <div className="animate-pulse space-y-8">
                 {/* Add loading skeletons here */}
               </div>
             ) : (
-              <div className="space-y-16 max-w-7xl mx-auto">
-                {/* Active Campaign Section */}
-                <div>
-                  <div className="flex items-center justify-between mb-6">
-                    <h2 className="text-2xl font-normal">Active Campaign</h2>
-                    <Badge variant="secondary" className="bg-white">
-                      Featured
-                    </Badge>
-                  </div>
-                  
-                  {activeCampaigns.length > 0 && currentActiveCampaign ? (
-                    <div className="relative group">
-                      {/* Left scroll button */}
-                      <div className="absolute -left-6 top-1/2 -translate-y-1/2 z-20">
-                        <Button
-                          variant="ghost"
-                          size="icon"
-                          className="rounded-full bg-white shadow-lg hover:bg-white/90 transition-all duration-200 opacity-0 group-hover:opacity-100"
-                          onClick={handlePrevCampaign}
-                        >
-                          <ArrowLeft className="h-5 w-5 text-gray-600" />
-                        </Button>
-                      </div>
-
-                      <motion.div
-                        key={currentActiveCampaign.id}
-                        initial={{ opacity: 0, x: -20 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        exit={{ opacity: 0, x: 20 }}
-                        transition={{ duration: 0.4, ease: [0.25, 0.1, 0.25, 1] }}
-                        className="w-full"
+              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-7xl mx-auto">
+                {sortedCampaigns.length > 0 ? (
+                  sortedCampaigns.map((campaign) => (
+                    <div key={campaign.id} className="relative">
+                      <CampaignCard {...campaign} eventLink={campaign.eventLink || ''} />
+                      <Badge
+                        className={`absolute top-4 right-4 z-10 ${
+                          campaign.status?.toUpperCase() === 'ACTIVE'
+                            ? 'bg-green-100 text-green-700'
+                            : campaign.status?.toUpperCase() === 'UPCOMING'
+                            ? 'bg-blue-100 text-blue-700'
+                            : 'bg-gray-100 text-gray-700'
+                        }`}
                       >
-                        <Card className="w-full overflow-hidden bg-white/95 backdrop-blur-sm rounded-2xl border border-gray-100/50">
-                          <div className="relative h-[400px] w-full">
-                            <Image
-                              src={currentActiveCampaign.coverImage || '/images/default-campaign.jpg'}
-                              alt={currentActiveCampaign.title}
-                              fill
-                              className="object-cover brightness-75"
-                              priority
-                            />
-                            <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent" />
-                            <div className="absolute bottom-0 p-8 text-white">
-                              <span className="px-3 py-1 bg-[#E86C3A] rounded-full text-sm font-medium">
-                                Active Campaign
-                              </span>
-                              <h2 className="text-4xl font-semibold mt-4">{currentActiveCampaign.title}</h2>
-                              <p className="text-white/80 mt-3 text-lg">{currentActiveCampaign.description}</p>
-                            </div>
-                          </div>
-
-                          <div className="grid grid-cols-3 gap-16 p-8">
-                            <div>
-                              <h3 className="text-lg font-medium mb-3">Campaign Details</h3>
-                              <div className="space-y-3 text-gray-600">
-                                <div className="flex items-center gap-2">
-                                  <Calendar className="h-4 w-4" />
-                                  <span>{formatDate(currentActiveCampaign.startDate)}</span>
-                                </div>
-                                <div className="flex items-center gap-2">
-                                  <Clock className="h-4 w-4" />
-                                  <span>{currentActiveCampaign.duration}</span>
-                                </div>
-                                <div className="flex items-center gap-2">
-                                  <Users className="h-4 w-4" />
-                                  <span>{currentActiveCampaign.currentParticipants}/{currentActiveCampaign.maxParticipants} participants</span>
-                                </div>
-                              </div>
-                            </div>
-
-                            <div>
-                              <h3 className="text-lg font-medium mb-3">Tags</h3>
-                              <div className="flex flex-wrap gap-2">
-                                {currentActiveCampaign.tags.map((tag) => (
-                                  <span
-                                    key={tag}
-                                    className="px-4 py-1 bg-purple-100 text-purple-600 rounded-full text-sm"
-                                  >
-                                    {tag}
-                                  </span>
-                                ))}
-                              </div>
-                            </div>
-
-                            <div>
-                              <h3 className="text-lg font-medium mb-3">Led by</h3>
-                              <p className="text-gray-600">{currentActiveCampaign.coach}</p>
-                              <Button 
-                                className="w-full bg-[#E86C3A] hover:bg-[#D55C2A] text-white mt-4"
-                                onClick={() => window.location.href = `/campaign/${currentActiveCampaign.id}`}
-                              >
-                                Join Campaign
-                                <ArrowRight className="ml-2 h-4 w-4" />
-                              </Button>
-                            </div>
-                          </div>
-                        </Card>
-                      </motion.div>
-
-                      {/* Right scroll button */}
-                      <div className="absolute -right-6 top-1/2 -translate-y-1/2 z-20">
-                        <Button
-                          variant="ghost"
-                          size="icon"
-                          className="rounded-full bg-white shadow-lg hover:bg-white/90 transition-all duration-200 opacity-0 group-hover:opacity-100"
-                          onClick={handleNextCampaign}
-                        >
-                          <ArrowRight className="h-5 w-5 text-gray-600" />
-                        </Button>
-                      </div>
-
-                      {/* Gradient overlays */}
-                      <div className="absolute left-0 top-0 bottom-0 w-20 bg-gradient-to-r from-white to-transparent pointer-events-none z-10" />
-                      <div className="absolute right-0 top-0 bottom-0 w-20 bg-gradient-to-l from-white to-transparent pointer-events-none z-10" />
+                        {campaign.status?.charAt(0).toUpperCase() + campaign.status?.slice(1).toLowerCase()}
+                      </Badge>
                     </div>
-                  ) : (
-                    <div className="text-center py-8 text-gray-500">
-                      No active campaigns available
+                  ))
+                ) : (
+                  <div className="text-center py-8 text-gray-500">
+                    No campaigns available
                   </div>
                 )}
-                </div>
-
-                {/* Upcoming Campaigns Section */}
-                <div>
-                  <div className="flex items-center justify-between mb-6">
-                    <h2 className="text-2xl font-normal">Upcoming Campaigns</h2>
-                    <Badge variant="secondary" className="bg-white">
-                      {upcomingCampaigns.length} Upcoming
-                    </Badge>
-                  </div>
-                  
-                  {upcomingCampaigns.length > 0 ? (
-                    <div className="relative group">
-                      {/* Left scroll button */}
-                      <div className="absolute -left-6 top-1/2 -translate-y-1/2 z-20">
-                        <Button
-                          variant="ghost"
-                          size="icon"
-                          className="rounded-full bg-white shadow-lg hover:bg-white/90 transition-all duration-200 opacity-0 group-hover:opacity-100"
-                          onClick={() => {
-                            if (campaignScrollRef.current) {
-                              const scrollWidth = campaignScrollRef.current.clientWidth * 0.8
-                              campaignScrollRef.current.scrollBy({
-                                left: -scrollWidth,
-                                behavior: 'smooth'
-                              })
-                            }
-                          }}
-                        >
-                          <ArrowLeft className="h-5 w-5 text-gray-600" />
-                        </Button>
-                      </div>
-                      
-                      {/* Scroll container */}
-                      <div 
-                        ref={campaignScrollRef}
-                        className="scroll-container flex overflow-x-auto gap-6 pb-4 px-2"
-                        style={{
-                          scrollSnapType: 'x mandatory',
-                          WebkitOverflowScrolling: 'touch',
-                        }}
-                      >
-                        {upcomingCampaigns.map((campaign, index) => (
-                          <motion.div
-                            key={campaign.id}
-                            className="campaign-card flex-none w-[350px]"
-                            style={{ 
-                              scrollSnapAlign: 'start',
-                              scrollSnapStop: 'always'
-                            }}
-                            initial={{ opacity: 0, y: 20 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{
-                              duration: 0.5,
-                              delay: index * 0.1,
-                              ease: [0.25, 0.1, 0.25, 1]
-                            }}
-                          >
-                            <CampaignCard 
-                              {...campaign}
-                              startDate={campaign.startDate}
-                              endDate={campaign.endDate}
-                              createdAt={campaign.createdAt}
-                              updatedAt={campaign.updatedAt || null}
-                            />
-                          </motion.div>
-                        ))}
-                      </div>
-
-                      {/* Right scroll button */}
-                      <div className="absolute -right-6 top-1/2 -translate-y-1/2 z-20">
-                        <Button
-                          variant="ghost"
-                          size="icon"
-                          className="rounded-full bg-white shadow-lg hover:bg-white/90 transition-all duration-200 opacity-0 group-hover:opacity-100"
-                          onClick={() => {
-                            if (campaignScrollRef.current) {
-                              const scrollWidth = campaignScrollRef.current.clientWidth * 0.8
-                              campaignScrollRef.current.scrollBy({
-                                left: scrollWidth,
-                                behavior: 'smooth'
-                              })
-                            }
-                          }}
-                        >
-                          <ArrowRight className="h-5 w-5 text-gray-600" />
-                        </Button>
-                      </div>
-
-                      {/* Gradient overlays */}
-                      <div className="absolute left-0 top-0 bottom-4 w-20 bg-gradient-to-r from-white to-transparent pointer-events-none z-10" />
-                      <div className="absolute right-0 top-0 bottom-4 w-20 bg-gradient-to-l from-white to-transparent pointer-events-none z-10" />
-                    </div>
-                  ) : (
-                    <div className="text-center py-8 text-gray-500">
-                      No upcoming campaigns available
-                    </div>
-                  )}
-                </div>
               </div>
             )}
           </section>

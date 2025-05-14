@@ -64,86 +64,167 @@ export function AssessmentResult({ name, scores, onSchedule }: AssessmentResultP
   return (
     <>
       {!isModalOpen && <NavBar />}
-      
-      {/* Results Header Layout */}
-      <section className="w-full bg-[#664EC9] pt-[80px]">
-        <div className="max-w-[1442px] h-[750px] mx-auto relative">
+      {/* Responsive Results Layout */}
+      <section className="w-full bg-[#664EC9] pt-8 pb-8 min-h-screen flex flex-col items-center justify-start">
+        {/* Mobile Layout */}
+        <div className="w-full max-w-md mx-auto flex flex-col items-start md:hidden px-4">
           {/* Logo */}
           <motion.div 
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.5 }}
-            className="absolute w-[201px] h-[54.46px] left-[38px] top-[31px] flex items-center gap-[6px]"
+            className="w-[140px] h-[40px] flex items-center gap-2 mb-4 mt-16"
           >
             <Image
               src="/images/logo_white.jpeg"
               alt="Onion Logo"
-              width={160}
-              height={54}
-              className="w-auto h-[54.46px]"
+              width={120}
+              height={40}
+              className="w-auto h-[40px]"
               priority
             />
           </motion.div>
-
-          {/* Two-column Grid Layout */}
-          <div className="grid grid-cols-2 h-full pt-[100px]">
-            {/* Left Column - Results Content */}
-            <div className="pl-[59px]">
-              <motion.h2 
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5 }}
-                className="text-2xl font-light text-white mb-[30px]"
-              >
-                Hi {name}, your quiz results match your ideal life
-              </motion.h2>
-              
-              <motion.div 
-                initial={{ opacity: 0, scale: 0.8 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 0.5, delay: 0.2 }}
-                className="flex items-start gap-[16px] mb-[64px]"
-              >
-                <div className="w-[1px] h-[135px] bg-white" />
-                <span className="font-geist text-[140px] leading-[110%] text-white">
-                  {overallScore}%
-                </span>
-              </motion.div>
-
-              <motion.p 
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: 0.4 }}
-                className="font-poppins text-[18px] leading-[140%] text-white mb-[64px] w-[539px]"
-              >
-                {getResultDescription(overallScore, name)}
-              </motion.p>
-
-              <motion.div>
-                <Button
-                  onClick={handleOpenSchedule}
-                  className="flex items-center justify-between w-[320px] h-[57px] bg-[#FF6512] hover:bg-[#E55401] rounded-full px-8"
-                >
-                  <span className="text-[18px] text-white whitespace-nowrap">
-                    Schedule your free coaching
-                  </span>
-                  <svg width="24" height="21" viewBox="0 0 24 21" fill="none">
-                    <path d="M23.0607 11.4393C23.6464 10.8536 23.6464 9.90087 23.0607 9.31505L13.5147 -0.23093C12.9289 -0.81674 11.9762 -0.81674 11.3904 -0.23093C10.8046 0.35489 10.8046 1.30762 11.3904 1.89343L19.9571 10.4601L11.3904 19.0268C10.8046 19.6126 10.8046 20.5653 11.3904 21.1511C11.9762 21.737 12.9289 21.737 13.5147 21.1511L23.0607 11.6052L23.0607 11.4393ZM0 11.8345L22 11.8345V8.91495L0 8.91495L0 11.8345Z" fill="white"/>
-                  </svg>
-                </Button>
-              </motion.div>
+          {/* Result Text */}
+          <motion.h2 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+            className="text-lg font-light text-white mb-2 text-left"
+          >
+            Hi {name}, your quiz results match your ideal life
+          </motion.h2>
+          {/* Score */}
+          <motion.div 
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.5, delay: 0.2 }}
+            className="flex items-center gap-4 mb-4"
+          >
+            <div className="w-[2px] h-[60px] bg-white" />
+            <span className="font-geist text-[64px] leading-[110%] text-white">
+              {overallScore}%
+            </span>
+          </motion.div>
+          {/* Description */}
+          <motion.p 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.4 }}
+            className="font-poppins text-base leading-[140%] text-white mb-4 text-left"
+          >
+            {getResultDescription(overallScore, name)}
+          </motion.p>
+          {/* Button */}
+          <motion.div className="mb-4 w-full flex">
+            <Button
+              onClick={handleOpenSchedule}
+              className="flex items-center justify-between w-full max-w-xs h-[48px] bg-[#FF6512] hover:bg-[#E55401] rounded-full px-6"
+            >
+              <span className="text-base text-white whitespace-nowrap">
+                Schedule a free coaching
+              </span>
+              <svg width="24" height="21" viewBox="0 0 24 21" fill="none">
+                <path d="M23.0607 11.4393C23.6464 10.8536 23.6464 9.90087 23.0607 9.31505L13.5147 -0.23093C12.9289 -0.81674 11.9762 -0.81674 11.3904 -0.23093C10.8046 0.35489 10.8046 1.30762 11.3904 1.89343L19.9571 10.4601L11.3904 19.0268C10.8046 19.6126 10.8046 20.5653 11.3904 21.1511C11.9762 21.737 12.9289 21.737 13.5147 21.1511L23.0607 11.6052L23.0607 11.4393ZM0 11.8345L22 11.8345V8.91495L0 8.91495L0 11.8345Z" fill="white"/>
+              </svg>
+            </Button>
+          </motion.div>
+          {/* Radar Chart */}
+          <motion.div 
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.8, delay: 0.3, type: "spring" }}
+            className="w-full flex flex-col items-center mb-2"
+          >
+            <div className="w-[95vw] max-w-md h-[80vw] max-h-[400px] mx-auto">
+              <LifeWheelVisualization scores={scores} />
             </div>
-
-            {/* Right Column - Life Wheel Chart */}
-            <div className="relative">
-              <motion.div 
-                initial={{ opacity: 0, scale: 0.8 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 0.8, delay: 0.3, type: "spring" }}
-                className="absolute left-[0px] top-[-100px] w-[600px] h-[650px]"
-              >
-                <LifeWheelVisualization scores={scores} />
-              </motion.div>
+          </motion.div>
+          <div className="flex md:hidden flex-row items-center justify-center bg-white rounded-full px-4 py-2 shadow-lg mt-4 w-full max-w-xs mx-auto mb-4 gap-4">
+            <div className="flex items-center gap-1">
+              <span className="w-3 h-3 rounded-sm bg-cyan-200 border-2 border-white"></span>
+              <span className="text-xs text-gray-800 font-medium">Ideal life</span>
+            </div>
+            <div className="flex items-center gap-1">
+              <span className="w-3 h-3 rounded-sm bg-orange-400 border-2 border-white"></span>
+              <span className="text-xs text-gray-800 font-medium">Current focus</span>
+            </div>
+          </div>
+        </div>
+        {/* Desktop Layout (unchanged) */}
+        <div className="hidden md:block w-full">
+          <div className="max-w-[1442px] h-[750px] mx-auto relative">
+            {/* Logo */}
+            <motion.div 
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.5 }}
+              className="absolute w-[201px] h-[54.46px] left-[60px] top-[60px] flex items-center gap-[6px]"
+            >
+              <Image
+                src="/images/logo_white.jpeg"
+                alt="Onion Logo"
+                width={160}
+                height={54}
+                className="w-auto h-[54.46px]"
+                priority
+              />
+            </motion.div>
+            {/* Two-column Grid Layout */}
+            <div className="grid grid-cols-2 h-full pt-[120px]">
+              {/* Left Column - Results Content */}
+              <div className="pl-[50px]">
+                <motion.h2 
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5 }}
+                  className="text-2xl font-light text-white mb-[20px]"
+                >
+                  Hi {name}, your quiz results match your ideal life
+                </motion.h2>
+                <motion.div 
+                  initial={{ opacity: 0, scale: 0.8 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ duration: 0.5, delay: 0.2 }}
+                  className="flex items-start gap-[16px] mb-[64px]"
+                >
+                  <div className="w-[1px] h-[135px] bg-white" />
+                  <span className="font-geist text-[140px] leading-[110%] text-white">
+                    {overallScore}%
+                  </span>
+                </motion.div>
+                <motion.p 
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5, delay: 0.4 }}
+                  className="font-poppins text-[18px] leading-[140%] text-white mb-[64px] w-[539px]"
+                >
+                  {getResultDescription(overallScore, name)}
+                </motion.p>
+                <motion.div>
+                  <Button
+                    onClick={handleOpenSchedule}
+                    className="flex items-center justify-between w-[320px] h-[57px] bg-[#FF6512] hover:bg-[#E55401] rounded-full px-8"
+                  >
+                    <span className="text-[18px] text-white whitespace-nowrap">
+                      Schedule your free coaching
+                    </span>
+                    <svg width="24" height="21" viewBox="0 0 24 21" fill="none">
+                      <path d="M23.0607 11.4393C23.6464 10.8536 23.6464 9.90087 23.0607 9.31505L13.5147 -0.23093C12.9289 -0.81674 11.9762 -0.81674 11.3904 -0.23093C10.8046 0.35489 10.8046 1.30762 11.3904 1.89343L19.9571 10.4601L11.3904 19.0268C10.8046 19.6126 10.8046 20.5653 11.3904 21.1511C11.9762 21.737 12.9289 21.737 13.5147 21.1511L23.0607 11.6052L23.0607 11.4393ZM0 11.8345L22 11.8345V8.91495L0 8.91495L0 11.8345Z" fill="white"/>
+                    </svg>
+                  </Button>
+                </motion.div>
+              </div>
+              {/* Right Column - Life Wheel Chart */}
+              <div className="relative">
+                <motion.div 
+                  initial={{ opacity: 0, scale: 1 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ duration: 0.8, delay: 0.3, type: "spring" }}
+                  className="absolute left-[-20px] top-[-80px] w-[600px] h-[650px]"
+                >
+                  <LifeWheelVisualization scores={scores} />
+                </motion.div>
+              </div>
             </div>
           </div>
         </div>

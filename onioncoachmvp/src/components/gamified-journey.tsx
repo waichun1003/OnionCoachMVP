@@ -312,19 +312,6 @@ export function GamifiedJourney() {
                 <div className="h-full flex flex-col">
                     {/* Mobile layout for all steps as horizontal scrollable cards */}
                     <div className="block md:hidden w-full pt-8">
-                        {/* Stepper above cards */}
-                        <div className="flex items-center justify-center mb-4">
-                            {steps.map((step, idx) => (
-                                <div key={idx} className="flex items-center">
-                                    <div className={`w-7 h-7 flex items-center justify-center rounded-full ${currentMobileStep === idx ? 'bg-[#6B46C1] text-white' : 'bg-gray-200 text-gray-500'} font-bold text-sm`}>
-                                        {step.number}
-                                    </div>
-                                    {idx < steps.length - 1 && (
-                                        <div className="w-8 h-1 bg-gray-300 mx-1 rounded-full" />
-                                    )}
-                                </div>
-                            ))}
-                        </div>
                         {/* Horizontal scrollable cards */}
                         <div
                             className="flex flex-row overflow-x-auto snap-x snap-mandatory w-full scrollbar-hide"
@@ -343,10 +330,10 @@ export function GamifiedJourney() {
                                         <div className="relative w-full max-w-[370px] aspect-[1/1] mx-auto mb-4 rounded-2xl overflow-hidden">
                                             <Image
                                               src={
-                                                idx === 0 ? "/images/setUpMission.jpeg" :
-                                                idx === 1 ? "/images/dailyQuest.jpeg" :
-                                                idx === 2 ? "/images/celebrateAchivement.jpeg" :
-                                                idx === 3 ? "/images/joinCommunities.jpeg" :
+                                                idx === 0 ? "/images/setUpYourMission.png" :
+                                                idx === 1 ? "/images/dailyQuest.png" :
+                                                idx === 2 ? "/images/celebrateAchievement.png" :
+                                                idx === 3 ? "/images/joinConnect.png" :
                                                 step.imageUrl
                                               }
                                               alt={step.title}
@@ -354,6 +341,18 @@ export function GamifiedJourney() {
                                               className="object-cover rounded-2xl"
                                               priority={idx === 0}
                                             />
+                                        </div>
+                                        <div className="flex items-center justify-center mt-2 mb-4">
+                                          {steps.map((step, idx) => (
+                                            <div key={idx} className="flex items-center">
+                                              <div className={`w-7 h-7 flex items-center justify-center rounded-full ${currentMobileStep === idx ? 'bg-[#6B46C1] text-white' : 'bg-gray-200 text-gray-500'} font-bold text-sm`}>
+                                                {step.number}
+                                              </div>
+                                              {idx < steps.length - 1 && (
+                                                <div className="w-8 h-1 bg-gray-300 mx-1 rounded-full" />
+                                              )}
+                                            </div>
+                                          ))}
                                         </div>
                                         {/* Text content below, more compact and readable */}
                                         <div className="px-4 text-left flex flex-col flex-1 justify-between">
@@ -388,7 +387,7 @@ export function GamifiedJourney() {
                                               </motion.div>
                                             </button>
                                           </Link>
-                                        </div>
+                                        </div>                                    
                                     </div>
                                 </div>
                             ))}
@@ -543,68 +542,11 @@ export function GamifiedJourney() {
                                     style={{ zIndex: 1 }}
                                 >
                                     <Image
-                                        src="/images/setUpMission.jpeg"
+                                        src="/images/setUpYourMission.png"
                                         alt="Professional woman working"
                                         fill
                                         className="object-cover"
                                         priority
-                                    />
-                                </motion.div>
-
-                                {/* Main Content Layer - Radar chart (upper-right) - using setUpMission1 */}
-                                <motion.div
-                                    className="absolute bottom-4 right-[375px] w-[301px] h-[301px] overflow-hidden rounded-3xl"
-                                    initial={{ opacity: 0, y: -10 }}
-                                    animate={{ opacity: 1, y: 0 }}
-                                    transition={{ duration: 0.5, delay: 0.3 }}
-                                    style={{ zIndex: 20 }}
-                                >
-                                    <Image
-                                        src="/images/setUpMission1.jpeg"
-                                        alt="Radar chart showing life balance"
-                                        fill
-                                        className="object-contain"
-                                        quality={100}
-                                        sizes="301px"
-                                        style={{ imageRendering: 'crisp-edges' }}
-                                    />
-                </motion.div>
-
-                                {/* Interactive Element Layer - Emoji feedback (middle) - using setUpMission2 */}
-                                <motion.div
-                                    className="absolute top-[-50px] left-[400px] w-[216px] h-[255px] overflow-hidden rounded-3xl"
-                                    initial={{ opacity: 0, x: -20 }}
-                                    animate={{ opacity: 1, x: 0 }}
-                                    transition={{ duration: 0.5, delay: 0.5 }}
-                                    style={{ zIndex: 30 }}
-                                >
-                                    <Image
-                                        src="/images/setUpMission2.jpeg"
-                                        alt="Emoji selection interface"
-                                        fill
-                                        className="object-contain"
-                                        quality={100}
-                                        sizes="216px"
-                                        style={{ imageRendering: 'crisp-edges' }}
-                                    />
-                                </motion.div>
-
-                                {/* Main Content Layer - Progress bars (bottom-right) - using setUpMission3 */}
-                                <motion.div
-                                    className="absolute bottom-[-100px] right-[20px] w-[247.5px] h-[190.75px] overflow-hidden rounded-3xl"
-                                    initial={{ opacity: 0, y: 20 }}
-                                    animate={{ opacity: 1, y: 0 }}
-                                    transition={{ duration: 0.5, delay: 0.4 }}
-                                    style={{ zIndex: 20 }}
-                                >
-                                    <Image
-                                        src="/images/setUpMission3.jpeg"
-                                        alt="Progress bars for life areas"
-                                        fill
-                                        className="object-contain"
-                                        quality={100}
-                                        sizes="1000px"
-                                        style={{ imageRendering: 'crisp-edges' }}
                                     />
                                 </motion.div>
                             </div>
@@ -758,17 +700,15 @@ export function GamifiedJourney() {
                                                     >
                                                         <p className="text-sm text-gray-600 mb-2">How to work</p>
                                                         
-                                                        <h3 className="text-2xl font-normal m-0 text-[#333333] leading-[1]" style={{ fontFamily: "'Playfair Display', serif" }}>
-                                                            {idx === 0 ? "Daily" : step.title.split(" ")[0]}
+                                                        <h3 className="text-5xl font-normal mb-2 text-[#333333]" style={{ fontFamily: "'Playfair Display', serif" }}>
+                                                            {step.title.split(' ').slice(0, -1).join(' ')}
                                                         </h3>
-                                                        <h3 className="text-xl font-serif italic m-0 text-[#333333] leading-[1]" style={{ fontFamily: "'Playfair Display', serif", fontWeight: "bold" }}>
-                                                            {idx === 0 ? "Quests" : step.subtitle}
+                                                        <h3 className="text-5xl font-serif italic mb-6 text-[#333333]" style={{ fontFamily: "'Playfair Display', serif", fontWeight: "bold" }}>
+                                                            {step.subtitle}
                                                         </h3>
                                                         
                                                         <p className="text-lg mb-8 leading-relaxed text-[#333333]" style={{ fontFamily: "'Roboto', sans-serif", fontSize: "1rem", lineHeight: "1.5" }}>
-                                                            {idx === 0 ? 
-                                                                "Clarify your goals through self-coaching. Explore self-coaching programs designed by different coaches to boost your growth. Focused on clarifying users' growth goals in specific areas, such as identifying your career passion, navigating career transitions, developing leadership skills, and increasing productivity." 
-                                                                : step.description}
+                                                            {step.description}
                                                         </p>
                                                         
                                                         <Link href="/find-coach">
@@ -811,253 +751,18 @@ export function GamifiedJourney() {
                                                     style={{ zIndex: 1 }}
                                                 >
                                                     <Image
-                                                        src={idx === 0 ? "/images/dailyQuest.jpeg" : step.imageUrl}
-                                                        alt={idx === 0 ? "Daily Quest background" : step.title}
+                                                        src={
+                                                            idx === 0 ? '/images/dailyQuest.png' :
+                                                            idx === 1 ? '/images/celebrateAchievement.png' :
+                                                            idx === 2 ? '/images/joinConnect.png' :
+                                                            step.imageUrl
+                                                        }
+                                                        alt={idx === 0 ? "Daily Quest background" : idx === 1 ? "Celebrate Achievements background" : idx === 2 ? "Join Communities background" : step.title}
                                                         fill
                                                         className="object-cover"
                                                         priority
                                                     />
                                                 </motion.div>
-
-                                                {/* Main Content Layer - Top */}
-                                                {idx === 0 && (
-                                                    <motion.div
-                                                        className="absolute top-[-30px] left-[-100px] w-[250px] h-[150px] overflow-hidden rounded-3xl"
-                                                        initial={{ opacity: 0, y: -10 }}
-                                                        animate={{ opacity: 1, y: 0 }}
-                                                        transition={{ duration: 0.5, delay: 0.3 }}
-                                                        style={{ 
-                                                            zIndex: 20,
-                                                            filter: 'drop-shadow(0px 6px 12px rgba(0, 0, 0, 0.15))',
-                                                            transform: 'translateZ(0)' // Force GPU acceleration
-                                                        }}
-                                                    >
-                                                        <Image
-                                                            src="/images/dailyQuest1.jpeg"
-                                                            alt="Daily Quest main content"
-                                                            fill
-                                                            className="object-contain"
-                                                            quality={100}
-                                                            sizes="250px"
-                                                            style={{ 
-                                                                imageRendering: '-webkit-optimize-contrast',
-                                                                backfaceVisibility: 'hidden'
-                                                            }}
-                                                        />
-                                                    </motion.div>
-                                                )}
-
-                                                {/* Interactive Element Layer - Middle */}
-                                                {idx === 0 && (
-                                                    <motion.div
-                                                        className="absolute top-[220px] right-[-50px] w-[312px] h-[188px] overflow-hidden rounded-3xl"
-                                                        initial={{ opacity: 0, x: -20 }}
-                                                        animate={{ opacity: 1, x: 0 }}
-                                                        transition={{ duration: 0.5, delay: 0.5 }}
-                                                        style={{ zIndex: 30 }}
-                                                    >
-                                                        <Image
-                                                            src="/images/dailyQuest3.jpeg"
-                                                            alt="Daily Quest interactive elements"
-                                                            fill
-                                                            className="object-contain"
-                                                            quality={100}
-                                                            sizes="216px"
-                                                            style={{ imageRendering: 'crisp-edges' }}
-                                                        />
-                                                    </motion.div>
-                                                )}
-
-                                                {/* Bottom Main Content Layer */}
-                                                {idx === 0 && (
-                                                    <motion.div
-                                                        className="absolute bottom-[-70px] left-[-100px] w-[355px] h-[101px]"
-                                                        initial={{ opacity: 0 }}
-                                                        animate={{ opacity: 1 }}
-                                                        transition={{ duration: 0.5, delay: 0.7 }}
-                                                        style={{ 
-                                                            zIndex: 50,
-                                                            filter: 'drop-shadow(0px 6px 12px rgba(0, 0, 0, 0.15))'
-                                                        }}
-                                                    >
-                                                        <div style={{ position: 'relative', width: '100%', height: '100%' }}>
-                                                            <Image
-                                                                src="/images/dailyQuest2.jpeg"
-                                                                alt="Daily Quest interactive elements"
-                                                                fill
-                                                                className="object-contain"
-                                                                quality={100}
-                                                                priority={true}
-                                                                sizes="350px"
-                                                            />
-                                                        </div>
-                                                        {/* Debug indicator */}
-                                                        <div className="absolute bottom-0 right-0 bg-red-500 h-4 w-4 rounded-full hidden"></div>
-                                                    </motion.div>
-                                                )}
-
-                                                {/* For other stack cards, show their specific layouts */}
-                                                {idx === 1 && (
-                                                    <>
-                                                        {/* Main background image */}
-                                                        <motion.div
-                                                            className="absolute inset-0 w-full h-full overflow-hidden rounded-3xl"
-                                                            initial={{ opacity: 0 }}
-                                                            animate={{ opacity: 1 }}
-                                                            transition={{ duration: 0.7 }}
-                                                            style={{ zIndex: 1 }}
-                                                        >
-                                                            <Image
-                                                                src="/images/celebrateAchivement.jpeg"
-                                                                alt="Celebrate Achievements background"
-                                                                fill
-                                                                className="object-cover"
-                                                                priority
-                                                            />
-                                                        </motion.div>
-
-                                                        {/* Left overlay - celebrateAchivement1 */}
-                                                        <motion.div
-                                                            className="absolute top-[-30px] right-[-50px] w-[361px] h-[111px] overflow-hidden rounded-3xl"
-                                                            initial={{ opacity: 0, y: -10 }}
-                                                            animate={{ opacity: 1, y: 0 }}
-                                                            transition={{ duration: 0.5, delay: 0.3 }}
-                                                            style={{ 
-                                                                zIndex: 50,
-                                                                filter: 'drop-shadow(0px 6px 12px rgba(0, 0, 0, 0.15))',
-                                                                transform: 'translateZ(0)' // Force GPU acceleration
-                                                            }}
-                                                        >
-                                                            <Image
-                                                                src="/images/celebrateAchivement1.jpeg"
-                                                                alt="Achievement progress"
-                                                                fill
-                                                                className="object-contain"
-                                                                quality={100}
-                                                                sizes="361px"
-                                                                style={{ 
-                                                                    imageRendering: '-webkit-optimize-contrast',
-                                                                    backfaceVisibility: 'hidden'
-                                                                }}
-                                                            />
-                                                        </motion.div>
-
-                                                        {/* Right overlay - celebrateAchivement2 */}
-                                                        <motion.div
-                                                            className="absolute bottom-[-50px] right-[-50px] w-[260px] h-[146px] overflow-hidden rounded-3xl"
-                                                            initial={{ opacity: 0, x: -20 }}
-                                                            animate={{ opacity: 1, x: 0 }}
-                                                            transition={{ duration: 0.5, delay: 0.5 }}
-                                                            style={{ zIndex: 30 }}
-                                                        >
-                                                            <Image
-                                                                src="/images/celebrateAchivement3.jpeg"
-                                                                alt="Achievement stats"
-                                                                fill
-                                                                className="object-contain"
-                                                                quality={100}
-                                                                sizes="200px"
-                                                                style={{ imageRendering: 'crisp-edges' }}
-                                                            />
-                                                        </motion.div>
-
-                                                        {/* Bottom overlay - celebrateAchivement3 */}
-                                                        <motion.div
-                                                            className="absolute bottom-[-50px] left-[-100px] w-[272px] h-[236px]"
-                                                            initial={{ opacity: 0 }}
-                                                            animate={{ opacity: 1 }}
-                                                            transition={{ duration: 0.5, delay: 0.7 }}
-                                                            style={{ 
-                                                                zIndex: 50,
-                                                                filter: 'drop-shadow(0px 6px 12px rgba(0, 0, 0, 0.15))'
-                                                            }}
-                                                        >
-                                                            <div style={{ position: 'relative', width: '100%', height: '100%' }}>
-                                                                <Image
-                                                                    src="/images/celebrateAchivement2.jpeg"
-                                                                    alt="Achievement rewards"
-                                                                    fill
-                                                                    className="object-contain"
-                                                                    quality={100}
-                                                                    priority={true}
-                                                                    sizes="355px"
-                                                                />
-                                                            </div>
-                                                        </motion.div>
-                                                    </>
-                                                )}
-
-                                                {/* For Join Communities stack card */}
-                                                {idx === 2 && (
-                                                    <>
-                                                        {/* Main background image */}
-                                                        <motion.div
-                                                            className="absolute inset-0 w-full h-full overflow-hidden rounded-3xl"
-                                                            initial={{ opacity: 0 }}
-                                                            animate={{ opacity: 1 }}
-                                                            transition={{ duration: 0.7 }}
-                                                            style={{ zIndex: 1 }}
-                                                        >
-                                                            <Image
-                                                                src="/images/joinCommunities.jpeg"
-                                                                alt="Join Communities background"
-                                                                fill
-                                                                className="object-cover"
-                                                                priority
-                                                            />
-                                                        </motion.div>
-
-                                                        {/* Left overlay - Search/Explore Card */}
-                                                        <motion.div
-                                                            className="absolute bottom-[-30px] left-[-100px] w-[361px] h-[236px] overflow-hidden rounded-3xl"
-                                                            initial={{ opacity: 0, y: -10 }}
-                                                            animate={{ opacity: 1, y: 0 }}
-                                                            transition={{ duration: 0.5, delay: 0.3 }}
-                                                            style={{ 
-                                                                zIndex: 20,
-                                                                filter: 'drop-shadow(0px 6px 12px rgba(0, 0, 0, 0.15))',
-                                                                transform: 'translateZ(0)', // Force GPU acceleration
-                                                                willChange: 'transform' // Optimize animations
-                                                            }}
-                                                        >
-                                                            <Image
-                                                                src="/images/joinCommunities1.jpeg"
-                                                                alt="Community search interface"
-                                                                fill
-                                                                className="object-contain"
-                                                                quality={100}
-                                                                priority={true}
-                                                                sizes="361px"
-                                                                style={{ 
-                                                                    imageRendering: '-webkit-optimize-contrast',
-                                                                    backfaceVisibility: 'hidden'
-                                                                }}
-                                                            />
-                                                        </motion.div>
-
-                                                        {/* Right overlay - Community Card */}
-                                                        <motion.div
-                                                            className="absolute top-[-70px] right-[-50px] w-[312px] h-[188px] overflow-hidden rounded-3xl"
-                                                            initial={{ opacity: 0, x: 20 }}
-                                                            animate={{ opacity: 1, x: 0 }}
-                                                            transition={{ duration: 0.5, delay: 0.5 }}
-                                                            style={{ 
-                                                                zIndex: 30,
-                                                                filter: 'drop-shadow(0px 6px 12px rgba(0, 0, 0, 0.15))'
-                                                            }}
-                                                        >
-                                                            <Image
-                                                                src="/images/joinCommunities2.jpeg"
-                                                                alt="Community engagement"
-                                                                fill
-                                                                className="object-contain"
-                                                                quality={100}
-                                                                sizes="312px"
-                                                                style={{ imageRendering: 'crisp-edges' }}
-                                                            />
-                                                        </motion.div>
-                                                    </>
-                                                )}
                                             </div>
                                         </div>
                                     </div>

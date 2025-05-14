@@ -1,10 +1,14 @@
 import { categoryColors as importedCategoryColors, getContrastColor as importedGetContrastColor } from './assessment-flow';
+import { useState } from 'react';
+import { motion } from 'framer-motion';
 
 interface LifeWheelVisualizationProps {
   scores: Record<string, number>;
 }
 
 export function LifeWheelVisualization({ scores }: LifeWheelVisualizationProps) {
+  const [activeDot, setActiveDot] = useState<number | null>(null);
+
   // Local fallback definitions in case imports fail
   const fallbackCategoryColors = {
     "Family Clan": "#9BEA5E",
@@ -46,14 +50,86 @@ export function LifeWheelVisualization({ scores }: LifeWheelVisualizationProps) 
   const numCategories = categories.length;
   const angleStep = (2 * Math.PI) / numCategories;
 
-  // Generate points for the spider web - increased scale
-  const getPoints = (value: number, index: number) => {
-    const angle = index * angleStep - Math.PI / 2; // Start from top
-    const radius = (value / 10) * 150; // Increased scale for larger chart
-    return {
-      x: 250 + radius * Math.cos(angle), // Increased center point
-      y: 230 + radius * Math.sin(angle)  // Increased center point
-    };
+  // --- Desktop chart config ---
+  const desktopConfig = {
+    centerX: 300,
+    centerY: 300,
+    chartRadius: 260,
+    labelRadius: 310,
+    viewBox: '0 -40 600 680',
+    scaleSpacing: 220,
+    fontSize: 12,
+    labelWidth: (category: string) => {
+      if (category === "Character Development") return 110;
+      if (category === "Side Hustle Dungeon") return 180;
+      if (category === "Love Quest") return 110;
+      if (category === "Hero's Journey") return 120;
+      const baseWidth = 30;
+      const charWidth = 10;
+      return Math.max(140, baseWidth + (category.length * charWidth));
+    },
+    getLabelPosition: (index: number) => {
+      const angle = index * angleStep - Math.PI / 2;
+      let x = 300 + 310 * Math.cos(angle);
+      let y = 300 + 310 * Math.sin(angle);
+      if (index === 5) y += 20;
+      return { x, y };
+    },
+    getPoints: (value: number, index: number) => {
+      const angle = index * angleStep - Math.PI / 2;
+      const radius = (value / 10) * 260;
+      return {
+        x: 300 + radius * Math.cos(angle),
+        y: 300 + radius * Math.sin(angle)
+      };
+    },
+    scaleNumbers: Array.from({ length: 10 }, (_, i) => ({
+      x: 300,
+      y: 300 - ((i + 1) / 10) * 220,
+      value: i + 1
+    }))
+  };
+
+  // --- Mobile chart config ---
+  const mobileConfig = {
+    centerX: 250,
+    centerY: 250,
+    chartRadius: 200,
+    labelRadius: 220,
+    viewBox: '0 -5 500 450',
+    scaleSpacing: 15,
+    fontSize: 10,
+    getLabelPosition: (index: number) => {
+      const angle = index * angleStep - Math.PI / 2;
+      let point = {
+        x: 250 + 210 * Math.cos(angle),
+        y: 230 + 210 * Math.sin(angle)
+      };
+      switch (index % 8) {
+        case 0: point.y += 20; break;
+        case 1: point.x += 20; point.y += 20; break;
+        case 2: point.x -= 5; break;
+        case 3: point.x += 20; point.y -= 20; break;
+        case 4: point.y -= 10; break;
+        case 5: point.x -= 20; point.y -= 15; break;
+        case 6: point.x += 5; break;
+        case 7: point.x -= 20; point.y += 20; break;
+      }
+      return point;
+    },
+    getPoints: (value: number, index: number) => {
+      const angle = index * angleStep - Math.PI / 2;
+      const radius = (value / 10) * 170;
+      return {
+        x: 250 + radius * Math.cos(angle),
+        y: 230 + radius * Math.sin(angle)
+      };
+    },
+    scaleNumbers: Array.from({ length: 10 }, (_, i) => ({
+      x: 250,
+      y: 230 - (i + 1) * 15,
+      value: i + 1
+    }))
   };
 
   // Calculate ideal scores based on current scores
@@ -67,78 +143,16 @@ export function LifeWheelVisualization({ scores }: LifeWheelVisualizationProps) 
     return acc;
   }, {} as Record<string, number>);
 
-  // Custom label positioning for each category - adjusted for larger chart
-  const getLabelPosition = (index: number) => {
-    const angle = index * angleStep - Math.PI / 2;
-    // Base position with increased radius for labels
-    const labelRadius = 210; // Increased radius for labels
-    let point = {
-      x: 250 + labelRadius * Math.cos(angle), // Increased center point
-      y: 230 + labelRadius * Math.sin(angle)  // Increased center point
-    };
-    
-    // Fine-tune positions for each label to prevent overlap
-    // Adjust these values as needed for your specific layout
-    switch (index % 8) {
-      case 0: // Top
-        point.y += 20;
-        break;
-      case 1: // Top-right
-        point.x += 20;
-        point.y += 20;
-        break;
-      case 2: // Right
-        point.x -= 5;
-        break;
-      case 3: // Bottom-right
-        point.x += 20;
-        point.y -= 20;
-        break;
-      case 4: // Bottom
-        point.y -= 20;
-        break;
-      case 5: // Bottom-left
-        point.x -= 20;
-        point.y -= 15;
-        break;
-      case 6: // Left
-        point.x += 5; // Increased offset for left labels
-        break;
-      case 7: // Top-left
-        point.x -= 20;
-        point.y += 20;
-        break;
-    }
-    
-    return point;
-  };
-
-  // Get width based on category name
-  const getLabelWidth = (category: string) => {
-    // Special case handling for specific categories that need extra width
-    if (category === "Character Development") return 85; // Reduced width since it's now on two lines
-    if (category === "Side Hustle Dungeon") return 130; // Increased from 160
-    if (category === "Love Quest") return 85; // Added specific width for Love Quest
-    if (category === "Hero's Journey") return 100; // Added specific width for Hero's Journey
-    
-    // More precise width calculation based on character count
-    // Each character is approximately 7px wide in the 10px font size
-    const baseWidth = 20; // Padding (2px left + 2px right) + some buffer
-    const charWidth = 6.5; // Increased approximate width per character
-    
-    // Calculate width based on text length with more extra space for safety
-    return Math.max(100, baseWidth + (category.length * charWidth));
-  };
-
-  return (
-    <div className="relative w-full h-full">
-      <svg width="100%" height="100%" viewBox="0 0 500 460"> {/* Increased viewBox width and height */}
+  // Chart rendering function for desktop (labels as colored boxes)
+  function renderDesktopChart(config: typeof desktopConfig) {
+    return (
+      <svg width="100%" height="100%" viewBox={config.viewBox}>
         {/* Background circles */}
         {[...Array(10)].map((_, i) => (
           <polygon
             key={i}
             points={categories.map((_, j) => {
-              const point = getPoints((i + 1), j);
+              const point = config.getPoints(i + 1, j);
               return `${point.x},${point.y}`;
             }).join(' ')}
             fill="none"
@@ -147,79 +161,66 @@ export function LifeWheelVisualization({ scores }: LifeWheelVisualizationProps) 
             strokeDasharray="2 2"
           />
         ))}
-
         {/* Score areas */}
         <polygon
           points={categories.map((category, i) => {
-            const point = getPoints(scores[category], i);
+            const point = config.getPoints(scores[category], i);
             return `${point.x},${point.y}`;
           }).join(' ')}
           fill="rgba(255, 46, 0, 0.25)"
           stroke="#FF4D00"
           strokeWidth="2"
         />
-
-        {/* Ideal life area - using the calculated ideal scores */}
+        {/* Ideal life area */}
         <polygon
           points={categories.map((category, i) => {
-            const point = getPoints(idealScores[category], i);
+            const point = config.getPoints(idealScores[category], i);
             return `${point.x},${point.y}`;
           }).join(' ')}
           fill="rgba(57, 255, 229, 0.25)"
           stroke="#39FFE5"
           strokeWidth="2"
         />
-
         {/* Scale numbers */}
-        {[...Array(10)].map((_, i) => (
+        {config.scaleNumbers.map((s, i) => (
           <text
             key={i}
-            x="250" // Increased center point
-            y={230 - (i + 1) * 15} // Increased spacing
+            x={s.x}
+            y={s.y}
             className="text-xs fill-[#664EC9]"
             textAnchor="middle"
+            alignmentBaseline="middle"
+            style={{ fontWeight: 500, fontSize: config.fontSize }}
           >
-            {i + 1}
+            {s.value}
           </text>
         ))}
-
-        {/* Category labels - with custom positioning */}
+        {/* Category labels as colored boxes */}
         {categories.map((category, i) => {
-          const point = getLabelPosition(i);
-          
-          // Always use a default color to avoid errors
-          const defaultColor = "#CCCCCC";
-          // Try to get the color from categoryColors, but use default if not found
-          const color = (categoryColors as Record<string, string>)[category] || defaultColor;
-          
-          // Dynamically calculate width based on text content
-          const finalWidth = getLabelWidth(category);
-          
-          // Format label text - split "Character Development" into two lines
+          const point = config.getLabelPosition(i);
+          const color = (categoryColors as Record<string, string>)[category] || "#CCCCCC";
+          const finalWidth = config.labelWidth(category);
           let displayText = category;
           if (category === "Character Development") {
             displayText = "Character\nDevelopment";
           }
-          
           return (
             <foreignObject
               key={category}
-              x={point.x - (finalWidth/2)} // Center based on dynamic width
+              x={point.x - (finalWidth/2)}
               y={point.y - 15}
-              width={finalWidth} // Dynamic width based on text length with special cases
-              height={category === "Character Development" ? 40 : 30} // Increased height for two-line label
+              width={finalWidth}
+              height={category === "Character Development" ? 40 : 30}
             >
-              <div 
-                className={`px-2 py-1 rounded text-center text-[10px] font-medium w-full ${
-                  category === "Character Development" ? "flex flex-col justify-center" : ""
-                }`}
-                style={{ 
+              <div
+                className={`px-2 py-1 rounded text-center font-medium w-full ${category === "Character Development" ? "flex flex-col justify-center" : ""}`}
+                style={{
                   backgroundColor: color,
                   color: getContrastColor(color),
-                  whiteSpace: category === "Character Development" ? "pre-line" : "nowrap", // Allow line breaks for Character Development
+                  whiteSpace: category === "Character Development" ? "pre-line" : "nowrap",
                   overflow: "visible",
                   textOverflow: "clip",
-                  fontSize: "10px",
+                  fontSize: config.fontSize,
                   lineHeight: "1.2",
                   height: category === "Character Development" ? "auto" : "unset"
                 }}
@@ -230,17 +231,136 @@ export function LifeWheelVisualization({ scores }: LifeWheelVisualizationProps) 
           );
         })}
       </svg>
+    );
+  }
 
-      {/* Legend - positioned lower at the bottom of the chart */}
-      <div className="absolute bottom-0 left-0 right-0 flex items-center justify-center gap-6 bg-white rounded-2xl px-4 py-3 mx-auto w-fit shadow-sm">
-        <div className="flex items-center gap-2">
-          <div className="w-6 h-6 bg-[#39FFE5] rounded-sm" />
-          <span className="text-sm">Ideal life</span>
+  // Chart rendering function for mobile (tab dot + tooltip)
+  function renderMobileChart(config: typeof mobileConfig) {
+    return (
+      <svg width="100%" height="100%" viewBox={config.viewBox}>
+        {/* Background circles */}
+        {[...Array(10)].map((_, i) => (
+          <polygon
+            key={i}
+            points={categories.map((_, j) => {
+              const point = config.getPoints(i + 1, j);
+              return `${point.x},${point.y}`;
+            }).join(' ')}
+            fill="none"
+            stroke="#E2E8F0"
+            strokeWidth="1"
+            strokeDasharray="2 2"
+          />
+        ))}
+        {/* Score areas */}
+        <polygon
+          points={categories.map((category, i) => {
+            const point = config.getPoints(scores[category], i);
+            return `${point.x},${point.y}`;
+          }).join(' ')}
+          fill="rgba(255, 46, 0, 0.25)"
+          stroke="#FF4D00"
+          strokeWidth="2"
+        />
+        {/* Ideal life area */}
+        <polygon
+          points={categories.map((category, i) => {
+            const point = config.getPoints(idealScores[category], i);
+            return `${point.x},${point.y}`;
+          }).join(' ')}
+          fill="rgba(57, 255, 229, 0.25)"
+          stroke="#39FFE5"
+          strokeWidth="2"
+        />
+        {/* Scale numbers */}
+        {config.scaleNumbers.map((s, i) => (
+          <text
+            key={i}
+            x={s.x}
+            y={s.y}
+            className="text-xs fill-[#664EC9]"
+            textAnchor="middle"
+            alignmentBaseline="middle"
+            style={{ fontWeight: 500, fontSize: config.fontSize }}
+          >
+            {s.value}
+          </text>
+        ))}
+        {/* Category tab dots with tooltip labels */}
+        {categories.map((category, i) => {
+          const point = config.getLabelPosition(i);
+          const color = (categoryColors as Record<string, string>)[category] || "#CCCCCC";
+          return (
+            <g key={category}>
+              {/* Tab dot */}
+              <rect
+                x={point.x - 12}
+                y={point.y - 12}
+                width={24}
+                height={24}
+                rx={5}
+                fill={color}
+                stroke="#fff"
+                strokeWidth={3}
+                style={{ cursor: "pointer" }}
+                onMouseEnter={() => setActiveDot(i)}
+                onMouseLeave={() => setActiveDot(null)}
+                onTouchStart={() => setActiveDot(i)}
+                onTouchEnd={() => setActiveDot(null)}
+              />
+              {/* Tooltip/Popover */}
+              {activeDot === i && (
+                <foreignObject
+                  x={point.x - 70}
+                  y={point.y - 50}
+                  width={140}
+                  height={36}
+                >
+                  <div
+                    className="rounded px-3 py-1 shadow text-xs font-medium flex items-center justify-center"
+                    style={{
+                      background: color,
+                      color: '#111',
+                      borderRadius: 8,
+                      minHeight: 28,
+                      fontWeight: 500,
+                      pointerEvents: 'none',
+                    }}
+                  >
+                    {category} : <b className="ml-1">{scores[category]}</b>
+                  </div>
+                </foreignObject>
+              )}
+            </g>
+          );
+        })}
+      </svg>
+    );
+  }
+
+  // --- Render ---
+  return (
+    <div className="relative w-full h-full">
+      {/* Desktop chart and legend */}
+      <div className="hidden md:flex w-full h-full flex-col items-center justify-center relative">
+        <div className="w-full flex items-center justify-center" style={{minHeight: 540}}>
+          {renderDesktopChart(desktopConfig)}
         </div>
-        <div className="flex items-center gap-2">
-          <div className="w-6 h-6 bg-[#FF4D00] rounded-sm" />
-          <span className="text-sm">Current focus</span>
+        {/* Desktop legend at bottom of chart (original, now separated and centered) */}
+        <div className="hidden md:flex mt-6 items-center justify-center gap-6 bg-white rounded-2xl px-4 py-3 mx-auto w-fit shadow-sm">
+          <div className="flex items-center gap-2">
+            <div className="w-6 h-6 bg-[#39FFE5] rounded-sm" />
+            <span className="text-sm">Ideal life</span>
+          </div>
+          <div className="flex items-center gap-2">
+            <div className="w-6 h-6 bg-[#FF4D00] rounded-sm" />
+            <span className="text-sm">Current focus</span>
+          </div>
         </div>
+      </div>
+      {/* Mobile chart and legend */}
+      <div className="md:hidden w-full h-full">
+        {renderMobileChart(mobileConfig)}
       </div>
     </div>
   );

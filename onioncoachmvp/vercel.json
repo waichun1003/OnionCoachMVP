@@ -5,5 +5,21 @@
   "devCommand": "next dev",
   "installCommand": "npm cache clean --force && npm install --no-audit --prefer-offline --no-fund || npm install --no-audit --no-fund",
   "outputDirectory": ".next",
-  "regions": ["iad1", "sfo1"]
+  "regions": ["iad1", "sfo1"],
+  "crons": [
+    {
+      "path": "/api/scrape",
+      "schedule": "0 */6 * * *"
+    }
+  ],
+  "functions": {
+    "pages/api/scrape.ts": {
+      "maxDuration": 300
+    }
+  },
+  "env": {
+    "DATABASE_URL": "@database_url",
+    "NEXTAUTH_URL": "@nextauth_url",
+    "NEXTAUTH_SECRET": "@nextauth_secret"
+  }
 }

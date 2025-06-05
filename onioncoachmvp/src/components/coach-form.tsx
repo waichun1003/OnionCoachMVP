@@ -5,12 +5,11 @@ import { motion, AnimatePresence } from "framer-motion"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Card, CardContent } from "@/components/ui/card"
-import { X, Sparkles, ArrowRight, Check } from "lucide-react"
+import { X, Sparkles, ArrowRight, Check, Upload, User } from "lucide-react"
 import { toast } from "sonner"
 import { z } from "zod"
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
-import { MultiSelect } from "@/components/ui/multi-select"
 import { Textarea } from "@/components/ui/textarea"
 import type { CoachData } from "@/types/coach"
 import { useModal } from "@/components/ui/modal-context"
@@ -30,17 +29,14 @@ const coachSchema = z.object({
     .startsWith("https://", { message: "URL must start with https://" })
     .optional()
     .or(z.literal("")),
-  expertise: z.array(z.string())
-    .min(1, "Select at least one area of expertise")
-    .max(5, "Maximum 5 areas of expertise"),
+  expertise: z.string().min(1, "Please select an area of expertise"),
   experience: z.string().min(1, "Please specify your years of experience"),
-  languages: z.array(z.string())
-    .min(1, "Select at least one language")
-    .max(3, "Maximum 3 languages"),
+  languages: z.string().min(1, "Please select a language"),
   timezone: z.string().min(1, "Please select your timezone"),
   availability: z.string().min(1, "Please specify your availability"),
   preferredRate: z.string().min(1, "Please specify your preferred rate"),
-  certifications: z.array(z.string()).optional(),
+  certifications: z.string().optional(),
+  profilePicture: z.string().optional(),
   bio: z.string()
     .min(100, "Bio should be at least 100 characters")
     .max(1000, "Bio should not exceed 1000 characters")
@@ -54,66 +50,104 @@ const EXPERTISE_OPTIONS = [
   { value: "business-strategy", label: "Business Strategy" },
   { value: "performance", label: "Performance" },
   { value: "communication", label: "Communication" },
-  { value: "team-building", label: "Team Building" }
+  { value: "team-building", label: "Team Building" },
+  { value: "entrepreneurship", label: "Entrepreneurship" },
+  { value: "work-life-balance", label: "Work-Life Balance" },
+  { value: "confidence-building", label: "Confidence Building" },
+  { value: "stress-management", label: "Stress Management" }
 ]
 
 const LANGUAGE_OPTIONS = [
   { value: "english", label: "English" },
   { value: "mandarin", label: "Mandarin" },
+  { value: "cantonese", label: "Cantonese" },
   { value: "spanish", label: "Spanish" },
   { value: "french", label: "French" },
   { value: "german", label: "German" },
   { value: "japanese", label: "Japanese" },
-  { value: "korean", label: "Korean" }
+  { value: "korean", label: "Korean" },
+  { value: "portuguese", label: "Portuguese" },
+  { value: "italian", label: "Italian" },
+  { value: "dutch", label: "Dutch" },
+  { value: "russian", label: "Russian" }
 ]
 
 const TIMEZONE_OPTIONS = [
-  "UTC-8 (PST)",
-  "UTC-5 (EST)",
-  "UTC+0 (GMT)",
-  "UTC+1 (CET)",
-  "UTC+8 (SGT/CST)",
-  "UTC+9 (JST)"
+  "UTC-12 (Baker Island)",
+  "UTC-11 (American Samoa)",
+  "UTC-10 (Hawaii)",
+  "UTC-9 (Alaska)",
+  "UTC-8 (PST - Los Angeles)",
+  "UTC-7 (MST - Denver)",
+  "UTC-6 (CST - Chicago)",
+  "UTC-5 (EST - New York)",
+  "UTC-4 (Atlantic)",
+  "UTC-3 (Brazil)",
+  "UTC-2 (South Georgia)",
+  "UTC-1 (Azores)",
+  "UTC+0 (GMT - London)",
+  "UTC+1 (CET - Paris)",
+  "UTC+2 (EET - Cairo)",
+  "UTC+3 (MSK - Moscow)",
+  "UTC+4 (GST - Dubai)",
+  "UTC+5 (PKT - Karachi)",
+  "UTC+5:30 (IST - Mumbai)",
+  "UTC+6 (BST - Dhaka)",
+  "UTC+7 (ICT - Bangkok)",
+  "UTC+8 (SGT/CST - Singapore)",
+  "UTC+9 (JST - Tokyo)",
+  "UTC+10 (AEST - Sydney)",
+  "UTC+11 (NCT - New Caledonia)",
+  "UTC+12 (NZST - Auckland)"
 ]
 
 const EXPERIENCE_OPTIONS = [
   "1-2 years",
   "3-5 years",
   "5-10 years",
-  "10+ years"
+  "10-15 years",
+  "15+ years"
 ]
 
 const AVAILABILITY_OPTIONS = [
-  "Full-time",
-  "Part-time",
+  "Full-time (40+ hours/week)",
+  "Part-time (20-39 hours/week)",
+  "Limited (10-19 hours/week)",
   "Weekends only",
+  "Evenings only",
   "Flexible hours",
-  "By appointment"
+  "By appointment only"
 ]
 
 const RATE_OPTIONS = [
-  "Under $100/hour",
-  "$100-200/hour",
-  "$200-500/hour",
+  "Under $50/hour",
+  "$50-100/hour",
+  "$100-150/hour",
+  "$150-200/hour",
+  "$200-300/hour",
+  "$300-500/hour",
   "$500+/hour",
-  "Custom package"
+  "Package deals only",
+  "Custom rates"
 ]
 
 const CERTIFICATION_OPTIONS = [
-  "ICF ACC",
-  "ICF PCC",
-  "ICF MCC",
-  "EMCC",
-  "CTI",
+  "ICF ACC (Associate Certified Coach)",
+  "ICF PCC (Professional Certified Coach)",
+  "ICF MCC (Master Certified Coach)",
+  "EMCC (European Mentoring & Coaching Council)",
+  "CTI (Co-Active Training Institute)",
   "NLP Practitioner",
-  "Other"
+  "Certified Professional Coach (CPC)",
+  "Board Certified Coach (BCC)",
+  "Other professional certification"
 ]
 
 const formSteps = [
   {
     title: "Basic Information",
     description: "Let's start with your professional identity. This information helps us understand who you are and how clients can connect with you.",
-    fields: ["fullName", "email", "linkedinUrl", "website"] as const
+    fields: ["profilePicture", "fullName", "email", "linkedinUrl", "website"] as const
   },
   {
     title: "Professional Details",
@@ -220,13 +254,16 @@ export function CoachForm({ onClose }: { onClose: () => void }) {
   const [currentStep, setCurrentStep] = useState(1)
   const [showSuccess, setShowSuccess] = useState(false)
   const [isSubmitting, setIsSubmitting] = useState(false)
+  const [profilePicturePreview, setProfilePicturePreview] = useState<string>('')
+  const [isUploadingImage, setIsUploadingImage] = useState(false)
 
   const form = useForm<CoachData>({
     resolver: zodResolver(coachSchema),
     defaultValues: {
-      expertise: [],
-      languages: [],
-      certifications: []
+      expertise: "",
+      languages: "",
+      certifications: "",
+      profilePicture: ""
     }
   })
 
@@ -277,18 +314,128 @@ export function CoachForm({ onClose }: { onClose: () => void }) {
     }
   }
 
+  const handleProfilePictureUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0]
+    if (!file) return
+
+    // Check file size (max 5MB)
+    if (file.size > 5 * 1024 * 1024) {
+      toast.error('Image size must be less than 5MB')
+      return
+    }
+
+    // Check file type
+    if (!file.type.startsWith('image/')) {
+      toast.error('Please select a valid image file')
+      return
+    }
+
+    setIsUploadingImage(true)
+    
+    try {
+      // Convert file to base64
+      const base64 = await new Promise<string>((resolve) => {
+        const reader = new FileReader()
+        reader.onloadend = () => resolve(reader.result as string)
+        reader.readAsDataURL(file)
+      })
+
+      // Call API route to upload to Cloudinary
+      const response = await fetch('/api/upload-profile-picture', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ image: base64 }),
+      })
+
+      if (!response.ok) {
+        throw new Error('Upload failed')
+      }
+
+      const { url } = await response.json()
+      
+      // Set the Cloudinary URL in the form
+      setValue('profilePicture', url)
+      setProfilePicturePreview(url)
+      
+      toast.success('Profile picture uploaded successfully!')
+    } catch (error) {
+      console.error('Error uploading image:', error)
+      toast.error('Failed to upload image. Please try again.')
+    } finally {
+      setIsUploadingImage(false)
+    }
+  }
+
   const renderFormField = (fieldName: keyof CoachData) => {
     switch (fieldName) {
+      case 'profilePicture':
+        return (
+          <div className="space-y-2">
+            <label className="block text-sm font-medium mb-1">Profile Picture</label>
+            <div className="flex flex-col items-center space-y-4">
+              <div className="w-24 h-24 rounded-full border-2 border-dashed border-gray-300 flex items-center justify-center overflow-hidden bg-gray-50 relative">
+                {isUploadingImage ? (
+                  <div className="flex flex-col items-center">
+                    <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-[#E86C3A]"></div>
+                    <span className="text-xs text-gray-500 mt-1">Uploading...</span>
+                  </div>
+                ) : profilePicturePreview ? (
+                  <img 
+                    src={profilePicturePreview} 
+                    alt="Profile preview" 
+                    className="w-full h-full object-cover rounded-full"
+                  />
+                ) : (
+                  <User className="w-8 h-8 text-gray-400" />
+                )}
+              </div>
+              <div className="flex flex-col items-center space-y-2">
+                <label className={`cursor-pointer ${isUploadingImage ? 'opacity-50 cursor-not-allowed' : 'bg-[#E86C3A] hover:bg-[#D55C2A]'} text-white px-4 py-2 rounded-md text-sm flex items-center space-x-2 transition-colors`}>
+                  <Upload className="w-4 h-4" />
+                  <span>{profilePicturePreview ? 'Change Photo' : 'Upload Photo'}</span>
+                  <input
+                    type="file"
+                    accept="image/*"
+                    onChange={handleProfilePictureUpload}
+                    className="hidden"
+                    disabled={isUploadingImage}
+                  />
+                </label>
+                {profilePicturePreview && !isUploadingImage && (
+                  <Button
+                    type="button"
+                    variant="outline"
+                    size="sm"
+                    onClick={() => {
+                      setProfilePicturePreview('')
+                      setValue('profilePicture', '')
+                    }}
+                    className="text-red-600 border-red-300 hover:bg-red-50 hover:border-red-400"
+                  >
+                    <X className="w-4 h-4 mr-1" />
+                    Remove Photo
+                  </Button>
+                )}
+              </div>
+            </div>
+            <p className="text-xs text-gray-500 text-center">Upload a professional headshot (max 5MB, JPG/PNG)</p>
+          </div>
+        )
       case 'expertise':
         return (
           <div className="space-y-2">
             <label className="block text-sm font-medium mb-1">Areas of Expertise</label>
-            <MultiSelect
-              options={EXPERTISE_OPTIONS}
-              value={watch('expertise')}
-              onChange={(value) => setValue('expertise', value)}
-              placeholder="Select expertise"
-            />
+            <select
+              {...register('expertise')}
+              className="w-full h-12 px-3 border rounded-md focus:ring-2 focus:ring-[#E86C3A]"
+            >
+              <option value="">Select expertise</option>
+              {EXPERTISE_OPTIONS.map(opt => (
+                <option key={opt.value} value={opt.value}>{opt.label}</option>
+              ))}
+            </select>
             {errors.expertise?.message && (
               <p className="text-red-500 text-sm">{errors.expertise.message}</p>
             )}
@@ -298,12 +445,15 @@ export function CoachForm({ onClose }: { onClose: () => void }) {
         return (
           <div className="space-y-2">
             <label className="block text-sm font-medium mb-1">Languages</label>
-            <MultiSelect
-              options={LANGUAGE_OPTIONS}
-              value={watch('languages')}
-              onChange={(value) => setValue('languages', value)}
-              placeholder="Select languages"
-            />
+            <select
+              {...register('languages')}
+              className="w-full h-12 px-3 border rounded-md focus:ring-2 focus:ring-[#E86C3A]"
+            >
+              <option value="">Select language</option>
+              {LANGUAGE_OPTIONS.map(opt => (
+                <option key={opt.value} value={opt.value}>{opt.label}</option>
+              ))}
+            </select>
             {errors.languages?.message && (
               <p className="text-red-500 text-sm">{errors.languages.message}</p>
             )}
@@ -405,12 +555,15 @@ export function CoachForm({ onClose }: { onClose: () => void }) {
         return (
           <div className="space-y-2">
             <label className="block text-sm font-medium mb-1">Certifications</label>
-            <MultiSelect
-              options={CERTIFICATION_OPTIONS}
-              value={watch('certifications') || []}
-              onChange={(value) => setValue('certifications', value)}
-              placeholder="Select certifications"
-            />
+            <select
+              {...register('certifications')}
+              className="w-full h-12 px-3 border rounded-md focus:ring-2 focus:ring-[#E86C3A]"
+            >
+              <option value="">Select certifications</option>
+              {CERTIFICATION_OPTIONS.map(opt => (
+                <option key={opt} value={opt}>{opt}</option>
+              ))}
+            </select>
             {errors.certifications?.message && (
               <p className="text-red-500 text-sm">{errors.certifications.message}</p>
             )}
@@ -479,6 +632,22 @@ export function CoachForm({ onClose }: { onClose: () => void }) {
             />
             
             <CardContent className="p-6 space-y-6 relative max-h-[80vh] overflow-y-auto custom-scrollbar">
+              <style jsx>{`
+                .custom-scrollbar::-webkit-scrollbar {
+                  width: 6px;
+                }
+                .custom-scrollbar::-webkit-scrollbar-track {
+                  background: #f1f1f1;
+                  border-radius: 10px;
+                }
+                .custom-scrollbar::-webkit-scrollbar-thumb {
+                  background: #E86C3A;
+                  border-radius: 10px;
+                }
+                .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+                  background: #D55C2A;
+                }
+              `}</style>
               <div className="absolute top-4 right-4 z-10">
                 <Button
                   variant="ghost"

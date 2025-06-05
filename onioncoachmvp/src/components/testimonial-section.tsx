@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from "framer-motion"
 import { Button } from "@/components/ui/button"
 import { ArrowLeft, ArrowRight } from 'lucide-react'
 import Image from "next/image"
+import Link from "next/link"
 import { CoachForm } from "@/components/coach-form"
 
 const testimonials = [
@@ -91,6 +92,17 @@ export function TestimonialSection() {
                             >
                                 We work with trained and licensed professional coaches who have over 10 years of experience in certain industries and have chosen coaching as their second career
                             </motion.p>
+                            
+                            <motion.p
+                                className="text-lg text-gray-600 mb-6"
+                                initial={{ opacity: 0, y: 20 }}
+                                whileInView={{ opacity: 1, y: 0 }}
+                                viewport={{ once: true }}
+                                transition={{ delay: 0.25 }}
+                            >
+                                Ready to transform careers? Join our team of professional coaches.
+                            </motion.p>
+
                             <motion.div
                                 className="flex flex-wrap gap-4"
                                 initial={{ opacity: 0, y: 20 }}
@@ -99,12 +111,11 @@ export function TestimonialSection() {
                                 transition={{ delay: 0.3 }}
                             >
                                 <Button
-                                    variant="outline"
                                     size="lg"
-                                    className="rounded-full border-[#F36C49] text-[#F36C49] hover:bg-[#F36C49] hover:text-white"
+                                    className="rounded-full bg-[#F36C49] hover:bg-[#E55D3A] text-white"
                                     onClick={() => setIsCoachFormOpen(true)}
                                 >
-                                    Join our team
+                                    Apply as Coach
                                     <ArrowRight className="ml-2 h-5 w-5" />
                                 </Button>
                             </motion.div>

@@ -159,71 +159,71 @@ export function AssessmentResult({ name, scores, onSchedule }: AssessmentResultP
               animate={{ opacity: 1 }}
               transition={{ duration: 0.5 }}
               className="absolute w-[201px] h-[54.46px] left-[60px] top-[60px] flex items-center gap-[6px]"
-            >
-              <Image
-                src="/images/logo_white.jpeg"
-                alt="Onion Logo"
-                width={160}
-                height={54}
-                className="w-auto h-[54.46px]"
-                priority
-              />
-            </motion.div>
-            {/* Two-column Grid Layout */}
+          >
+            <Image
+              src="/images/logo_white.jpeg"
+              alt="Onion Logo"
+              width={160}
+              height={54}
+              className="w-auto h-[54.46px]"
+              priority
+            />
+          </motion.div>
+          {/* Two-column Grid Layout */}
             <div className="grid grid-cols-2 h-full pt-[120px]">
-              {/* Left Column - Results Content */}
+            {/* Left Column - Results Content */}
               <div className="pl-[50px]">
-                <motion.h2 
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.5 }}
+              <motion.h2 
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5 }}
                   className="text-2xl font-light text-white mb-[20px]"
+              >
+                Hi {name}, your quiz results match your ideal life
+              </motion.h2>
+              <motion.div 
+                initial={{ opacity: 0, scale: 0.8 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 0.5, delay: 0.2 }}
+                className="flex items-start gap-[16px] mb-[64px]"
+              >
+                <div className="w-[1px] h-[135px] bg-white" />
+                <span className="font-geist text-[140px] leading-[110%] text-white">
+                  {overallScore}%
+                </span>
+              </motion.div>
+              <motion.p 
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 0.4 }}
+                className="font-poppins text-[18px] leading-[140%] text-white mb-[64px] w-[539px]"
+              >
+                {getResultDescription(overallScore, name)}
+              </motion.p>
+              <motion.div>
+                <Button
+                  onClick={handleOpenSchedule}
+                  className="flex items-center justify-between w-[320px] h-[57px] bg-[#FF6512] hover:bg-[#E55401] rounded-full px-8"
                 >
-                  Hi {name}, your quiz results match your ideal life
-                </motion.h2>
-                <motion.div 
-                  initial={{ opacity: 0, scale: 0.8 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  transition={{ duration: 0.5, delay: 0.2 }}
-                  className="flex items-start gap-[16px] mb-[64px]"
-                >
-                  <div className="w-[1px] h-[135px] bg-white" />
-                  <span className="font-geist text-[140px] leading-[110%] text-white">
-                    {overallScore}%
+                  <span className="text-[18px] text-white whitespace-nowrap">
+                    Schedule your free coaching
                   </span>
-                </motion.div>
-                <motion.p 
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.5, delay: 0.4 }}
-                  className="font-poppins text-[18px] leading-[140%] text-white mb-[64px] w-[539px]"
-                >
-                  {getResultDescription(overallScore, name)}
-                </motion.p>
-                <motion.div>
-                  <Button
-                    onClick={handleOpenSchedule}
-                    className="flex items-center justify-between w-[320px] h-[57px] bg-[#FF6512] hover:bg-[#E55401] rounded-full px-8"
-                  >
-                    <span className="text-[18px] text-white whitespace-nowrap">
-                      Schedule your free coaching
-                    </span>
-                    <svg width="24" height="21" viewBox="0 0 24 21" fill="none">
-                      <path d="M23.0607 11.4393C23.6464 10.8536 23.6464 9.90087 23.0607 9.31505L13.5147 -0.23093C12.9289 -0.81674 11.9762 -0.81674 11.3904 -0.23093C10.8046 0.35489 10.8046 1.30762 11.3904 1.89343L19.9571 10.4601L11.3904 19.0268C10.8046 19.6126 10.8046 20.5653 11.3904 21.1511C11.9762 21.737 12.9289 21.737 13.5147 21.1511L23.0607 11.6052L23.0607 11.4393ZM0 11.8345L22 11.8345V8.91495L0 8.91495L0 11.8345Z" fill="white"/>
-                    </svg>
-                  </Button>
-                </motion.div>
-              </div>
-              {/* Right Column - Life Wheel Chart */}
-              <div className="relative">
-                <motion.div 
+                  <svg width="24" height="21" viewBox="0 0 24 21" fill="none">
+                    <path d="M23.0607 11.4393C23.6464 10.8536 23.6464 9.90087 23.0607 9.31505L13.5147 -0.23093C12.9289 -0.81674 11.9762 -0.81674 11.3904 -0.23093C10.8046 0.35489 10.8046 1.30762 11.3904 1.89343L19.9571 10.4601L11.3904 19.0268C10.8046 19.6126 10.8046 20.5653 11.3904 21.1511C11.9762 21.737 12.9289 21.737 13.5147 21.1511L23.0607 11.6052L23.0607 11.4393ZM0 11.8345L22 11.8345V8.91495L0 8.91495L0 11.8345Z" fill="white"/>
+                  </svg>
+                </Button>
+              </motion.div>
+            </div>
+            {/* Right Column - Life Wheel Chart */}
+            <div className="relative">
+              <motion.div 
                   initial={{ opacity: 0, scale: 1 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  transition={{ duration: 0.8, delay: 0.3, type: "spring" }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 0.8, delay: 0.3, type: "spring" }}
                   className="absolute left-[-20px] top-[-80px] w-[600px] h-[650px]"
-                >
-                  <LifeWheelVisualization scores={scores} />
-                </motion.div>
+              >
+                <LifeWheelVisualization scores={scores} />
+              </motion.div>
               </div>
             </div>
           </div>

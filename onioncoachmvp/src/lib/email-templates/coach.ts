@@ -18,9 +18,9 @@ export const coachEmailTemplates = {
       
       <h2>Application Details</h2>
       <ul style="list-style: none; padding: 0;">
-        <li>🎯 Expertise: ${data.expertise.join(', ')}</li>
-        <li>⏰ Experience: ${data.experience} years</li>
-        <li>🌍 Languages: ${data.languages.join(', ')}</li>
+        <li>🎯 Expertise: ${data.expertise}</li>
+        <li>⏰ Experience: ${data.experience}</li>
+        <li>🌍 Languages: ${data.languages}</li>
         <li>⏱️ Timezone: ${data.timezone}</li>
       </ul>
       
@@ -32,7 +32,7 @@ export const coachEmailTemplates = {
       </ol>
       
       <div style="background: #E86C3A; color: white; padding: 15px; border-radius: 8px; margin-top: 20px;">
-        <p>Questions? Reply to this email or contact us at partners@onion.coach</p>
+        <p>Questions? Reply to this email or contact us at partners@onioncoach.com</p>
       </div>
     </div>
   `,
@@ -55,12 +55,12 @@ export const coachEmailTemplates = {
 
       <h2>Qualifications</h2>
       <div style="background: #f7f7f7; padding: 20px; border-radius: 8px;">
-        <p><strong>Expertise:</strong> ${data.expertise.join(', ')}</p>
-        <p><strong>Experience:</strong> ${data.experience} years</p>
-        <p><strong>Languages:</strong> ${data.languages.join(', ')}</p>
+        <p><strong>Expertise:</strong> ${data.expertise}</p>
+        <p><strong>Experience:</strong> ${data.experience}</p>
+        <p><strong>Languages:</strong> ${data.languages}</p>
         <p><strong>Timezone:</strong> ${data.timezone}</p>
-        ${data.certifications?.length ? 
-          `<p><strong>Certifications:</strong> ${data.certifications.join(', ')}</p>` : 
+        ${data.certifications ? 
+          `<p><strong>Certifications:</strong> ${data.certifications}</p>` : 
           ''}
       </div>
 

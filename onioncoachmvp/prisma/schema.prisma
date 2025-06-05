@@ -51,13 +51,14 @@ model Coach {
   email          String    @unique @db.VarChar(255)
   linkedinUrl    String?   @map("linkedin_url") @db.VarChar(255)
   website        String?   @db.VarChar(255)
-  expertise      String[]
+  expertise      String    @db.VarChar(100)
   experience     String    @db.VarChar(50)
-  languages      String[]
+  languages      String    @db.VarChar(50)
   timezone       String    @db.VarChar(50)
   availability   String    @db.VarChar(50)
   preferredRate  String    @map("preferred_rate") @db.VarChar(50)
-  certifications String[]
+  certifications String?   @db.VarChar(100)
+  profilePicture String?   @map("profile_picture") @db.Text
   bio            String
   status         String    @default("pending") @db.VarChar(50)
   createdAt      DateTime  @default(now()) @map("created_at") @db.Timestamp(6)

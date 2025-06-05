@@ -12,19 +12,26 @@ const resend = process.env.RESEND_API_KEY
   ? new Resend(process.env.RESEND_API_KEY)
   : null
 
+console.log('Resend configuration:', {
+  hasApiKey: !!process.env.RESEND_API_KEY,
+  resendInstance: !!resend,
+  keyLength: process.env.RESEND_API_KEY?.length
+})
+
 // Coach application schema for validation
 const coachApplicationSchema = z.object({
   fullName: z.string().min(2),
   email: z.string().email(),
   linkedinUrl: z.string().transform(val => val || undefined),
   website: z.string().transform(val => val || undefined),
-  expertise: z.array(z.string()),
+  expertise: z.string(),
   experience: z.string(),
-  languages: z.array(z.string()),
+  languages: z.string(),
   timezone: z.string(),
   availability: z.string(),
   preferredRate: z.string(),
-  certifications: z.array(z.string()).optional(),
+  certifications: z.string().optional(),
+  profilePicture: z.string().optional(),
   bio: z.string().min(100)
 }) satisfies z.ZodType<CoachData>
 
@@ -62,7 +69,8 @@ export async function POST(req: Request) {
         timezone: validatedData.timezone,
         availability: validatedData.availability,
         preferredRate: validatedData.preferredRate,
-        certifications: validatedData.certifications || [],
+        certifications: validatedData.certifications || null,
+        profilePicture: validatedData.profilePicture,
         bio: validatedData.bio,
         status: 'upcoming'
       }
@@ -72,21 +80,40 @@ export async function POST(req: Request) {
     // Send email notifications
     if (resend) {
       const emailStart = Date.now()
-      await Promise.all([
-        resend.emails.send({
-          from: 'Onion Coach <partners@onion.coach>',
-          to: [validatedData.email],
-          subject: 'Application Received - Onion Coach',
-          html: coachEmailTemplates.coachConfirmation(validatedData)
-        }),
-        resend.emails.send({
-          from: 'Onion Coach <partners@onion.coach>',
-          to: ['team@onion.coach'],
-          subject: `New Coach Application: ${validatedData.fullName}`,
-          html: coachEmailTemplates.teamNotification(validatedData)
+      console.log(`[${requestId}] Starting email notifications...`)
+      
+      try {
+        const emailResults = await Promise.all([
+          resend.emails.send({
+            from: 'Onion Coach <partners@onioncoach.com>',
+            to: [validatedData.email],
+            subject: 'Application Received - Onion Coach',
+            html: coachEmailTemplates.coachConfirmation(validatedData)
+          }),
+          resend.emails.send({
+            from: 'Onion Coach <partners@onioncoach.com>',
+            to: ['team@onion.coach'],
+            subject: `New Coach Application: ${validatedData.fullName}`,
+            html: coachEmailTemplates.teamNotification(validatedData)
+          })
+        ])
+        
+        console.log(`[${requestId}] Emails sent successfully:`, {
+          coachEmail: emailResults[0],
+          teamEmail: emailResults[1]
         })
-      ])
-      metrics.email = Date.now() - emailStart
+        
+        metrics.email = Date.now() - emailStart
+      } catch (emailError: any) {
+        console.error(`[${requestId}] Email sending failed:`, {
+          error: emailError.message,
+          stack: emailError.stack
+        })
+        // Don't throw error - let the application succeed even if emails fail
+        metrics.email = Date.now() - emailStart
+      }
+    } else {
+      console.warn(`[${requestId}] Resend not configured - emails will not be sent`)
     }
 
     console.log(`[${requestId}] Application completed successfully:`, {

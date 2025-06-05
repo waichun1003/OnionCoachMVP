@@ -22,6 +22,22 @@ export const uploadImage = async (file: string) => {
   }
 };
 
+export const uploadProfilePicture = async (file: string) => {
+  try {
+    const result = await cloudinary.uploader.upload(file, {
+      folder: 'coach-profiles',
+      transformation: [
+        { width: 400, height: 400, crop: 'fill', gravity: 'face' },
+        { quality: 'auto', fetch_format: 'auto' }
+      ],
+    });
+    return result.secure_url;
+  } catch (error) {
+    console.error('Error uploading profile picture to Cloudinary:', error);
+    throw error;
+  }
+};
+
 export const getOptimizedImageUrl = (url: string) => {
   return cloudinary.url(url, {
     fetch_format: 'auto',

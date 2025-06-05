@@ -16,7 +16,12 @@
     "db:seed": "npx ts-node --project tsconfig.seed.json prisma/seed.ts",
     "test:scraper": "ts-node --project tsconfig.scripts.json scripts/test-scraper.ts",
     "test:assessment": "ts-node --project tsconfig.scripts.json scripts/test-assessment.ts",
-    "test:cron": "ts-node --project tsconfig.scripts.json scripts/test-cron.ts"
+    "test:cron": "ts-node --project tsconfig.scripts.json scripts/test-cron.ts",
+    "scrape": "curl -X POST http://localhost:3000/api/scrape",
+    "scrape:prod": "curl -X POST https://your-domain.vercel.app/api/scrape",
+    "setup:deploy-hook": "bash scripts/setup-deploy-hook.sh",
+    "deploy:with-scrape": "vercel --prod && npm run trigger:deploy-hook",
+    "trigger:deploy-hook": "curl -X POST https://your-domain.vercel.app/api/deploy-hook"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.10.0",

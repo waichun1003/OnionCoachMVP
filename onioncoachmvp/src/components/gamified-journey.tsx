@@ -763,7 +763,7 @@ export function GamifiedJourney() {
                                                         priority
                                                     />
                                                 </motion.div>
-                                            </div>
+                                                        </div>
                                         </div>
                                     </div>
                                 </div>

@@ -2,6 +2,9 @@ import { prisma } from '@/lib/prisma'
 import { notFound } from 'next/navigation'
 import { NavBar } from '@/components/nav-bar'
 
+// Force dynamic rendering to prevent static generation at build time
+export const dynamic = 'force-dynamic'
+
 export default async function ArticlePage({ params }: { params: { id: string } }) {
   const article = await prisma.article.findUnique({
     where: { id: params.id },

@@ -13,7 +13,10 @@
     }
   ],
   "functions": {
-    "pages/api/scrape.ts": {
+    "src/app/api/scrape/route.ts": {
+      "maxDuration": 300
+    },
+    "src/app/api/deploy-hook/route.ts": {
       "maxDuration": 300
     }
   }

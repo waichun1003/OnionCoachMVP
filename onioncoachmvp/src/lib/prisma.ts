@@ -16,9 +16,13 @@ const prismaClientSingleton = () => {
     }
   })
   
-  if (process.env.NODE_ENV === 'production' && process.env.DATABASE_URL) {
+  // Only use Accelerate if the URL is a prisma:// URL
+  if (process.env.NODE_ENV === 'production' && 
+      process.env.DATABASE_URL && 
+      process.env.DATABASE_URL.startsWith('prisma://')) {
     return prisma.$extends(withAccelerate())
   }
+  
   return prisma
 }
 
